@@ -26,6 +26,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C99BCB6A134E7E9300EC6DF6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		C99BCB6B134E7E9F00EC6DF6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		C9AC9ED2134E7B200089CAB4 /* mbvm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mbvm; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AC9ED6134E7B200089CAB4 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		C9AC9ED8134E7B200089CAB4 /* mbvm.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = mbvm.1; sourceTree = "<group>"; };
@@ -35,9 +37,6 @@
 		C9AC9EE2134E7BA60089CAB4 /* vm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vm.h; sourceTree = "<group>"; };
 		C9AC9EE4134E7BB90089CAB4 /* system.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = system.c; sourceTree = "<group>"; };
 		C9AC9EE5134E7BB90089CAB4 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
-		C9AC9EE7134E7C0C0089CAB4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = mbvm/LICENSE; sourceTree = "<group>"; };
-		C9AC9EE8134E7C180089CAB4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = mbvm/README.md; sourceTree = "<group>"; };
-		C9AC9EE9134E7CF80089CAB4 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +53,8 @@
 		C9AC9EC7134E7B200089CAB4 = {
 			isa = PBXGroup;
 			children = (
-				C9AC9EE7134E7C0C0089CAB4 /* LICENSE */,
-				C9AC9EE8134E7C180089CAB4 /* README.md */,
-				C9AC9EE9134E7CF80089CAB4 /* .gitignore */,
+				C99BCB6B134E7E9F00EC6DF6 /* LICENSE */,
+				C99BCB6A134E7E9300EC6DF6 /* README.md */,
 				C9AC9ED5134E7B200089CAB4 /* mbvm */,
 				C9AC9ED3134E7B200089CAB4 /* Products */,
 			);
@@ -218,6 +216,7 @@
 				C9AC9EDD134E7B200089CAB4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
