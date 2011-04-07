@@ -35,8 +35,8 @@
 		C9AC9EE2134E7BA60089CAB4 /* vm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vm.h; sourceTree = "<group>"; };
 		C9AC9EE4134E7BB90089CAB4 /* system.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = system.c; sourceTree = "<group>"; };
 		C9AC9EE5134E7BB90089CAB4 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
-		C9AC9EE7134E7C0C0089CAB4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		C9AC9EE8134E7C180089CAB4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		C9AC9EE7134E7C0C0089CAB4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = mbvm/LICENSE; sourceTree = "<group>"; };
+		C9AC9EE8134E7C180089CAB4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = mbvm/README.md; sourceTree = "<group>"; };
 		C9AC9EE9134E7CF80089CAB4 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -54,6 +54,8 @@
 		C9AC9EC7134E7B200089CAB4 = {
 			isa = PBXGroup;
 			children = (
+				C9AC9EE7134E7C0C0089CAB4 /* LICENSE */,
+				C9AC9EE8134E7C180089CAB4 /* README.md */,
 				C9AC9EE9134E7CF80089CAB4 /* .gitignore */,
 				C9AC9ED5134E7B200089CAB4 /* mbvm */,
 				C9AC9ED3134E7B200089CAB4 /* Products */,
@@ -79,8 +81,6 @@
 				C9AC9EE2134E7BA60089CAB4 /* vm.h */,
 				C9AC9EE4134E7BB90089CAB4 /* system.c */,
 				C9AC9EE5134E7BB90089CAB4 /* system.h */,
-				C9AC9EE7134E7C0C0089CAB4 /* LICENSE */,
-				C9AC9EE8134E7C180089CAB4 /* README.md */,
 			);
 			path = mbvm;
 			sourceTree = "<group>";
