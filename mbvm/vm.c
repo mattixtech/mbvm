@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 
 void allocate_vm(){
     ram     = malloc(RAM_SIZE);
@@ -21,18 +22,21 @@ void allocate_vm(){
     pc      = 0;
 }
 
-void copy_memory(unsigned int *source, unsigned int *destination,int num_chunks){
+void copy_memory(uint32_t *source, uint32_t *destination,int num_chunks){
     //TODO there is no bounds checking here
     for(int i=0;i<num_chunks;i++)
         *(destination+i) = *(source+i);
 }
-void exec_program(unsigned int program[],int size){
+void exec_program(uint32_t program[],int size){
+    
+    //copy the contents of the program to this VM's RAM
     copy_memory(program, ram, size);
-    while(pc<size){
+    
+    //this loop executes until the exit instruction is encountered
+    while(1){
         exec(ram[pc]);
+        dump_state();
     }
     
-    for(int i=0;i<size;i++)
-        printf("%u",pop());
     
 }

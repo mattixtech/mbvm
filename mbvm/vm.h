@@ -6,6 +6,8 @@
 //  Copyright 2011 Megabit. All rights reserved.
 //
 
+#include <stdint.h>
+
 #ifndef VM_H
 #define VM_H
 
@@ -14,14 +16,15 @@
 #define NUM_REGISTERS 8
 #define REGISTER_SIZE 4
 
-unsigned int *ram;
-unsigned int *r;
-unsigned int *stack;
+uint32_t *ram;
+uint32_t *r;
+uint32_t *stack;
+uint32_t prev_instr;
 
-unsigned int sp;
-unsigned int pc;
+uint32_t sp;
+uint32_t pc;
 
 void allocate_vm();
-void copy_memory(unsigned int *source, unsigned int *destination,int num);
-void exec_program(unsigned int[],int size);
+void copy_memory(uint32_t *source, uint32_t *destination,int num);
+void exec_program(uint32_t[],int size);
 #endif
