@@ -22,6 +22,6 @@ unsigned int sp;
 unsigned int pc;
 
 void allocate_vm();
-
-void exec_program();
+void copy_memory(unsigned int *source, unsigned int *destination,int num);
+void exec_program(unsigned int[],int size);
 #endif

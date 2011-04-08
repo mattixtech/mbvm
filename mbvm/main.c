@@ -15,10 +15,9 @@
 
 int main (int argc, const char * argv[])
 {   
+    unsigned int program[] = {0x0000,0x0001,0x0002,0x0003,0x0004,0x0005,0x0006,0x0007,0x0008,0x0009};
+    int size = sizeof(program)/sizeof(unsigned int);
     allocate_vm();    
-    exec_program();
+    exec_program(program,size);
     return 0;
-    //testing
-    //
-    //
 }

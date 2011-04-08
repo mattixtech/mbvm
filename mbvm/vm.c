@@ -10,6 +10,7 @@
 #include "system.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 void allocate_vm(){
     ram     = malloc(RAM_SIZE);
@@ -19,13 +20,13 @@ void allocate_vm(){
     pc      = 0;
 }
 
-void exec_program(){
-    ram[0] = 0x0001;
-    ram[1] = 0x0002;
-    ram[2] = 0x0003;
-    ram[3] = 0x0004;
-    
-    while(pc<4){
+void copy_memory(unsigned int *source, unsigned int *destination,int num_chunks){
+    for(int i=0;i<num_chunks;i++)
+        *(destination+i) = *(source+i);
+}
+void exec_program(unsigned int program[],int size){
+    copy_memory(program, ram, size);
+    while(pc<size){
         exec(ram[pc]);
     }
     
