@@ -56,7 +56,9 @@ void dec_instr(uint32_t instr){
                 case MODE_IMMEDIATE_W:
                     print_word(data); break;
                 case MODE_DATA_32:
-                    break;
+                    print_32(ram[++pc]); break;
+                case MODE_REGISTER:
+                    print_32(r[d2]); break;
             }break;
     }
 }
@@ -67,6 +69,10 @@ void print_byte(uint8_t byte){
 
 void print_word(uint16_t word){
     printf("%x\n",word);
+}
+
+void print_32(uint32_t data){
+    printf("%x\n",data);
 }
 
 /*

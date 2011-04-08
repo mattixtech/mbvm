@@ -20,6 +20,7 @@ void allocate_vm(){
     stack   = malloc(STACK_SIZE);
     sp      = 0;
     pc      = 0;
+    sr      = 0;
 }
 
 void copy_memory(uint32_t *source, uint32_t *destination,int num_chunks){
@@ -28,7 +29,6 @@ void copy_memory(uint32_t *source, uint32_t *destination,int num_chunks){
         *(destination+i) = *(source+i);
 }
 void exec_program(uint32_t program[],int size){
-    r[0] = 0xDDBBCCAA;
     //copy the contents of the program to this VM's RAM
     copy_memory(program, ram, size);
     
@@ -36,7 +36,5 @@ void exec_program(uint32_t program[],int size){
     while(1){
         exec(ram[pc]);
         dump_state();
-    }
-    
-    
+    }    
 }

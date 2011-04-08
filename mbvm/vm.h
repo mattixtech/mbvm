@@ -24,7 +24,9 @@ uint32_t prev_instr;
 uint32_t sp;
 uint32_t pc;
 
+uint8_t sr;
+
 void allocate_vm();
-void copy_memory(uint32_t *source, uint32_t *destination,int num);
-void exec_program(uint32_t[],int size);
+void copy_memory(uint32_t*, uint32_t*,int);
+void exec_program(uint32_t[],int);
 #endif

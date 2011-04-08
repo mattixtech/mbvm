@@ -9,7 +9,7 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-void exec(uint32_t programCode);
+void exec(uint32_t);
 void dump_state();
 
 #endif
