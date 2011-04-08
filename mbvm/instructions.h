@@ -10,5 +10,8 @@
 #define INSTRUCTIONS_H
 
 void dec_instr(unsigned int instr);
+void push(unsigned int data);
+unsigned int pop();
+unsigned int peek();
 
 #endif

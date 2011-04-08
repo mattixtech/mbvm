@@ -7,7 +7,32 @@
 //
 
 #include "instructions.h"
+#include "vm.h"
 
+/*
+ *
+ */
 void dec_instr(unsigned int instr){
     
+}
+
+/*
+ *
+ */
+void push(unsigned int data){
+    stack[sp++] = data;
+}
+
+/*
+ *
+ */
+unsigned int pop(){
+    return stack[--sp];
+}
+
+/*
+ *
+ */
+unsigned int peek(){
+    return stack[sp];
 }

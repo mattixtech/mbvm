@@ -8,9 +8,11 @@
 
 #include "system.h"
 #include "vm.h"
+#include "instructions.h"
+
 #include <stdio.h>
 
 void exec(unsigned int programCode){
-    printf("%u",programCode);
-    pc+=1;
+    push(programCode);
+    pc++;
 }
