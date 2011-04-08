@@ -15,8 +15,8 @@
 
 int main (int argc, const char * argv[])
 {   
-    uint32_t program[] = {0xFE000001,0xFE000002,0xFE000003,0xFE000004,0xFE000005,0xB0000000,0xFFEEFFEE,
-        0xB0000000,0xABCDABCD,0x00000000};
+    uint32_t program[] = {0xFE010001,0xFE02AABB,0xFE010003,0xFE010004,0xFE010005,0xB0030000,0xFFEEFFEE,
+        0xB0030000,0xABCDABCD,0xB0060000,0x00000000};
     int size = sizeof(program)/sizeof(uint32_t);
     allocate_vm();    
     exec_program(program,size);
