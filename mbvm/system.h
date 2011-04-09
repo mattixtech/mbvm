@@ -11,5 +11,8 @@
 
 void exec(uint32_t);
 void dump_state();
-
+uint32_t get_block(uint8_t*, uint32_t);
+uint16_t get_word(uint8_t*, uint32_t);
+uint8_t get_byte(uint8_t*, uint32_t);
+uint32_t incr_pc();
 #endif

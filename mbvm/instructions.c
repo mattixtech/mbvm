@@ -8,6 +8,7 @@
 
 #include "instructions.h"
 #include "vm.h"
+#include "system.h"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -32,58 +33,81 @@ void dec_instr(uint32_t instr){
     //data is the least significant 2 bytes of the instruction
     uint16_t data = (instr & 0x0000FFFF);
     
+    uint32_t mem_addr;
+    uint32_t mem_data;
+    
     //switch based on the operation
     switch(op){
     case INSTR_EXIT:
-        exit(0); break;
+        exit(0); 
+        break;
     case INSTR_PUSH:
             switch(mode){
                 case MODE_IMMEDIATE_B:
+                    push(d2);
                     break;
                 case MODE_IMMEDIATE_W:
+                    push(data);
                    break;
                 case MODE_DATA_32:
-                    push(ram[++pc]); break;
+                    push(get_block(ram, incr_pc()));
+                    break;
+                case MODE_DATA_32_ADDR:
+                    mem_addr = get_block(ram, incr_pc());
+                    push(get_block(ram,mem_addr));
+                    break;
+                case MODE_DATA_32_ADDR_W:
+                    mem_addr = get_block(ram, incr_pc());
+                    push(get_word(ram,mem_addr));
+                    break;  
+                case MODE_DATA_32_ADDR_B:
+                    mem_addr = get_block(ram, incr_pc());
+                    push(get_byte(ram,mem_addr));
+                    break;
+                case MODE_DATA_32_INDR:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    push(get_block(ram,mem_addr));
+                    break;
                 case MODE_REGISTER:
-                    push(r[d2]); break;
+                    push(r[d2]); 
+                    break;
             }break;        
     case INSTR_POP:
-        pop(); break;
+        pop(); 
+        break;
     case INSTR_PRINT:
             switch(mode){
                 case MODE_IMMEDIATE_B:
-                    print_byte(d2); break;
+                    print(d2);
+                    break;
                 case MODE_IMMEDIATE_W:
-                    print_word(data); break;
+                    print(d1);
+                    print(d2);
+                    break;
                 case MODE_DATA_32:
-                    print_32(ram[++pc]); break;
+                    print(get_block(ram, incr_pc()));
+                    break;
                 case MODE_REGISTER:
-                    print_32(r[d2]); break;
+                    print(r[d2]);
+                    break;
             }break;
     }
 }
 
-void print_byte(uint8_t byte){
-    printf("%x\n",byte);
-}
-
-void print_word(uint16_t word){
-    printf("%x\n",word);
-}
-
-void print_32(uint32_t data){
-    printf("%x\n",data);
+void print(char data){
+    printf("%c",data);
 }
 
 /*
- *
+ *pushes the 4byte data block onto the stack and realigns the sp
  */
 void push(uint32_t data){
     stack[sp++] = data;
 }
 
 /*
- *
+ *pops the 4byte data block off of the stack and realigns the sp
  */
 uint32_t pop(){
     return stack[--sp];

@@ -11,12 +11,17 @@
 #ifndef VM_H
 #define VM_H
 
-#define RAM_SIZE 1024
-#define STACK_SIZE 256
+//ram 1MB
+#define RAM_SIZE 1048576
+
+//stack 64KB
+#define STACK_SIZE 65536
+
+#define PROGRAM_SPACE 983040
 #define NUM_REGISTERS 8
 #define REGISTER_SIZE 4
 
-uint32_t *ram;
+uint8_t *ram;
 uint32_t *r;
 uint32_t *stack;
 uint32_t prev_instr;
@@ -27,6 +32,6 @@ uint32_t pc;
 uint8_t sr;
 
 void allocate_vm();
-void copy_memory(uint32_t*, uint32_t*,int);
+void copy_memory(uint32_t*, uint8_t*,int);
 void exec_program(uint32_t[],int);
 #endif
