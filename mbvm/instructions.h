@@ -13,15 +13,15 @@
 #define INSTR_EXIT                  0x00
 #define INSTR_NOP                   0xFF
 
-#define INSTR_PRINT                 0xFE
 #define INSTR_PUSH                  0xB0
 #define INSTR_POP                   0xB1
 #define INSTR_PEEK                  0xB2
+
 #define INSTR_MOV                   0x01
 #define INSTR_ADD                   0x02
 #define INSTR_SUB                   0x03
 
-
+#define ADV_INSTR_PRINT             0xFE
 
 #define MODE_IMMEDIATE_B            0x01
 #define MODE_IMMEDIATE_W            0x02

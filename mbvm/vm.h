@@ -30,7 +30,7 @@ uint32_t sp;
 uint32_t pc;
 
 uint8_t sr;
-
+uint32_t* pr;
 void allocate_vm();
 void copy_memory(uint32_t*, uint8_t*,int);
 void exec_program(uint32_t[],int);

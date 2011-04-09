@@ -15,11 +15,13 @@
 
 //create a program to load into the virtual machine
 uint32_t program[] = {
-    0xB0070000,
+    0xFE000000,
+    0x00000000
+    /*0xB0080000,
     0x0000000C,
     0x00000000,
-    0x00000010,
-    0xBBAABBAA
+    0x00000013,
+    0xAABBCCDD*/
 };
 
 int main (int argc, const char * argv[])

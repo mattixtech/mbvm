@@ -24,6 +24,9 @@ void allocate_vm(){
     sp      = 0;
     pc      = 0;
     sr      = 0;
+    
+    //point the pr to r7
+    pr      = r+7;
 }
 
 /*
