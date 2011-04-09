@@ -41,9 +41,13 @@ void dec_instr(uint32_t instr){
     
     //switch based on the operation
     switch(op){
+            
+    //        
     case INSTR_EXIT:
         exit(0); 
         break;
+            
+    //        
     case INSTR_PUSH:
             switch(mode){
                 case MODE_IMMEDIATE_B:
@@ -112,13 +116,31 @@ void dec_instr(uint32_t instr){
                     mem_addr = get_block(ram, mem_addr);
                     push(get_byte(ram,mem_addr));
                     break;
-            }break;        
+            }break;
+            
     case INSTR_POP:
         pop(); 
         break;
+    
+    //print has two modes
+    //it can either print the char stored in the pr
+    //or print the 0 terminated string located in
+    //memory pointed to by pr
     case ADV_INSTR_PRINT:
-        print((char) *(pr));
+            switch(mode){
+                case MODE_DEFAULT:
+                    print((char) *(pr));
+                    break;
+                case MODE_EXTRA:
+                    mem_addr = *(pr);
+                    char p_byte = '\00';
+                    while((p_byte = get_byte(ram,mem_addr++))){
+                        print(p_byte);
+                    }
+                    break;
+            }
         break;
+            
     }
 }
 

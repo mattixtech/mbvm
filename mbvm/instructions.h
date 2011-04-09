@@ -23,6 +23,7 @@
 
 #define ADV_INSTR_PRINT             0xFE
 
+#define MODE_DEFAULT                0x00
 #define MODE_IMMEDIATE_B            0x01
 #define MODE_IMMEDIATE_W            0x02
 #define MODE_DATA_32                0x03
@@ -39,6 +40,7 @@
 #define MODE_REGISTER_INDR          0x0E
 #define MODE_REGISTER_INDR_B        0x0F
 #define MODE_REGISTER_INDR_W        0x10
+#define MODE_EXTRA                  0xFF
 
 void dec_instr(uint32_t);
 void push(uint32_t);

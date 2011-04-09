@@ -59,15 +59,16 @@ uint32_t incr_pc(){
  *dumps the machine's state for debugging purposes
  */
 void dump_state(){
-    printf("\nlast instr: 0x%x\n",prev_instr);
-    printf("r0: 0x%x, r1: 0x%x, r2: 0x%x, r3: 0x%x, r4: 0x%x, r5: 0x%x, r6: 0x%x, r7: 0x%x\n",
-           r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7]);
-    printf("pc: 0x%x, sp: 0x%x, sr: 0x%x\n",pc,sp,sr);
-    printf("stack:");
-    int start = sp-1;
-    for(int i=start;i>=0;i--)
-        printf(" 0x%x",stack[i]);
-    printf("\n");
-    printf("next instr: 0x%x\n\n",get_block(ram, pc));
-        
+    if(DEBUG_STATE){
+        printf("\nlast instr: 0x%x\n",prev_instr);
+        printf("r0: 0x%x, r1: 0x%x, r2: 0x%x, r3: 0x%x, r4: 0x%x, r5: 0x%x, r6: 0x%x, r7: 0x%x\n",
+        r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7]);
+        printf("pc: 0x%x, sp: 0x%x, sr: 0x%x\n",pc,sp,sr);
+        printf("stack:");
+        int start = sp-1;
+        for(int i=start;i>=0;i--)
+            printf(" 0x%x",stack[i]);
+        printf("\n");
+        printf("next instr: 0x%x\n\n",get_block(ram, pc));
+    }
 }

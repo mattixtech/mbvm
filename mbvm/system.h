@@ -9,6 +9,8 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
+#define DEBUG_STATE 1
+
 void exec(uint32_t);
 void dump_state();
 uint32_t get_block(uint8_t*, uint32_t);
