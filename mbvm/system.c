@@ -31,6 +31,31 @@ uint32_t get_block(uint8_t* loc, uint32_t image_addr){
 }
 
 /*
+ *stores a 4byte value into a memory location
+ */
+void store_block(uint8_t* loc, uint32_t index, uint32_t block){    
+    *(loc+index+0)    = (block & 0xFF000000)>>24;
+    *(loc+index+1)    = (block & 0x00FF0000)>>16;
+    *(loc+index+2)    = (block & 0x0000FF00)>>8;
+    *(loc+index+3)    = (block & 0x000000FF);    
+}
+
+/*
+ *stores a 2byte value into a memory location
+ */
+void store_word(uint8_t* loc, uint32_t index, uint16_t word){    
+    *(loc+index+0)    = (word & 0xFF00)>>8;
+    *(loc+index+1)    = (word & 0x00FF);  
+}
+
+/*
+ *stores a byte value into a memory location
+ */
+void store_byte(uint8_t* loc, uint32_t index, uint8_t byte){    
+    *(loc+index)    = byte;
+}
+
+/*
  *returns the 2byte word found in loc @ image_addr
  */
 uint16_t get_word(uint8_t* loc, uint32_t image_addr){

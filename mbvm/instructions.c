@@ -44,7 +44,139 @@ void dec_instr(uint32_t instr){
         case INSTR_EXIT:
             exit(0); 
             break;
-                  
+            
+        case INSTR_LOAD:
+            switch(mode){
+                case MODE_IMMEDIATE_B:
+                    dr = d2;
+                    break;
+                case MODE_IMMEDIATE_W:
+                    dr = data;
+                    break;
+                case MODE_DATA_32:
+                    dr = get_block(ram, incr_pc());
+                    break;
+                case MODE_DATA_32_ADDR:
+                    mem_addr = get_block(ram, incr_pc());
+                    dr = get_block(ram,mem_addr);
+                    break;
+                case MODE_DATA_32_ADDR_W:
+                    mem_addr = get_block(ram, incr_pc());
+                    dr = get_word(ram,mem_addr);
+                    break;  
+                case MODE_DATA_32_ADDR_B:
+                    mem_addr = get_block(ram, incr_pc());
+                    dr = get_byte(ram,mem_addr);
+                    break;
+                case MODE_DATA_32_INDR:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    dr = get_block(ram,mem_addr);
+                    break;
+                case MODE_DATA_32_INDR_W:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    dr = get_word(ram,mem_addr);
+                    break;
+                case MODE_DATA_32_INDR_B:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    dr = get_byte(ram,mem_addr);
+                    break;
+                case MODE_REGISTER:
+                    dr = r[d2]; 
+                    break;
+                case MODE_REGISTER_ADDR:
+                    mem_addr = r[d2];
+                    dr = get_block(ram,mem_addr);
+                    break;
+                case MODE_REGISTER_ADDR_W:
+                    mem_addr = r[d2];
+                    dr = get_word(ram,mem_addr);
+                    break;  
+                case MODE_REGISTER_ADDR_B:
+                    mem_addr = r[d2];
+                    dr = get_byte(ram,mem_addr);
+                    break;
+                case MODE_REGISTER_INDR:
+                    mem_addr = r[d2];
+                    mem_addr = get_block(ram, mem_addr);
+                    dr = get_block(ram,mem_addr);
+                    break;
+                case MODE_REGISTER_INDR_W:
+                    mem_addr = r[d2];
+                    mem_addr = get_block(ram, mem_addr);
+                    dr = get_word(ram,mem_addr);
+                    break;
+                case MODE_REGISTER_INDR_B:
+                    mem_addr = r[d2];
+                    mem_addr = get_block(ram, mem_addr);
+                    dr = get_byte(ram,mem_addr);
+                    break;
+            }break;
+        
+            //TODO complete STORE instruction
+        case INSTR_STORE:
+            switch(mode){
+                case MODE_DATA_32_ADDR:
+                    mem_addr = get_block(ram, incr_pc());
+                    store_block(ram, mem_addr,dr);
+                    break;
+                case MODE_DATA_32_ADDR_W:
+                    mem_addr = get_block(ram, incr_pc());
+                    store_word(ram, mem_addr,dr);
+                    break;  
+                case MODE_DATA_32_ADDR_B:
+                    mem_addr = get_block(ram, incr_pc());
+                    store_byte(ram, mem_addr,dr);
+                    break;
+                case MODE_DATA_32_INDR:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    store_block(ram, mem_addr,dr);
+                    break;
+                case MODE_DATA_32_INDR_W:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    store_word(ram, mem_addr,dr);
+                    break;
+                case MODE_DATA_32_INDR_B:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    store_byte(ram, mem_addr,dr);
+                    break;
+                case MODE_REGISTER:
+                    r[d2] = dr; 
+                    break;
+                case MODE_REGISTER_ADDR:
+                    mem_addr = r[d2];
+                    store_block(ram, mem_addr,dr);
+                    break;
+                case MODE_REGISTER_ADDR_W:
+                    mem_addr = r[d2];
+                    store_word(ram, mem_addr,dr);
+                    break;  
+                case MODE_REGISTER_ADDR_B:
+                    mem_addr = r[d2];
+                    store_byte(ram, mem_addr,dr);
+                    break;
+                case MODE_REGISTER_INDR:
+                    mem_addr = r[d2];
+                    mem_addr = get_block(ram, mem_addr);
+                    store_block(ram, mem_addr,dr);
+                    break;
+                case MODE_REGISTER_INDR_W:
+                    mem_addr = r[d2];
+                    mem_addr = get_block(ram, mem_addr);
+                    store_word(ram, mem_addr,dr);
+                    break;
+                case MODE_REGISTER_INDR_B:
+                    mem_addr = r[d2];
+                    mem_addr = get_block(ram, mem_addr);
+                    store_byte(ram, mem_addr,dr);
+                    break;
+            }break;           
+        
         case INSTR_PUSH:
             switch(mode){
                 case MODE_IMMEDIATE_B:
