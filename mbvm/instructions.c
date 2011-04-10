@@ -40,15 +40,12 @@ void dec_instr(uint32_t instr){
     uint32_t mem_data;
     
     //switch based on the operation
-    switch(op){
-            
-    //        
-    case INSTR_EXIT:
-        exit(0); 
-        break;
-            
-    //        
-    case INSTR_PUSH:
+    switch(op){      
+        case INSTR_EXIT:
+            exit(0); 
+            break;
+                  
+        case INSTR_PUSH:
             switch(mode){
                 case MODE_IMMEDIATE_B:
                     push(d2);
@@ -118,15 +115,28 @@ void dec_instr(uint32_t instr){
                     break;
             }break;
             
-    case INSTR_POP:
-        pop(); 
-        break;
-    
-    //print has two modes
-    //it can either print the char stored in the pr
-    //or print the 0 terminated string located in
-    //memory pointed to by pr
-    case ADV_INSTR_PRINT:
+        case INSTR_POP:
+            pop(); 
+            break;
+            
+        //jump instructions
+        case INSTR_JMP:
+            mem_addr = get_block(ram, incr_pc());
+            if((mem_addr % INSTRUCTION_SIZE) == 0){
+                pc = mem_addr; //point the pc to the jmp location
+                dec_instr(get_block(ram,pc)); //restart the instruction cycle at the new pc
+            }
+            break;
+            
+        case INSTR_CMP:
+            
+            break;
+            
+        //print has two modes
+        //it can either print the char stored in the pr
+        //or print the 0 terminated string located in
+        //memory pointed to by pr
+        case ADV_INSTR_PRINT:
             switch(mode){
                 case MODE_DEFAULT:
                     print((char) *(pr));
@@ -139,8 +149,7 @@ void dec_instr(uint32_t instr){
                     }
                     break;
             }
-        break;
-            
+            break;            
     }
 }
 

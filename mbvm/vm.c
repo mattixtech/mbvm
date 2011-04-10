@@ -25,8 +25,15 @@ void allocate_vm(){
     pc      = 0;
     sr      = 0;
     
-    //point the pr to r7
-    pr      = r+7;
+    //point the pr
+    pr      = r+PRINT_REGISTER;
+    
+    if(DEBUG_STATE){
+        printf("VM Allocation:\n");
+        printf("RAM size:   %dMB, starting address: 0x%x\n",RAM_SIZE/(1024*1024),ram);
+        printf("STACK size:  %dKB, starting address: 0x%x\n",STACK_SIZE/(1024),stack);
+        printf("Special Registers: pr=r%d\n",PRINT_REGISTER);
+    }
 }
 
 /*
@@ -52,10 +59,16 @@ void copy_memory(uint32_t *source, uint8_t *destination, int num_blocks){
  *begins executing program image
  */
 void exec_program(uint32_t program[],int size){
+    
+    //print the entire program image
+    disp_image(program,size);
+    
     //copy the contents of the program to this VM's RAM
     copy_memory(program, ram, size);
     
+    printf("\nExecuting...\n");
     //this loop executes until the exit instruction is encountered
+    dump_state();
     while(1){
         //get the next 4byte block instruction from ram @ pc
         uint32_t next_instr = get_block(ram,pc);

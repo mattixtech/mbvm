@@ -12,14 +12,16 @@
 #define VM_H
 
 //ram 1MB
-#define RAM_SIZE 1048576
+#define RAM_SIZE (1024*1024*100)
 
 //stack 64KB
-#define STACK_SIZE 65536
+#define STACK_SIZE (64*1024)
 
-#define PROGRAM_SPACE 983040
+#define INSTRUCTION_SIZE 4
 #define NUM_REGISTERS 8
 #define REGISTER_SIZE 4
+
+#define PRINT_REGISTER 7
 
 uint8_t *ram;
 uint32_t *r;
@@ -28,6 +30,11 @@ uint32_t prev_instr;
 
 uint32_t sp;
 uint32_t pc;
+
+//sr schematic
+//7 6  5 4 3 2 1 0
+//bit 0: zero bit, will be on if the previous instruction yielded a zero result
+//bit 1: 
 
 uint8_t sr;
 uint32_t* pr;

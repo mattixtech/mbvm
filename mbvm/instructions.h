@@ -10,19 +10,31 @@
 #ifndef INSTRUCTIONS_H
 #define INSTRUCTIONS_H
 
+//Basic instructions
 #define INSTR_EXIT                  0x00
 #define INSTR_NOP                   0xFF
 
-#define INSTR_PUSH                  0xB0
-#define INSTR_POP                   0xB1
-#define INSTR_PEEK                  0xB2
+#define INSTR_PUSH                  0xA0
+#define INSTR_POP                   0xA1
+#define INSTR_PEEK                  0xA2
 
-#define INSTR_MOV                   0x01
-#define INSTR_ADD                   0x02
-#define INSTR_SUB                   0x03
+#define INSTR_LOAD                  0x01
+#define INSTR_STORE                 0x02
+#define INSTR_ADD                   0x03
+#define INSTR_SUB                   0x04
 
+#define INSTR_JMP                   0x10
+#define INSTR_JMPZ                  0x11
+#define INSTR_JMPZ                  0x12
+#define INSTR_JMPEQ                 0x11
+#define INSTR_JMPNEQ                0x12
+
+#define INSTR_CMP                   0x20
+
+//Advanced instructions
 #define ADV_INSTR_PRINT             0xFE
 
+//Instruction modes
 #define MODE_DEFAULT                0x00
 #define MODE_IMMEDIATE_B            0x01
 #define MODE_IMMEDIATE_W            0x02
