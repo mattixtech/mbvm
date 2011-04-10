@@ -115,7 +115,6 @@ void dec_instr(uint32_t instr){
                     break;
             }break;
         
-            //TODO complete STORE instruction
         case INSTR_STORE:
             switch(mode){
                 case MODE_DATA_32_ADDR:
@@ -248,8 +247,66 @@ void dec_instr(uint32_t instr){
             }break;
             
         case INSTR_POP:
-            pop(); 
-            break;
+            switch(mode){
+                case MODE_DATA_32_ADDR:
+                    mem_addr = get_block(ram, incr_pc());
+                    store_block(ram,mem_addr,pop());
+                    break;
+                case MODE_DATA_32_ADDR_W:
+                    mem_addr = get_block(ram, incr_pc());
+                    store_word(ram,mem_addr,pop());
+                    break;  
+                case MODE_DATA_32_ADDR_B:
+                    mem_addr = get_block(ram, incr_pc());
+                    store_byte(ram,mem_addr,pop());
+                    break;
+                case MODE_DATA_32_INDR:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    store_block(ram,mem_addr,pop());
+                    break;
+                case MODE_DATA_32_INDR_W:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    store_word(ram,mem_addr,pop());
+                    break;
+                case MODE_DATA_32_INDR_B:
+                    mem_addr = get_block(ram, incr_pc());
+                    mem_addr = get_block(ram, mem_addr);
+                    store_byte(ram,mem_addr,pop());
+                    break;
+                case MODE_REGISTER:
+                    r[d2] = pop();
+                    break;
+                case MODE_REGISTER_ADDR:
+                    mem_addr = r[d2];
+                    store_block(ram,mem_addr,pop());
+                    break;
+                case MODE_REGISTER_ADDR_W:
+                    mem_addr = r[d2];
+                    store_word(ram,mem_addr,pop());
+                    break;  
+                case MODE_REGISTER_ADDR_B:
+                    mem_addr = r[d2];
+                    store_byte(ram,mem_addr,pop());
+                    break;
+                case MODE_REGISTER_INDR:
+                    mem_addr = r[d2];
+                    mem_addr = get_block(ram, mem_addr);
+                    store_block(ram,mem_addr,pop());
+                    break;
+                case MODE_REGISTER_INDR_W:
+                    mem_addr = r[d2];
+                    mem_addr = get_block(ram, mem_addr);
+                    store_word(ram,mem_addr,pop());
+                    break;
+                case MODE_REGISTER_INDR_B:
+                    mem_addr = r[d2];
+                    mem_addr = get_block(ram, mem_addr);
+                    store_byte(ram,mem_addr,pop());
+                    break;
+            }break;
+
             
         //jump instructions
         case INSTR_JMP:
