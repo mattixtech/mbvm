@@ -25,7 +25,7 @@
 
 #define INSTR_JMP                   0x10
 #define INSTR_JMPZ                  0x11
-#define INSTR_JMPZ                  0x12
+#define INSTR_JMPNZ                 0x12
 #define INSTR_JMPEQ                 0x11
 #define INSTR_JMPNEQ                0x12
 

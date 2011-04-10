@@ -139,10 +139,10 @@ void dec_instr(uint32_t instr){
         case ADV_INSTR_PRINT:
             switch(mode){
                 case MODE_DEFAULT:
-                    print((char) *(pr));
+                    print((char) pr);
                     break;
                 case MODE_EXTRA:
-                    mem_addr = *(pr);
+                    mem_addr = pr;
                     char p_byte = '\00';
                     while((p_byte = get_byte(ram,mem_addr++))){
                         print(p_byte);

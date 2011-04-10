@@ -23,16 +23,14 @@ void allocate_vm(){
     stack   = (uint32_t*) (ram + (RAM_SIZE - STACK_SIZE));// + PROGRAM_SPACE;
     sp      = 0;
     pc      = 0;
-    sr      = 0;
-    
-    //point the pr
-    pr      = r+PRINT_REGISTER;
+    sr      = 0;    
+    dr      = 0;
+    pr      = 0;
     
     if(DEBUG_STATE){
         printf("VM Allocation:\n");
-        printf("RAM size:   %dMB, starting address: 0x%x\n",RAM_SIZE/(1024*1024),ram);
-        printf("STACK size:  %dKB, starting address: 0x%x\n",STACK_SIZE/(1024),stack);
-        printf("Special Registers: pr=r%d\n",PRINT_REGISTER);
+        printf("RAM size:   %dMB, starting address: 0x%x\n",RAM_SIZE/(1024*1024),(unsigned int) ram);
+        printf("STACK size:  %dKB, starting address: 0x%x\n",STACK_SIZE/(1024),(unsigned int) stack);
     }
 }
 

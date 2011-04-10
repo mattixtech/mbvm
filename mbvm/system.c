@@ -73,9 +73,10 @@ void disp_image(uint32_t image[],int blocks){
 void dump_state(){
     if(DEBUG_STATE){
         printf("\ninstr: 0x%x\n",prev_instr);
-        printf("r0: 0x%x, r1: 0x%x, r2: 0x%x, r3: 0x%x, r4: 0x%x, r5: 0x%x, r6: 0x%x, r7: 0x%x\n",
+        printf("r0: 0x%x, r1: 0x%x, r2: 0x%x, r3: 0x%x, r4: 0x%x, r5: 0x%x, r6: 0x%x, r7: 0x%x, ",
         r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7]);
-        printf("pc: 0x%x, sp: 0x%x, sr: 0x%x, zb: %d\n",pc,sp,sr,sr & 0x01);
+        printf("sr: 0x%x, dr: 0x%x, pr: 0x%x\n", sr, dr, pr);
+        printf("pc: 0x%x, sp: 0x%x, zb: %d\n",pc,sp,sr & 0x01);
         printf("stack:");
         int start = sp-1;
         for(int i=start;i>=0;i--)
