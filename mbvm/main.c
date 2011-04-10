@@ -17,13 +17,15 @@ void test();
 
 //create a program to load into the virtual machine
 uint32_t program[] = {
-    0xFF000000,
+    0x01030000,
+    0x00000014,
+    0x020A0009,
     0x10000000,
-    0x0000001C,
-    0xFF000000,
-    0xFF000000,
-    0xFF000000,
-    0xFF000000,
+    0x00000020,
+    0x6D617474,
+    0x6865770A,
+    0x00000000,
+    0xFEFF0000,
     0x00000000,
 };
 

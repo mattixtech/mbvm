@@ -24,13 +24,13 @@ void allocate_vm(){
     sp      = 0;
     pc      = 0;
     sr      = 0;    
-    dr      = 0;
-    pr      = 0;
+    dr      = r+DATA_REGISTER;
+    pr      = r+PRINT_REGISTER;
     
     if(DEBUG_STATE){
         printf("VM Allocation:\n");
-        printf("RAM size:   %dMB, starting address: 0x%x\n",RAM_SIZE/(1024*1024),(unsigned int) ram);
-        printf("STACK size:  %dKB, starting address: 0x%x\n",STACK_SIZE/(1024),(unsigned int) stack);
+        printf("RAM size:   %dMB, starting address: 0x%X\n",RAM_SIZE/(1024*1024),(unsigned int) ram);
+        printf("STACK size:  %dKB, starting address: 0x%X\n",STACK_SIZE/(1024),(unsigned int) stack);
     }
 }
 
@@ -63,8 +63,8 @@ void exec_program(uint32_t program[],int size){
     
     //copy the contents of the program to this VM's RAM
     copy_memory(program, ram, size);
-    
-    printf("\nExecuting...\n");
+    if(DEBUG_STATE)
+        printf("\nExecuting...\n");
     //this loop executes until the exit instruction is encountered
     dump_state();
     while(1){

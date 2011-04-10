@@ -87,7 +87,7 @@ void disp_image(uint32_t image[],int blocks){
     if(DEBUG_STATE){
         printf("\nProgram Image:\n");
         for(int i=0;i<blocks;i++){
-            printf("0x%x \t 0x%x\n",i*4,image[i]);
+            printf("0x%X \t 0x%X\n",i*4,image[i]);
         }
     }
 }
@@ -97,16 +97,16 @@ void disp_image(uint32_t image[],int blocks){
  */
 void dump_state(){
     if(DEBUG_STATE){
-        printf("\ninstr: 0x%x\n",prev_instr);
-        printf("r0: 0x%x, r1: 0x%x, r2: 0x%x, r3: 0x%x, r4: 0x%x, r5: 0x%x, r6: 0x%x, r7: 0x%x, ",
+        printf("\ninstr: 0x%X\n",prev_instr);
+        printf("r0: 0x%X, r1: 0x%X, r2: 0x%X, r3: 0x%X, r4: 0x%X, r5: 0x%X, r6: 0x%X, r7: 0x%X, ",
         r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7]);
-        printf("sr: 0x%x, dr: 0x%x, pr: 0x%x\n", sr, dr, pr);
-        printf("pc: 0x%x, sp: 0x%x, zb: %d\n",pc,sp,sr & 0x01);
+        printf("sr: 0x%X, dr: 0x%X, pr: 0x%X\n", sr, *dr, *pr);
+        printf("pc: 0x%X, sp: 0x%X, zb: %d\n",pc,sp,sr & 0x01);
         printf("stack:");
         int start = sp-1;
         for(int i=start;i>=0;i--)
-            printf(" 0x%x",stack[i]);
+            printf(" 0x%X",stack[i]);
         printf("\n");
-        printf("next instr: 0x%x, following block: 0x%x\n\n",get_block(ram, pc),get_block(ram,pc+4));
+        printf("next instr: 0x%X, following block: 0x%X\n\n",get_block(ram, pc),get_block(ram,pc+4));
     }
 }

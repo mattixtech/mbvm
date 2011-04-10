@@ -18,8 +18,11 @@
 #define STACK_SIZE (64*1024)
 
 #define INSTRUCTION_SIZE 4
-#define NUM_REGISTERS 8
+#define NUM_REGISTERS 10
 #define REGISTER_SIZE 4
+
+#define DATA_REGISTER 8
+#define PRINT_REGISTER 9
 
 uint8_t *ram;
 uint32_t *r;
@@ -35,8 +38,8 @@ uint32_t pc;
 //bit 1: 
 
 uint8_t sr;
-uint32_t dr;
-uint32_t pr;
+uint32_t *dr;
+uint32_t *pr;
 void allocate_vm();
 void copy_memory(uint32_t*, uint8_t*,int);
 void exec_program(uint32_t[],int);

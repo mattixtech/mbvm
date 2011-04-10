@@ -42,76 +42,79 @@ void dec_instr(uint32_t instr){
     //switch based on the operation
     switch(op){      
         case INSTR_EXIT:
+            if(DEBUG_STATE){
+                printf("exit instruction reached, terminating...\n");
+            }
             exit(0); 
             break;
             
         case INSTR_LOAD:
             switch(mode){
                 case MODE_IMMEDIATE_B:
-                    dr = d2;
+                    *dr = d2;
                     break;
                 case MODE_IMMEDIATE_W:
-                    dr = data;
+                    *dr = data;
                     break;
                 case MODE_DATA_32:
-                    dr = get_block(ram, incr_pc());
+                    *dr = get_block(ram, incr_pc());
                     break;
                 case MODE_DATA_32_ADDR:
                     mem_addr = get_block(ram, incr_pc());
-                    dr = get_block(ram,mem_addr);
+                    *dr = get_block(ram,mem_addr);
                     break;
                 case MODE_DATA_32_ADDR_W:
                     mem_addr = get_block(ram, incr_pc());
-                    dr = get_word(ram,mem_addr);
+                    *dr = get_word(ram,mem_addr);
                     break;  
                 case MODE_DATA_32_ADDR_B:
                     mem_addr = get_block(ram, incr_pc());
-                    dr = get_byte(ram,mem_addr);
+                    *dr = get_byte(ram,mem_addr);
                     break;
                 case MODE_DATA_32_INDR:
                     mem_addr = get_block(ram, incr_pc());
                     mem_addr = get_block(ram, mem_addr);
-                    dr = get_block(ram,mem_addr);
+                    *dr = get_block(ram,mem_addr);
                     break;
                 case MODE_DATA_32_INDR_W:
                     mem_addr = get_block(ram, incr_pc());
                     mem_addr = get_block(ram, mem_addr);
-                    dr = get_word(ram,mem_addr);
+                    *dr = get_word(ram,mem_addr);
                     break;
                 case MODE_DATA_32_INDR_B:
                     mem_addr = get_block(ram, incr_pc());
                     mem_addr = get_block(ram, mem_addr);
-                    dr = get_byte(ram,mem_addr);
+                    *dr = get_byte(ram,mem_addr);
                     break;
                 case MODE_REGISTER:
-                    dr = r[d2]; 
+                    *dr = r[d2]; 
                     break;
                 case MODE_REGISTER_ADDR:
                     mem_addr = r[d2];
-                    dr = get_block(ram,mem_addr);
+                    *dr = get_block(ram,mem_addr);
                     break;
                 case MODE_REGISTER_ADDR_W:
                     mem_addr = r[d2];
-                    dr = get_word(ram,mem_addr);
+                    *dr = get_word(ram,mem_addr);
                     break;  
                 case MODE_REGISTER_ADDR_B:
                     mem_addr = r[d2];
-                    dr = get_byte(ram,mem_addr);
+                    *dr = get_byte(ram,mem_addr);
                     break;
                 case MODE_REGISTER_INDR:
                     mem_addr = r[d2];
                     mem_addr = get_block(ram, mem_addr);
-                    dr = get_block(ram,mem_addr);
+                    *dr = get_block(ram,mem_addr);
                     break;
                 case MODE_REGISTER_INDR_W:
                     mem_addr = r[d2];
                     mem_addr = get_block(ram, mem_addr);
-                    dr = get_word(ram,mem_addr);
+                    *dr = get_word(ram,mem_addr);
                     break;
                 case MODE_REGISTER_INDR_B:
                     mem_addr = r[d2];
                     mem_addr = get_block(ram, mem_addr);
-                    dr = get_byte(ram,mem_addr);
+                    *dr = get_byte(ram,mem_addr);
                     break;
             }break;
         
@@ -119,60 +122,60 @@ void dec_instr(uint32_t instr){
             switch(mode){
                 case MODE_DATA_32_ADDR:
                     mem_addr = get_block(ram, incr_pc());
-                    store_block(ram, mem_addr,dr);
+                    store_block(ram, mem_addr,*dr);
                     break;
                 case MODE_DATA_32_ADDR_W:
                     mem_addr = get_block(ram, incr_pc());
-                    store_word(ram, mem_addr,dr);
+                    store_word(ram, mem_addr,*dr);
                     break;  
                 case MODE_DATA_32_ADDR_B:
                     mem_addr = get_block(ram, incr_pc());
-                    store_byte(ram, mem_addr,dr);
+                    store_byte(ram, mem_addr,*dr);
                     break;
                 case MODE_DATA_32_INDR:
                     mem_addr = get_block(ram, incr_pc());
                     mem_addr = get_block(ram, mem_addr);
-                    store_block(ram, mem_addr,dr);
+                    store_block(ram, mem_addr,*dr);
                     break;
                 case MODE_DATA_32_INDR_W:
                     mem_addr = get_block(ram, incr_pc());
                     mem_addr = get_block(ram, mem_addr);
-                    store_word(ram, mem_addr,dr);
+                    store_word(ram, mem_addr,*dr);
                     break;
                 case MODE_DATA_32_INDR_B:
                     mem_addr = get_block(ram, incr_pc());
                     mem_addr = get_block(ram, mem_addr);
-                    store_byte(ram, mem_addr,dr);
+                    store_byte(ram, mem_addr,*dr);
                     break;
                 case MODE_REGISTER:
-                    r[d2] = dr; 
+                    r[d2] = *dr; 
                     break;
                 case MODE_REGISTER_ADDR:
                     mem_addr = r[d2];
-                    store_block(ram, mem_addr,dr);
+                    store_block(ram, mem_addr,*dr);
                     break;
                 case MODE_REGISTER_ADDR_W:
                     mem_addr = r[d2];
-                    store_word(ram, mem_addr,dr);
+                    store_word(ram, mem_addr,*dr);
                     break;  
                 case MODE_REGISTER_ADDR_B:
                     mem_addr = r[d2];
-                    store_byte(ram, mem_addr,dr);
+                    store_byte(ram, mem_addr,*dr);
                     break;
                 case MODE_REGISTER_INDR:
                     mem_addr = r[d2];
                     mem_addr = get_block(ram, mem_addr);
-                    store_block(ram, mem_addr,dr);
+                    store_block(ram, mem_addr,*dr);
                     break;
                 case MODE_REGISTER_INDR_W:
                     mem_addr = r[d2];
                     mem_addr = get_block(ram, mem_addr);
-                    store_word(ram, mem_addr,dr);
+                    store_word(ram, mem_addr,*dr);
                     break;
                 case MODE_REGISTER_INDR_B:
                     mem_addr = r[d2];
                     mem_addr = get_block(ram, mem_addr);
-                    store_byte(ram, mem_addr,dr);
+                    store_byte(ram, mem_addr,*dr);
                     break;
             }break;           
         
@@ -312,8 +315,8 @@ void dec_instr(uint32_t instr){
         case INSTR_JMP:
             mem_addr = get_block(ram, incr_pc());
             if((mem_addr % INSTRUCTION_SIZE) == 0){
-                pc = mem_addr; //point the pc to the jmp location
-                dec_instr(get_block(ram,pc)); //restart the instruction cycle at the new pc
+                pc = mem_addr-4; //point the pc to the jmp location
+                                 //dec_instr(get_block(ram,pc)); //restart the instruction cycle at the new pc
             }
             break;
             
@@ -328,10 +331,10 @@ void dec_instr(uint32_t instr){
         case ADV_INSTR_PRINT:
             switch(mode){
                 case MODE_DEFAULT:
-                    print((char) pr);
+                    print((char) *pr);
                     break;
                 case MODE_EXTRA:
-                    mem_addr = pr;
+                    mem_addr = *pr;
                     char p_byte = '\00';
                     while((p_byte = get_byte(ram,mem_addr++))){
                         print(p_byte);
