@@ -24,7 +24,6 @@
 #define INSTR_SUB                   0x04
 
 #define INSTR_JMP                   0x10
-#define INSTR_CMP                   0x20
 
 //Advanced instructions
 #define ADV_INSTR_PRINT             0xFE
@@ -54,6 +53,10 @@
 #define JUMP_MODE_FUNC              0x0C
 
 void dec_instr(uint32_t);
+void alter_sr();
+void zb_on();
+void zb_off();
+int zb_tst();
 void push(uint32_t);
 uint32_t pop();
 uint32_t peek();

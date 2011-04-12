@@ -1,6 +1,15 @@
 MBVM - MattBrooksVirtualMachine
 ===
 
+Machine Layout
+---
+Program Counter: PC - DWORD 
+Stack Pointer: SP - DWORD  
+Registers: r0-r7 - DWORD  
+Data Register: dr - DWORD  
+Print Register: pr - DWORD  
+Status Register: sr - BYTE  
+
 Machine Instructions
 ---
 + EXIT  
@@ -23,4 +32,4 @@ Machine Features
 --
 + Hardware print-to-screen emulation
 
-accessed by storing a character or string address in the print register and then issuing the PRINT instruction
+    accessed by storing a character or string address in the print register and then issuing the PRINT instruction

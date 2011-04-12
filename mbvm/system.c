@@ -22,7 +22,7 @@ void exec(uint32_t programCode){
 /*
  *returns the 4byte block found in loc @ image_addr
  */
-uint32_t get_block(uint8_t* loc, uint32_t image_addr){
+uint32_t get_dword(uint8_t* loc, uint32_t image_addr){
     uint32_t b0 = loc[image_addr+0]<<24;
     uint32_t b1 = loc[image_addr+1]<<16;
     uint32_t b2 = loc[image_addr+2]<<8;
@@ -33,7 +33,7 @@ uint32_t get_block(uint8_t* loc, uint32_t image_addr){
 /*
  *stores a 4byte value into a memory location
  */
-void store_block(uint8_t* loc, uint32_t index, uint32_t block){    
+void store_dword(uint8_t* loc, uint32_t index, uint32_t block){    
     *(loc+index+0)    = (block & 0xFF000000)>>24;
     *(loc+index+1)    = (block & 0x00FF0000)>>16;
     *(loc+index+2)    = (block & 0x0000FF00)>>8;
@@ -83,9 +83,9 @@ uint32_t incr_pc(){
 /*
  *
  */
-void disp_image(uint32_t image[],int blocks){
+void disp_image(uint32_t *image,int blocks){
     if(DEBUG_STATE){
-        printf("\nProgram Image:\n");
+        printf("\nFLASH Image:\n");
         for(int i=0;i<blocks;i++){
             printf("0x%X \t 0x%X\n",i*4,image[i]);
         }
@@ -107,6 +107,6 @@ void dump_state(){
         for(int i=start;i>=0;i--)
             printf(" 0x%X",stack[i]);
         printf("\n");
-        printf("next instr: 0x%X, following block: 0x%X\n\n",get_block(ram, pc),get_block(ram,pc+4));
+        printf("next instr: 0x%X, following block: 0x%X\n\n",get_dword(ram, pc),get_dword(ram,pc+4));
     }
 }

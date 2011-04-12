@@ -11,9 +11,10 @@
 #ifndef VM_H
 #define VM_H
 
-//ram 1MB
-#define RAM_SIZE (1024*1024*100)
-
+//ram 10MB
+#define RAM_SIZE (1024*1024*10)
+//flash 100MB
+#define FLASH_SIZE (1024*1024*10)
 //stack 64KB
 #define STACK_SIZE (64*1024)
 
@@ -25,6 +26,7 @@
 #define PRINT_REGISTER 9
 
 uint8_t *ram;
+uint32_t *flash;
 uint32_t *r;
 uint32_t *stack;
 uint32_t prev_instr;
@@ -40,7 +42,8 @@ uint32_t pc;
 uint8_t sr;
 uint32_t *dr;
 uint32_t *pr;
+uint32_t flash_allocated;
 void allocate_vm();
 void copy_memory(uint32_t*, uint8_t*,int);
-void exec_program(uint32_t[],int);
+void exec_program();
 #endif

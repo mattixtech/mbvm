@@ -17,17 +17,19 @@ void test();
 
 //create a program to load into the virtual machine
 uint32_t program[] = {
-    0x01030000,
-    0x00000014,
-    0x020A0009,
-    0x10000000,
-    0x00000020,
-    0x6D617474,
-    0x6865770A,
-    0x00000000,
-    0xFEFF0000,
+    0x01010000,
+    0xFF000000,
+    0x01010001,
+    0xFF000000,
     0x00000000,
 };
+
+void load_program(uint32_t program[], uint32_t *destination, int size){
+    for(int i=0;i<size;i++){
+        destination[i] = program[i];
+        flash_allocated++;
+    }
+}
 
 int main (int argc, const char * argv[])
 {
@@ -39,8 +41,11 @@ int main (int argc, const char * argv[])
     //create the virtual machine in RAM
     allocate_vm();
     
+    //load hard-coded program
+    load_program(program,flash,size);
+    
     //pass the program to the virtual machine and begin executing
-    exec_program(program,size);
+    exec_program();
     
     return 0;
 }
