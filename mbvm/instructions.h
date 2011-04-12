@@ -24,11 +24,6 @@
 #define INSTR_SUB                   0x04
 
 #define INSTR_JMP                   0x10
-#define INSTR_JMPZ                  0x11
-#define INSTR_JMPNZ                 0x12
-#define INSTR_JMPEQ                 0x11
-#define INSTR_JMPNEQ                0x12
-
 #define INSTR_CMP                   0x20
 
 //Advanced instructions
@@ -53,6 +48,10 @@
 #define MODE_REGISTER_INDR_B        0x0F
 #define MODE_REGISTER_INDR_W        0x10
 #define MODE_EXTRA                  0xFF
+
+#define JUMP_MODE_JMPEQ             0x0A
+#define JUMP_MODE_JMPNEQ            0x0B
+#define JUMP_MODE_FUNC              0x0C
 
 void dec_instr(uint32_t);
 void push(uint32_t);
