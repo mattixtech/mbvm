@@ -24,6 +24,8 @@
 #define INSTR_SUB                   0x04
 
 #define INSTR_JMP                   0x10
+#define INSTR_FCAL                  0x11
+#define INSTR_FRET                  0x12
 
 //Advanced instructions
 #define ADV_INSTR_PRINT             0xFE
@@ -50,9 +52,10 @@
 
 #define JUMP_MODE_JMPEQ             0x0A
 #define JUMP_MODE_JMPNEQ            0x0B
-#define JUMP_MODE_FUNC              0x0C
 
 void dec_instr(uint32_t);
+void function_call();
+void function_return();
 void alter_sr();
 void zb_on();
 void zb_off();

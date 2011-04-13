@@ -39,6 +39,8 @@ void dec_instr(uint32_t instr){
     //memory content
     uint32_t mem_data;
     
+    /**Regular Instructions**/
+    
     //switch based on the operation
     switch(op){      
         case INSTR_EXIT:
@@ -519,15 +521,35 @@ void dec_instr(uint32_t instr){
                     break;
             }break;
             
-        //jump instructions
         case INSTR_JMP:
             //TODO add the other jump modes
             mem_addr = get_dword(ram, incr_pc());
             if((mem_addr % INSTRUCTION_SIZE) == 0){
-                pc = mem_addr-4; //point the pc to the jmp location
-                                 //dec_instr(get_dword(ram,pc)); //restart the instruction cycle at the new pc
+                switch(mode){
+                    case MODE_DEFAULT:
+                        pc = mem_addr-4; //point the pc to the jmp location
+                        break;
+                    case JUMP_MODE_JMPEQ:
+                        if(zb_tst())
+                             pc = mem_addr-4; //point the pc to the jmp location                        
+                        break;
+                    case JUMP_MODE_JMPNEQ:
+                        if( ! zb_tst())
+                             pc = mem_addr-4; //point the pc to the jmp location 
+                        break;
+                }               
             }
             break;
+            
+        case INSTR_FCAL:
+            function_call();
+            break;
+            
+        case INSTR_FRET:
+            function_return();
+            break;
+    /**Advanced Instructions**/
+            
             
         //print has two modes
         //it can either print the char stored in the pr
@@ -546,6 +568,30 @@ void dec_instr(uint32_t instr){
                     }
                     break;
             }break;            
+    }
+}
+
+/*
+ *
+ */
+void function_call(){    
+    //push registers onto stack
+    for(int i=0;i<NUM_REGISTERS;i++){
+        push(r[i]);
+    }    
+    push(pc);
+    push(sr);
+}
+
+/*
+ *
+ */
+void function_return(){    
+    sr = pop();
+    pc = pop();
+    //restore registers from stack
+    for(int i=NUM_REGISTERS-1;i>=0;i--){
+        r[i] = pop();
     }
 }
 

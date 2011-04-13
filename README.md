@@ -22,7 +22,8 @@ Machine Instructions
 + ADD  
 + SUB  
 + JMP  
-+ CMP
++ FCAL  
++ FRET
 
 Advanced Instructions
 ---
