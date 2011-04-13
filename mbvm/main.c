@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "vm.h"
 #include "instructions.h"
@@ -17,23 +18,14 @@ void test();
 
 //create a program to load into the virtual machine
 uint32_t program[] = {
-    0x0101000A,
-    0x020A0002,
-    0x010A0001,
+    0x010100FF,
     0x020A0009,
-    0xFE000000,
-    0x0101000A,
+    0x010100FF,
+    0xFDFF0000,
+    0xFF000000,
+    0x010100FF,
     0x020A0009,
-    0xFE000000,
-    0x010A0001,
-    0x03010005,
-    0x020A0001,
-    0x010A0002,
-    0x04010001,
-    0x020A0002,
-    0x100B0000,
-    0x00000004,
-
+    0xFEFF0000,
     0x00000000
 };
 
@@ -45,8 +37,19 @@ void load_program(uint32_t program[], uint32_t *destination, int size){
 }
 
 int main (int argc, const char * argv[])
-{
-    test();
+{    
+    if(argc < 2)
+    {
+        puts("Usage: mbvm [-d] <program file>");
+        return 1;
+    }
+    int i;
+    for(i=1;i<argc;i++){        
+        if(strcmp(argv[i],"-d") == 0){
+            debugging = 1;
+        }
+    }
+    //printf("%s\n",argv[i-1]);
     
     //determine how many 4 byte words are in the program
     int size = sizeof(program)/sizeof(uint32_t);
@@ -61,19 +64,4 @@ int main (int argc, const char * argv[])
     exec_program();
     
     return 0;
-}
-
-void test(){
-    /*uint8_t *t = malloc(4);
-    
-    uint32_t move = 0xDDBBCCAA;
-    uint8_t stored = move & 0x000000FF;
-    
-    *(t) = 0xAABBCCDD;
-    
-    uint8_t t0 = *(t);
-    uint8_t t1 = *(t+1);
-    uint8_t t2 = *(t+2);
-    uint8_t t3 = *(t+3);*/
-    
 }

@@ -9,8 +9,8 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#define DEBUG_STATE 0
 
+uint8_t debugging;
 void exec(uint32_t);
 void disp_image(uint32_t*, int);
 void dump_state();

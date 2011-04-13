@@ -30,7 +30,7 @@ void allocate_vm(){
     
     flash_allocated = 0;
     
-    if(DEBUG_STATE){
+    if(debugging){
         printf("MBVM INIT\n");
         printf("FLASH size:   %dMB, starting address: 0x%X\n",FLASH_SIZE/(1024*1024),(unsigned int) flash);
         printf("RAM size:   %dMB, starting address: 0x%X\n",RAM_SIZE/(1024*1024),(unsigned int) ram);
@@ -56,7 +56,7 @@ void copy_memory(uint32_t *source, uint8_t *destination, int num_dwords){
         destination += 4;
     }
     
-    if(DEBUG_STATE)
+    if(debugging)
         printf("\nCopied FLASH image to RAM...\n");
 }
 
@@ -65,14 +65,14 @@ void copy_memory(uint32_t *source, uint8_t *destination, int num_dwords){
  */
 void exec_program(){
     
-    if(DEBUG_STATE)
+    if(debugging)
         printf("FLASH has %d DWORDS allocated\n",flash_allocated);
     //print the entire program image
     disp_image(flash,flash_allocated);
     
     //copy the contents of the program to this VM's RAM
     copy_memory(flash, ram, flash_allocated);
-    if(DEBUG_STATE)
+    if(debugging)
         printf("\nExecuting...\n");
     //this loop executes until the exit instruction is encountered
     dump_state();

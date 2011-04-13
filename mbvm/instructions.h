@@ -29,6 +29,7 @@
 
 //Advanced instructions
 #define ADV_INSTR_PRINT             0xFE
+#define ADV_INSTR_SCAN              0xFD
 
 //Instruction modes
 #define MODE_DEFAULT                0x00

@@ -84,7 +84,7 @@ uint32_t incr_pc(){
  *
  */
 void disp_image(uint32_t *image,int blocks){
-    if(DEBUG_STATE){
+    if(debugging){
         printf("\nFLASH Image:\n");
         for(int i=0;i<blocks;i++){
             printf("0x%X \t 0x%X\n",i*4,image[i]);
@@ -96,7 +96,7 @@ void disp_image(uint32_t *image,int blocks){
  *dumps the machine's state for debugging purposes
  */
 void dump_state(){
-    if(DEBUG_STATE){
+    if(debugging){
         printf("\ninstr: 0x%X\n",prev_instr);
         printf("r0: 0x%X, r1: 0x%X, r2: 0x%X, r3: 0x%X, r4: 0x%X, r5: 0x%X, r6: 0x%X, r7: 0x%X, ",
         r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7]);

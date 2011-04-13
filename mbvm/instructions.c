@@ -44,7 +44,7 @@ void dec_instr(uint32_t instr){
     //switch based on the operation
     switch(op){      
         case INSTR_EXIT:
-            if(DEBUG_STATE){
+            if(debugging){
                 printf("exit instruction reached, terminating...\n");
             }
             exit(0); 
@@ -548,6 +548,7 @@ void dec_instr(uint32_t instr){
         case INSTR_FRET:
             function_return();
             break;
+            
     /**Advanced Instructions**/
             
             
@@ -567,12 +568,25 @@ void dec_instr(uint32_t instr){
                         print(p_byte);
                     }
                     break;
-            }break;            
+            }break;
+            
+        case ADV_INSTR_SCAN:
+            switch(mode){
+                case MODE_DEFAULT:
+                    scanf("%c",pr);
+                    break;
+                case MODE_EXTRA:
+                    mem_addr = *pr;
+                    fgets((char*)ram+mem_addr,*dr,stdin);
+                    //scanf("%s",ram[mem_addr]);
+                    break;
+            }
+            break;
     }
 }
 
 /*
- *
+ *saves the current program state on the stack
  */
 void function_call(){    
     //push registers onto stack
@@ -584,7 +598,7 @@ void function_call(){
 }
 
 /*
- *
+ *restores the program state from the stack
  */
 void function_return(){    
     sr = pop();
