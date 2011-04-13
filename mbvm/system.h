@@ -1,10 +1,10 @@
-//
-//  system.h
-//  mbvm
-//
-//  Created by Matthew Brooks on 11-04-07.
-//  Copyright 2011 Megabit. All rights reserved.
-//
+/* 
+ * Project:     MBVM
+ * File:        system.h
+ * Author:      Matthew Brooks
+ * Created:     2011-04-07
+ */
+
 #include <stdint.h>
 #ifndef SYSTEM_H
 #define SYSTEM_H

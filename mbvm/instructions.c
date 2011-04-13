@@ -1,10 +1,9 @@
-//
-//  instructions.c
-//  mbhvm
-//
-//  Created by Matthew Brooks on 11-04-07.
-//  Copyright 2011 Megabit. All rights reserved.
-//
+/* 
+ * Project:     MBVM
+ * File:        instructions.c
+ * Author:      Matthew Brooks
+ * Created:     2011-04-07
+ */
 
 #include "instructions.h"
 #include "vm.h"
