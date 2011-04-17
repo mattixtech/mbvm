@@ -27,7 +27,8 @@ Machine Instructions
 
 Advanced Instructions
 ---
-+ PRINT
++ PRINT  
++ SCAN
 
 Machine Features
 --

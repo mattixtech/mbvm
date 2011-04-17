@@ -75,7 +75,7 @@ uint8_t get_byte(uint8_t* loc, uint32_t image_addr){
  *points the pc to the next 4 byte block and returns the incremented pc
  */
 uint32_t incr_pc(){
-    pc += 4;
+    pc += INSTRUCTION_SIZE;
     return pc;
 }
 
