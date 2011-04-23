@@ -63,5 +63,8 @@ int main (int argc, const char * argv[])
     //pass the program to the virtual machine and begin executing
     exec_program();
     
+    //release VM memory
+    deallocate_vm();
+    
     return 0;
 }

@@ -38,6 +38,15 @@ void allocate_vm(){
 }
 
 /*
+ *release all the memory used by the VM
+ */
+void deallocate_vm(){
+    free(ram);
+    free(flash);
+    free(r);
+}
+
+/*
  *copies 4byte blocks of memory from source to byte addressable destination
  */
 void copy_memory(uint32_t *source, uint8_t *destination, int num_dwords){

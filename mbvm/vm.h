@@ -43,6 +43,7 @@ uint32_t *dr;
 uint32_t *pr;
 uint32_t flash_allocated;
 void allocate_vm();
+void deallocate_vm();
 void copy_memory(uint32_t*, uint8_t*,int);
 void exec_program();
 #endif
