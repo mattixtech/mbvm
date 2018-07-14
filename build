@@ -1,8 +1,10 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" >/dev/null )" && pwd )"
 EXE_FILE="mbvm"
+
 echo "Building..."
 gcc -o mbvm "$DIR"/src/*
+
 if [ $? -eq 0 -a -x "$DIR"/"$EXE_FILE" ]; then
   echo "Build complete!"
 fi

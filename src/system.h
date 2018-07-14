@@ -1,4 +1,4 @@
-/* 
+/**
  * Project:     MBVM
  * File:        system.h
  * Author:      Matthew Brooks
@@ -8,7 +8,6 @@
 #include <stdint.h>
 #ifndef SYSTEM_H
 #define SYSTEM_H
-
 
 uint8_t debugging;
 void exec(uint32_t);

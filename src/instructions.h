@@ -1,7 +1,4 @@
-//
-//  instructions.h
-//  mbvm
-/* 
+/**
  * Project:     MBVM
  * File:        instructions.h
  * Author:      Matthew Brooks
@@ -13,7 +10,7 @@
 #ifndef INSTRUCTIONS_H
 #define INSTRUCTIONS_H
 
-//Basic instructions
+// Basic instructions
 #define INSTR_EXIT                  0x00
 #define INSTR_NOP                   0xFF
 
@@ -30,11 +27,11 @@
 #define INSTR_FCAL                  0x11
 #define INSTR_FRET                  0x12
 
-//Advanced instructions
+// Advanced instructions
 #define ADV_INSTR_PRINT             0xFE
 #define ADV_INSTR_SCAN              0xFD
 
-//Instruction modes
+// Instruction modes
 #define MODE_DEFAULT                0x00
 #define MODE_IMMEDIATE_B            0x01
 #define MODE_IMMEDIATE_W            0x02
