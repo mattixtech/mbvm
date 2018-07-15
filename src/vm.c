@@ -33,6 +33,7 @@ void allocate_vm()
 	if (debugging)
 	{
 		printf("MBVM INIT\n");
+		// TOOD: Fix the warnings from casting below.
 		printf("FLASH size:   %dMB, starting address: 0x%X\n", FLASH_SIZE / (1024 * 1024), (unsigned int) flash);
 		printf("RAM size:   %dMB, starting address: 0x%X\n", RAM_SIZE / (1024 * 1024), (unsigned int) ram);
 		printf("STACK size:  %dKB, starting address: 0x%X\n", STACK_SIZE / (1024), (unsigned int) stack);
@@ -85,8 +86,9 @@ void exec_program()
 	if (debugging)
 		printf("\nExecuting...\n");
 
-	dump_state(); // This loop executes until the exit instruction is encountered.
+	//dump_state(); 
 
+	// This loop executes until the exit instruction is encountered.
 	while (1)
 	{
 		uint32_t next_instr = get_dword(ram, pc);	// Get the next 4byte block instruction from ram @ pc.
