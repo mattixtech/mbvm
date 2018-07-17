@@ -584,12 +584,11 @@ void dec_instr(uint32_t instr)
 		switch (mode)
 		{
 		case MODE_DEFAULT:
-			scanf("%c", pr); // TODO: Fix the warning about type of pr
+			scanf("%c", (char *)pr); // Scan the character literal into pr
 			break;
 		case MODE_EXTRA:
 			mem_addr = *pr;
-			fgets((char*)ram + mem_addr, *dr, stdin);
-			//scanf("%s",ram[mem_addr]);
+			fgets(ram + flash_allocated*4 + mem_addr, *dr, stdin);
 			break;
 		}
 		break;

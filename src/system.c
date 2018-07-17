@@ -124,6 +124,24 @@ void dump_state()
 		for (int i = start; i >= 0; i--)
 			printf(" 0x%X", stack[i]);
 		printf("\n");
+		printf("RAM explorer:\n");
+
+		// This iterates through ALL of the RAM allocated to the VM and for any byte that isn't
+		// 0 it prints out the hext value for that byte along with its address relative to the VM
+		int printed_contents = 0;
+		for (int i = flash_allocated * 4; i < (RAM_SIZE); i++)
+		{
+			char ram_contents = *(ram + i);
+			if (ram_contents != 0)
+			{
+				if (printed_contents != 0)
+					printf(",");
+				printf("0x%X:0x%X", i, ram_contents);
+				printed_contents = 1;
+			}
+		}
+
+		printf("\n");
 		printf("next instr: 0x%X, following block: 0x%X\n\n", get_dword(ram, pc), get_dword(ram, pc + 4));
 	}
 }

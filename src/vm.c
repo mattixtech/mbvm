@@ -34,9 +34,9 @@ void allocate_vm()
 	{
 		printf("MBVM INIT\n");
 		// TOOD: Fix the warnings from casting below
-		printf("FLASH size:   %dMB, starting address: 0x%X\n", FLASH_SIZE / (1024 * 1024), (unsigned int) flash);
-		printf("RAM size:   %dMB, starting address: 0x%X\n", RAM_SIZE / (1024 * 1024), (unsigned int) ram);
-		printf("STACK size:  %dKB, starting address: 0x%X\n", STACK_SIZE / (1024), (unsigned int) stack);
+		printf("FLASH size:   %dMB, starting address: 0x%X\n", FLASH_SIZE / (1024 * 1024), flash);
+		printf("RAM size:   %dMB, starting address: 0x%X\n", RAM_SIZE / (1024 * 1024), ram);
+		printf("STACK size:  %dKB, starting address: 0x%X\n", STACK_SIZE / (1024), stack);
 	}
 }
 
@@ -86,7 +86,7 @@ void exec_program()
 	if (debugging)
 		printf("\nExecuting...\n");
 
-	//dump_state(); 
+	//dump_state();
 
 	// This loop executes until the exit instruction is encountered
 	while (1)
