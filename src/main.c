@@ -54,11 +54,26 @@ void load_test_app()
 	// 	0x00000000, // Exit
 	// };
 
+	// uint32_t program[] =
+	// {
+	// 	0x010100FF,	// LOAD.ib	0xFF
+	// 	0x0201FF09,	// STORE.ib	0xFF
+	// 	0xFDFF0000, // SCAN
+	// 	0xFEFF0000, // PRINT
+	// 	0xFEFF0000, // PRINT
+	// 	0x00000000, // Exit
+	// };
+
+	// Hello world...
 	uint32_t program[] =
 	{
-		0x0101000B,	// LOAD.ib	0x0B 	(Load immediate byte 0x0B into dr)
-		0xFDFF0000, // SCAN		--		(...)
-		0x00000000, // Exit
+		0x01010010,
+		0x020A0009,
+		0xFEFF0000,
+		0x00000000,
+		0x68656C6C, // The string 'hello world\n'
+		0x6F20776F,
+		0x726C640A,
 	};
 
 	load_program(program, sizeof(program) / sizeof(program[0]), flash); // Load it

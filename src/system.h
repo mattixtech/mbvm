@@ -19,5 +19,6 @@ void store_byte(uint8_t*, uint32_t, uint8_t);
 uint32_t get_dword(uint8_t*, uint32_t);
 uint16_t get_word(uint8_t*, uint32_t);
 uint8_t get_byte(uint8_t*, uint32_t);
+uint32_t offset_ram_for_flash(uint32_t);
 uint32_t incr_pc();
 #endif

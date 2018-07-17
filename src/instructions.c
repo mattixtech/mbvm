@@ -107,6 +107,8 @@ void dec_instr(uint32_t instr)
 			mem_addr = get_dword(ram, mem_addr);
 			*dr = get_byte(ram, mem_addr);
 			break;
+		default:
+			unsupported_mode(mode);
 		}
 
 		alter_sr();
@@ -172,6 +174,8 @@ void dec_instr(uint32_t instr)
 			mem_addr = get_dword(ram, mem_addr);
 			store_byte(ram, mem_addr, *dr);
 			break;
+		default:
+			unsupported_mode(mode);
 		}
 
 		alter_sr();
@@ -246,6 +250,8 @@ void dec_instr(uint32_t instr)
 			mem_addr = get_dword(ram, mem_addr);
 			*dr += get_byte(ram, mem_addr);
 			break;
+		default:
+			unsupported_mode(mode);
 		}
 
 		alter_sr();
@@ -320,6 +326,8 @@ void dec_instr(uint32_t instr)
 			mem_addr = get_dword(ram, mem_addr);
 			*dr -= get_byte(ram, mem_addr);
 			break;
+		default:
+			unsupported_mode(mode);
 		}
 
 		alter_sr();
@@ -394,6 +402,8 @@ void dec_instr(uint32_t instr)
 			mem_addr = get_dword(ram, mem_addr);
 			push(get_byte(ram, mem_addr));
 			break;
+		default:
+			unsupported_mode(mode);
 		}
 
 		break;
@@ -458,6 +468,8 @@ void dec_instr(uint32_t instr)
 			mem_addr = get_dword(ram, mem_addr);
 			store_byte(ram, mem_addr, pop());
 			break;
+		default:
+			unsupported_mode(mode);
 		}
 
 		break;
@@ -522,6 +534,8 @@ void dec_instr(uint32_t instr)
 			mem_addr = get_dword(ram, mem_addr);
 			store_byte(ram, mem_addr, peek(0));
 			break;
+		default:
+			unsupported_mode(mode);
 		}
 
 		break;
@@ -545,6 +559,8 @@ void dec_instr(uint32_t instr)
 				if ( ! zb_tst())
 					pc = mem_addr - 4;	// Point the pc to the jmp location
 				break;
+			default:
+				unsupported_mode(mode);
 			}
 		}
 
@@ -576,6 +592,8 @@ void dec_instr(uint32_t instr)
 				print(p_byte);
 
 			break;
+		default:
+			unsupported_mode(mode);
 		}
 
 		break;
@@ -588,11 +606,22 @@ void dec_instr(uint32_t instr)
 			break;
 		case MODE_EXTRA:
 			mem_addr = *pr;
-			fgets(ram + flash_allocated*4 + mem_addr, *dr, stdin);
+			fgets(ram + mem_addr, *dr, stdin);
 			break;
+		default:
+			unsupported_mode(mode);
 		}
 		break;
 	}
+}
+
+/**
+ *
+ */
+void unsupported_mode(unsigned char mode)
+{
+	printf("ERROR: Unuspported mode.\n");
+	exit(1);
 }
 
 /**
@@ -600,7 +629,7 @@ void dec_instr(uint32_t instr)
  */
 void function_call()
 {
-	//push registers onto stack
+	// Push registers onto stack
 	for (int i = 0; i < NUM_REGISTERS; i++)
 		push(r[i]);
 
@@ -616,7 +645,7 @@ void function_return()
 	sr = pop();
 	pc = pop();
 
-	// Restore registers from stack.
+	// Restore registers from stack
 	for (int i = NUM_REGISTERS - 1; i >= 0; i--)
 		r[i] = pop();
 }
@@ -689,7 +718,7 @@ uint32_t pop() {
  */
 uint32_t peek(int depth)
 {
-	//bounds check to make sure the stack is at least depth high
+	// Bounds check to make sure the stack is at least 'depth' high
 	if (sp > 0 && (depth + 1 <= sp))
 		return stack[sp - (depth + 1)];
 	else

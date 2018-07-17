@@ -13,7 +13,7 @@
 #include <stdint.h>
 
 /**
- * TODO:
+ * Executes an instruction.
  */
 void exec(uint32_t programCode)
 {
@@ -95,15 +95,25 @@ uint32_t incr_pc()
 }
 
 /**
- * TODO:
+ * Get the location of useable RAM which is the starting address of RAM offset by the
+ * size of allocated flash.
+ */
+uint32_t offset_ram_for_flash(uint32_t mem_addr)
+{
+	return (flash_allocated * INSTRUCTION_SIZE) + mem_addr;
+}
+
+/**
+ * Displays the contents of flash memory.
  */
 void disp_image(uint32_t *image, int blocks)
 {
 	if (debugging)
 	{
 		printf("\nFLASH Image:\n");
+
 		for (int i = 0; i < blocks; i++)
-			printf("0x%X \t 0x%X\n", i * 4, image[i]);
+			printf("0x%X \t 0x%X\n", i * INSTRUCTION_SIZE, image[i]);
 	}
 }
 
@@ -121,17 +131,21 @@ void dump_state()
 		printf("pc: 0x%X, sp: 0x%X, zb: %d\n", pc, sp, sr & 0x01);
 		printf("stack:");
 		int start = sp - 1;
+
 		for (int i = start; i >= 0; i--)
 			printf(" 0x%X", stack[i]);
+
 		printf("\n");
-		printf("RAM explorer:\n");
 
 		// This iterates through ALL of the RAM allocated to the VM and for any byte that isn't
 		// 0 it prints out the hext value for that byte along with its address relative to the VM
+		printf("RAM explorer:\n");
 		int printed_contents = 0;
-		for (int i = flash_allocated * 4; i < (RAM_SIZE); i++)
+
+		for (int i = flash_allocated * INSTRUCTION_SIZE; i < (RAM_SIZE); i++)
 		{
 			char ram_contents = *(ram + i);
+
 			if (ram_contents != 0)
 			{
 				if (printed_contents != 0)

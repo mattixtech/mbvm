@@ -65,4 +65,5 @@ void push(uint32_t);
 uint32_t pop();
 uint32_t peek();
 void print(char);
+void unsupported_mode(unsigned char);
 #endif
