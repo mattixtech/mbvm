@@ -33,7 +33,7 @@ void allocate_vm()
 	if (debugging)
 	{
 		printf("MBVM INIT\n");
-		// TOOD: Fix the warnings from casting below.
+		// TOOD: Fix the warnings from casting below
 		printf("FLASH size:   %dMB, starting address: 0x%X\n", FLASH_SIZE / (1024 * 1024), (unsigned int) flash);
 		printf("RAM size:   %dMB, starting address: 0x%X\n", RAM_SIZE / (1024 * 1024), (unsigned int) ram);
 		printf("STACK size:  %dKB, starting address: 0x%X\n", STACK_SIZE / (1024), (unsigned int) stack);
@@ -58,13 +58,13 @@ void copy_memory(uint32_t *source, uint8_t *destination, int num_dwords)
 	// TODO: there is no bounds checking here.
 	for (int i = 0; i < num_dwords; i++)
 	{
-		// Memory is byte addressable but the program image is composed of 4byte instructions and 4byte data so here it is split into bytes and copied.
+		// Memory is byte addressable but the program image is composed of 4byte instructions and 4byte data so here it is split into bytes and copied
 		*(destination)      = (*(source + i) & 0xFF000000) >> 24;
 		*(destination + 1)    = (*(source + i) & 0x00FF0000) >> 16;
 		*(destination + 2)    = (*(source + i) & 0x0000FF00) >> 8;
 		*(destination + 3)    = (*(source + i) & 0x000000FF);
 
-		// Increment destination counter to next 4byte block.
+		// Increment destination counter to next 4byte block
 		destination += 4;
 	}
 
@@ -80,19 +80,19 @@ void exec_program()
 	if (debugging)
 		printf("FLASH has %d DWORDS allocated\n", flash_allocated);
 
-	disp_image(flash, flash_allocated); 		// Print the entire program image.
-	copy_memory(flash, ram, flash_allocated);	// Copy the contents of the program to this VM's RAM.
+	disp_image(flash, flash_allocated); 		// Print the entire program image
+	copy_memory(flash, ram, flash_allocated);	// Copy the contents of the program to this VM's RAM
 
 	if (debugging)
 		printf("\nExecuting...\n");
 
 	//dump_state(); 
 
-	// This loop executes until the exit instruction is encountered.
+	// This loop executes until the exit instruction is encountered
 	while (1)
 	{
-		uint32_t next_instr = get_dword(ram, pc);	// Get the next 4byte block instruction from ram @ pc.
-		exec(next_instr);							// Execute the instruction received.
-		dump_state();								// Dump state for debug purposes.
+		uint32_t next_instr = get_dword(ram, pc);	// Get the next 4byte block instruction from ram @ pc
+		exec(next_instr);							// Execute the instruction received
+		dump_state();								// Dump state for debug purposes
 	}
 }

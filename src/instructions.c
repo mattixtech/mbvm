@@ -18,17 +18,17 @@
  */
 void dec_instr(uint32_t instr)
 {
-	unsigned char op    = (char) ((instr & 0xFF000000) >> 24); 	// op is the most significant byte of the instruction.
-	unsigned char mode  = (char) ((instr & 0x00FF0000) >> 16); 	// mode is the second most significant byte of the instruction.
-	unsigned char d1    = (char) ((instr & 0x0000FF00) >> 8); 	// d1 is the second least significant byte of the instruction.
-	unsigned char d2    = (char) (instr & 0x000000FF); 			// d2 is the least significant byte of the instruction.
-	uint16_t data = (instr & 0x0000FFFF); 						// data is the least significant 2 bytes of the instruction.
-	uint32_t mem_addr; 											// memory pointer.
+	unsigned char op    = (char) ((instr & 0xFF000000) >> 24); 	// op is the most significant byte of the instruction
+	unsigned char mode  = (char) ((instr & 0x00FF0000) >> 16); 	// mode is the second most significant byte of the instruction
+	unsigned char d1    = (char) ((instr & 0x0000FF00) >> 8); 	// d1 is the second least significant byte of the instruction
+	unsigned char d2    = (char) (instr & 0x000000FF); 			// d2 is the least significant byte of the instruction
+	uint16_t data = (instr & 0x0000FFFF); 						// data is the least significant 2 bytes of the instruction
+	uint32_t mem_addr; 											// memory pointer
 	uint32_t mem_data;											// memory content
 
 	// Regular Instructions...
 
-	// Switch based on the operation.
+	// Switch based on the operation
 	switch (op)
 	{
 	case INSTR_EXIT:
@@ -527,7 +527,7 @@ void dec_instr(uint32_t instr)
 		break;
 
 	case INSTR_JMP:
-		// TODO add the other jump modes.
+		// TODO: add the other jump modes
 		mem_addr = get_dword(ram, incr_pc());
 
 		if ((mem_addr % INSTRUCTION_SIZE) == 0)
@@ -535,15 +535,15 @@ void dec_instr(uint32_t instr)
 			switch (mode)
 			{
 			case MODE_DEFAULT:
-				pc = mem_addr - 4; 		// Point the pc to the jmp location.
+				pc = mem_addr - 4; 		// Point the pc to the jmp location
 				break;
 			case JUMP_MODE_JMPEQ:
 				if (zb_tst())
-					pc = mem_addr - 4; 	// Point the pc to the jmp location.
+					pc = mem_addr - 4; 	// Point the pc to the jmp location
 				break;
 			case JUMP_MODE_JMPNEQ:
 				if ( ! zb_tst())
-					pc = mem_addr - 4;	// Point the pc to the jmp location.
+					pc = mem_addr - 4;	// Point the pc to the jmp location
 				break;
 			}
 		}
@@ -560,7 +560,9 @@ void dec_instr(uint32_t instr)
 
 	// Advanced Instructions...
 
-	// Print has two modes. It can either print the char stored in the pr or print the 0 terminated string located in the memory pointed to by pr.
+	// Print has two modes
+	// 1. print the char stored in the pr
+	// 2. print the 0 terminated string located in the memory pointed to by pr
 	case ADV_INSTR_PRINT:
 		switch (mode)
 		{
@@ -582,7 +584,7 @@ void dec_instr(uint32_t instr)
 		switch (mode)
 		{
 		case MODE_DEFAULT:
-			scanf("%c", pr); // TODO: Fix the warning about type of pr.
+			scanf("%c", pr); // TODO: Fix the warning about type of pr
 			break;
 		case MODE_EXTRA:
 			mem_addr = *pr;
@@ -608,7 +610,7 @@ void function_call()
 }
 
 /**
- * Restores the program state from the stack
+ * Restores the program state from the stack.
  */
 void function_return()
 {

@@ -34,22 +34,19 @@ void load_program(uint32_t program[], int size, uint32_t *destination)
  */
 void load_test_app()
 {
-	// Create a program to load into the virtual machine.
+	// Create a program to load into the virtual machine
 	uint32_t program[] =
 	{
-		0x01010005,
-		0x020A0000,
-		0x01010005,
-		0x030A0000,
-		0x020A0000,
-		0x010A0000,
-		0x04010009,
-		0x020A0000,
-		0x00000000,
-		0x00000000
+		0x01010005,	// LOAD.ib	0x05 (Load immediate byte 0x05 into dr)
+		0x020A0000, // STORE.r	0x00 (Store into register 0x00 contents of dr)
+		0x030A0000, // ADD.r	0x00 (Add contents of register 0x00 with contents of dr)
+		0x020A0000, // STORE.r	0x00 (Store into register 0x00 contents of dr)
+		0x04010009, // SUB.ib	0x09 (Subtract 0x09 from contents of dr)
+		0x020A0000, // STORE.r	0x00 (Store into register 0x00 contents of dr)
+		0x00000000, // Exit
 	};
 
-	load_program(program, sizeof(program) / sizeof(program[0]), flash); // Load it.
+	load_program(program, sizeof(program) / sizeof(program[0]), flash); // Load it
 }
 
 /**
@@ -57,7 +54,7 @@ void load_test_app()
  */
 int main (int argc, const char * argv[])
 {
-	// Simple argument validation.
+	// Simple argument validation
 	if (argc < 2 || argc > 3)
 	{
 		puts("Usage: mbvm [-d] <program file>");
@@ -70,10 +67,10 @@ int main (int argc, const char * argv[])
 			debugging = 1;
 	//printf("%s\n",argv[i-1]);
 
-	allocate_vm(); 		// Create the virtual machine in RAM.
-	load_test_app(); 	// TODO: load in the program specified via command line.
-	exec_program(); 	// Pass the program to the virtual machine and begin executing.
-	deallocate_vm(); 	// Free all the memory we allocated.
+	allocate_vm(); 		// Create the virtual machine in RAM
+	load_test_app(); 	// TODO: load in the program specified via command line
+	exec_program(); 	// Pass the program to the virtual machine and begin executing
+	deallocate_vm(); 	// Free all the memory we allocated
 
 	return 0;
 }
