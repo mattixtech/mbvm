@@ -9,6 +9,7 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
+#define EMPTY_BYTE 0x00
 #define FORMAT_HEX_4_BYTE "0x%08X"
 
 uint8_t debugging;

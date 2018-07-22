@@ -58,10 +58,11 @@ void load_test_app()
     // Hello world...
     uint32_t program[] =
         {
-            0x01010010,
-            0x020A0009,
-            0xFEFF0000,
-            0x00000000,
+            create_instruction(INSTR_LOAD, MODE_IMMEDIATE_B, EMPTY_BYTE, 0x10),
+            create_instruction(INSTR_STORE, MODE_REGISTER, EMPTY_BYTE, 0x09),
+            create_instruction(ADV_INSTR_PRINT, MODE_EXTRA, EMPTY_BYTE,
+                               EMPTY_BYTE),
+            create_instruction(INSTR_EXIT, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE),
             0x68656C6C, // The string 'hello world\n'
             0x6F20776F,
             0x726C640A,
