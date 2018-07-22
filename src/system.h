@@ -9,16 +9,18 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
+#define FORMAT_HEX_4_BYTE "0x%08X"
+
 uint8_t debugging;
 void exec(uint32_t);
-void disp_image(uint32_t*, int);
+void disp_image(uint32_t *, int);
 void dump_state();
-void store_dword(uint8_t*, uint32_t, uint32_t);
-void store_word(uint8_t*, uint32_t, uint16_t);
-void store_byte(uint8_t*, uint32_t, uint8_t);
-uint32_t get_dword(uint8_t*, uint32_t);
-uint16_t get_word(uint8_t*, uint32_t);
-uint8_t get_byte(uint8_t*, uint32_t);
+void store_dword(uint8_t *, uint32_t, uint32_t);
+void store_word(uint8_t *, uint32_t, uint16_t);
+void store_byte(uint8_t *, uint32_t, uint8_t);
+uint32_t get_dword(uint8_t *, uint32_t);
+uint16_t get_word(uint8_t *, uint32_t);
+uint8_t get_byte(uint8_t *, uint32_t);
 uint32_t offset_ram_for_flash(uint32_t);
 uint32_t incr_pc();
 #endif

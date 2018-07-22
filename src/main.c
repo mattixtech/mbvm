@@ -22,11 +22,32 @@
  */
 void load_program(uint32_t program[], int size, uint32_t *destination)
 {
-	for (int i = 0; i < size; i++)
-	{
-		destination[i] = program[i];
-		flash_allocated++;
-	}
+    for (int i = 0; i < size; i++)
+    {
+        destination[i] = program[i];
+        flash_allocated++;
+    }
+}
+
+/**
+ * Creates an instruction from 'instruction parts'.
+ * 
+ * @param instr the instruction code
+ * @param mode the instruction mode
+ * @param d1 the first data byte
+ * @param d2 the second data byte
+ */
+uint32_t create_instruction(unsigned char instr, unsigned char mode,
+                            unsigned char d1, unsigned char d2)
+{
+    // TODO: There is probably a better way to do this...
+    uint32_t instruction = 0x00000000;
+    instruction = (instruction ^ (instr & 0x000000FF) << 24);
+    instruction = (instruction ^ (mode & 0x000000FF) << 16);
+    instruction = (instruction ^ (d1 & 0x000000FF) << 8);
+    instruction = (instruction ^ (d2 & 0x000000FF));
+
+    return instruction;
 }
 
 /**
@@ -34,73 +55,48 @@ void load_program(uint32_t program[], int size, uint32_t *destination)
  */
 void load_test_app()
 {
-	// Create a program to load into the virtual machine
-	// uint32_t program[] =
-	// {
-	// 	0x01010005,	// LOAD.ib	0x05 	(Load immediate byte 0x05 into dr)
-	// 	0x020A0000, // STORE.r	0x00 	(Store into register 0x00 contents of dr)
-	// 	0x030A0000, // ADD.r	0x00 	(Add contents of register 0x00 with contents of dr)
-	// 	0x020A0009, // STORE.r	0x09	(Store into pr the contents of dr)
-	// 	0xFE000000, // PRINT	--		(Print the pr)
-	// 	0x020A0000, // STORE.r	0x00 	(Store into register 0x00 contents of dr)
-	// 	0x04010009, // SUB.ib	0x09 	(Subtract 0x09 from contents of dr)
-	// 	0x020A0000, // STORE.r	0x00 	(Store into register 0x00 contents of dr)
-	// 	0x020A0009, // STORE.r	0x09	(Store into pr the contents of dr)
-	// 	0xFE000000, // PRINT	--		(Print the pr)
-	// 	//0xFD000000, // SCAN		--		(Scan into the pr)
-	// 	0x0101000B,	// LOAD.ib	0x0B 	(Load immediate byte 0x0B into dr)
-	// 	0xFDFF0000, // SCAN		--		(...)
-	// 	0xFF000000, // NOOP
-	// 	0x00000000, // Exit
-	// };
+    // Hello world...
+    uint32_t program[] =
+        {
+            0x01010010,
+            0x020A0009,
+            0xFEFF0000,
+            0x00000000,
+            0x68656C6C, // The string 'hello world\n'
+            0x6F20776F,
+            0x726C640A,
+        };
 
-	// uint32_t program[] =
-	// {
-	// 	0x010100FF,	// LOAD.ib	0xFF
-	// 	0x0201FF09,	// STORE.ib	0xFF
-	// 	0xFDFF0000, // SCAN
-	// 	0xFEFF0000, // PRINT
-	// 	0xFEFF0000, // PRINT
-	// 	0x00000000, // Exit
-	// };
-
-	// Hello world...
-	uint32_t program[] =
-	{
-		0x01010010,
-		0x020A0009,
-		0xFEFF0000,
-		0x00000000,
-		0x68656C6C, // The string 'hello world\n'
-		0x6F20776F,
-		0x726C640A,
-	};
-
-	load_program(program, sizeof(program) / sizeof(program[0]), flash); // Load it
+    // Load it
+    load_program(program, sizeof(program) / sizeof(program[0]), flash);
 }
 
 /**
  * The main().
  */
-int main (int argc, const char * argv[])
+int main(int argc, const char *argv[])
 {
-	// Simple argument validation
-	if (argc < 2 || argc > 3)
-	{
-		puts("Usage: mbvm [-d] <program file>");
+    // Simple argument validation
+    if (argc < 2 || argc > 3)
+    {
+        puts("Usage: mbvm [-d] <program file>");
 
-		return 1;
-	}
+        return 1;
+    }
 
-	for (int i = 1; i < argc; i++)
-		if (strcmp(argv[i], "-d") == 0)
-			debugging = 1;
-	//printf("%s\n",argv[i-1]);
+    for (int i = 1; i < argc; i++)
+        if (strcmp(argv[i], "-d") == 0)
+            debugging = 1;
+    //printf("%s\n",argv[i-1]);
 
-	allocate_vm(); 		// Create the virtual machine in RAM
-	load_test_app(); 	// TODO: load in the program specified via command line
-	exec_program(); 	// Pass the program to the virtual machine and begin executing
-	deallocate_vm(); 	// Free all the memory we allocated
+    // Create the virtual machine in RAM
+    allocate_vm();
+    // TODO: load in the program specified via command line
+    load_test_app();
+    // Pass the program to the virtual machine and begin executing
+    exec_program();
+    // Free all the memory we allocated
+    deallocate_vm();
 
-	return 0;
+    return 0;
 }
