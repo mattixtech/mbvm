@@ -1,4 +1,4 @@
-MBVM - MattBrooksVirtualMachine
+MBVM
 ===
 
 Machine Layout
@@ -34,4 +34,4 @@ Machine Features
 --
 + Hardware print-to-screen emulation
 
-    accessed by storing a character or string address in the print register and then issuing the PRINT instruction
+    Accessed by storing a character or string address in the print register and then issuing the PRINT instruction

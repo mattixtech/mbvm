@@ -612,7 +612,8 @@ void dec_instr(uint32_t instr)
         switch (mode)
         {
         case MODE_DEFAULT:
-            scanf("%c", (char *)pr); // Scan the character literal into pr
+            // Scan the character literal into pr
+            scanf("%c", (char *)pr);
             break;
         case MODE_EXTRA:
             mem_addr = *pr;
@@ -626,7 +627,7 @@ void dec_instr(uint32_t instr)
 }
 
 /**
- *
+ * Prints an error messages for unsupported mode and exits.
  */
 void unsupported_mode(unsigned char mode)
 {
@@ -689,6 +690,8 @@ void zb_off()
 
 /*
  * Tests the zero bit of the status register.
+ * 
+ * @return 1 if the sr is set, 0 otherwise
  */
 int zb_tst()
 {
@@ -702,6 +705,8 @@ int zb_tst()
 
 /**
  * Prints the raw char data.
+ * 
+ * @param data the char to print
  */
 void print(char data)
 {
@@ -726,6 +731,8 @@ uint32_t pop()
 
 /**
  * Returns the 4byte data block from the stack at depth.
+ * 
+ * @param depth the depth
  */
 uint32_t peek(int depth)
 {

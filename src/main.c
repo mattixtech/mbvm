@@ -73,9 +73,13 @@ void load_test_app()
 }
 
 /**
- * The main().
+ * Check the command line arguments.
+ * 
+ * @param argc the number of arguments
+ * @param argv the array of arguments
+ * @return whether or not args were parsed successfully
  */
-int main(int argc, const char *argv[])
+int parse_args(int argc, const char *argv[])
 {
     // Simple argument validation
     if (argc < 2 || argc > 3)
@@ -85,10 +89,24 @@ int main(int argc, const char *argv[])
         return 1;
     }
 
-    for (int i = 1; i < argc; i++)
-        if (strcmp(argv[i], "-d") == 0)
+    // Turn on debugging if -d switch was provided as command line arg
+    if (argc > 1)
+        if (strcmp(argv[1], "-d") == 0)
             debugging = 1;
-    //printf("%s\n",argv[i-1]);
+
+    return 0;
+}
+
+/**
+ * The main().
+ * 
+ * @param argc the number of arguments
+ * @param argv the array of arguments
+ */
+int main(int argc, const char *argv[])
+{
+    if (parse_args(argc, argv) != 0)
+        return 1;
 
     // Create the virtual machine in RAM
     allocate_vm();

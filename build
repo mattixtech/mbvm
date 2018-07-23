@@ -1,17 +1,105 @@
 #!/bin/bash
-########################################
+################################################################################
 # Project:     MBVM
 # File:        build
 # Author:      Matthew Brooks
 # Created:     2018-07-21
-########################################
+################################################################################
 
+################################################################################
+# Description:
+# 
+#   A build script for generating the executable code using GCC on a *Nix
+# system.
+################################################################################
+
+################################################################################
+# Verify prerequisites.
+#
+# return:
+#   0 - Verification successful
+#   1 - Verification error
+################################################################################
+verify()
+{
+    # Make sure GCC is available
+    gcc -v > /dev/null 2>&1
+
+    if [ $? -ne 0 ]; then
+      return 1
+    fi
+
+    return 0
+}
+
+################################################################################
+# Create an output directory for the executable.
+#
+# in:
+#   $1 - The directory to create
+#
+# return:
+#   0 - Directory was created
+#   1 - Problem creating directory
+################################################################################
+create_output_dir()
+{
+    local output_dir="$1"
+
+    # Create an exec directory to store the built executable
+    if ! [ -d "$output_dir" ]; then
+        mkdir "$output_dir"
+
+        if [ $? -ne 0 ]; then
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
+################################################################################
+# Exit with an error.
+#
+# in:
+#   $1 - The error to print
+################################################################################
+Exit()
+{
+    local error="$1"
+
+    if ! [ -z "$error" ]; then
+        echo -e "ERROR: $error"
+    fi
+
+    exit 1
+}
+
+# Get the directory this script was executed in
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" > /dev/null)" && pwd)"
+# The name of the executable to generate
 EXE_FILE="mbvm"
+# The output directory for the executable
+EXEC_DIR="$DIR/exec"
+
+echo "Verifying..."
+
+if ! verify; then
+    Exit "Failed to verify prerequisites!"
+fi
 
 echo "Building..."
-gcc -o mbvm "$DIR"/src/*
 
-if [ $? -eq 0 -a -x "$DIR"/"$EXE_FILE" ]; then
-  echo "Build complete!"
+if ! create_output_dir "$EXEC_DIR";then
+    Exit "Failed to create exec directory!"
 fi
+
+gcc -o "$DIR"/exec/mbvm "$DIR"/src/*
+
+if [ $? -eq 0 -a -x "$EXEC_DIR/$EXE_FILE" ]; then
+    echo "Build complete."
+else
+    Exit "Build failure!"
+fi
+
+exit 0

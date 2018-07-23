@@ -113,8 +113,13 @@ void disp_image(uint32_t *image, int blocks)
         printf("\nFLASH Image:\n");
 
         for (int i = 0; i < blocks; i++)
-            printf("0x%X \t " FORMAT_HEX_4_BYTE "\n", i * INSTRUCTION_SIZE,
-                   image[i]);
+        {
+            // Take the 4 bytes in image[i] and get a char pointer to them
+            unsigned char *chars = (unsigned char *)&image[i];
+            printf("0x%X \t" FORMAT_HEX_4_BYTE "\t%c%c%c%c\n",
+                   i * INSTRUCTION_SIZE, image[i], chars[3], chars[2], chars[1],
+                   chars[0]);
+        }
     }
 }
 

@@ -34,11 +34,11 @@ void allocate_vm()
     {
         printf("MBVM INIT\n");
         // TOOD: Fix the warnings from casting below
-        printf("FLASH size:   %dMB, starting address: 0x%X\n",
+        printf("FLASH size: %dMB, @ %p\n",
                FLASH_SIZE / (1024 * 1024), flash);
-        printf("RAM size:   %dMB, starting address: 0x%X\n",
+        printf("RAM size:   %dMB, @ %p\n",
                RAM_SIZE / (1024 * 1024), ram);
-        printf("STACK size:  %dKB, starting address: 0x%X\n",
+        printf("STACK size: %dKB, @ %p\n\n",
                STACK_SIZE / (1024), stack);
     }
 }
