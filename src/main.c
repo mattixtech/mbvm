@@ -36,6 +36,7 @@ void load_program(uint32_t program[], int size, uint32_t *destination)
  * @param mode the instruction mode
  * @param d1 the first data byte
  * @param d2 the second data byte
+ * @return the 4-byte instruction
  */
 uint32_t create_instruction(unsigned char instr, unsigned char mode,
                             unsigned char d1, unsigned char d2)
@@ -65,7 +66,7 @@ void load_test_app()
             create_instruction(INSTR_EXIT, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE),
             0x68656C6C, // The string 'hello world\n'
             0x6F20776F,
-            0x726C640A,
+            0x726C640A
         };
 
     // Load it
@@ -102,6 +103,7 @@ int parse_args(int argc, const char *argv[])
  * 
  * @param argc the number of arguments
  * @param argv the array of arguments
+ * @return the exit code for this program
  */
 int main(int argc, const char *argv[])
 {
