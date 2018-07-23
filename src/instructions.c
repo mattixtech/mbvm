@@ -23,6 +23,7 @@ void dec_instr(uint32_t instr)
     // mode is the second most significant byte of the instruction
     unsigned char mode = (char)((instr & 0x00FF0000) >> 16);
     // d1 is the second least significant byte of the instruction
+    // TODO: Unused
     unsigned char d1 = (char)((instr & 0x0000FF00) >> 8);
     // d2 is the least significant byte of the instruction
     unsigned char d2 = (char)(instr & 0x000000FF);
@@ -31,6 +32,7 @@ void dec_instr(uint32_t instr)
     // memory pointer
     uint32_t mem_addr;
     // memory content
+    // TODO: Unused
     uint32_t mem_data;
 
     // Regular Instructions...
@@ -617,7 +619,7 @@ void dec_instr(uint32_t instr)
             break;
         case MODE_EXTRA:
             mem_addr = *pr;
-            fgets(ram + mem_addr, *dr, stdin);
+            fgets((char *) (ram + mem_addr), *dr, stdin);
             break;
         default:
             unsupported_mode(mode);
@@ -631,7 +633,7 @@ void dec_instr(uint32_t instr)
  */
 void unsupported_mode(unsigned char mode)
 {
-    printf("ERROR: Unuspported mode.\n");
+    printf("ERROR: Unuspported mode '0x%X'.\n", mode);
     exit(1);
 }
 
@@ -734,7 +736,7 @@ uint32_t pop()
  * 
  * @param depth the depth
  */
-uint32_t peek(int depth)
+uint32_t peek(uint32_t depth)
 {
     // Bounds check to make sure the stack is at least 'depth' high
     if (sp > 0 && (depth + 1 <= sp))

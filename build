@@ -81,6 +81,17 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" > /dev/null)" && pwd)"
 EXE_FILE="mbvm"
 # The output directory for the executable
 EXEC_DIR="$DIR/exec"
+# Options to pass to GCC
+GCC_EXTRA_OPTIONS=""
+
+# Check for debugging flag
+while getopts "d" args; do
+  case $args in
+    d)
+      GCC_EXTRA_OPTIONS+=" -Wall -Wextra -g"
+      ;;
+  esac
+done
 
 echo "Verifying..."
 
@@ -90,11 +101,11 @@ fi
 
 echo "Building..."
 
-if ! create_output_dir "$EXEC_DIR";then
+if ! create_output_dir "$EXEC_DIR"; then
     Exit "Failed to create exec directory!"
 fi
 
-gcc -o "$DIR"/exec/mbvm "$DIR"/src/*
+gcc $GCC_EXTRA_OPTIONS -o "$EXEC_DIR/$EXE_FILE" "$DIR"/src/*
 
 if [ $? -eq 0 -a -x "$EXEC_DIR/$EXE_FILE" ]; then
     echo "Build complete."
