@@ -33,7 +33,6 @@ void allocate_vm()
     if (debugging)
     {
         printf("MBVM INIT\n");
-        // TOOD: Fix the warnings from casting below
         printf("FLASH size: %dMB, @ %p\n",
                FLASH_SIZE / (1024 * 1024), flash);
         printf("RAM size:   %dMB, @ %p\n",
@@ -91,8 +90,6 @@ void exec_program()
 
     if (debugging)
         printf("\nExecuting...\n");
-
-    //dump_state();
 
     // This loop executes until the exit instruction is encountered
     while (1)
