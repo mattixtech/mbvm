@@ -6,8 +6,8 @@
  */
 
 #include "system.h"
-#include "vm.h"
-#include "instructions.h"
+#include "../vm/vm.h"
+#include "../instructions/instruction_exec.h"
 
 #include <stdio.h>
 #include <stdint.h>
@@ -17,7 +17,7 @@
  */
 void exec(uint32_t programCode)
 {
-    dec_instr(programCode);
+    process_instr(programCode);
     prev_instr = programCode;
     incr_pc();
 }

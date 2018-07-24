@@ -6,8 +6,8 @@
  */
 
 #include "vm.h"
-#include "system.h"
-#include "instructions.h"
+#include "../system/system.h"
+#include "../instructions/instructions.h"
 
 #include <stdlib.h>
 #include <stdio.h>

@@ -105,11 +105,18 @@ if ! create_output_dir "$EXEC_DIR"; then
     Exit "Failed to create exec directory!"
 fi
 
-gcc $GCC_EXTRA_OPTIONS -o "$EXEC_DIR/$EXE_FILE" "$DIR"/src/*
+SOURCE_FILES="$(find $DIR/src/ -name '*.c')"
+
+if [ -z "$SOURCE_FILES" ]; then
+    Exit "Failed to find source files!"
+fi
+
+gcc $GCC_EXTRA_OPTIONS -o "$EXEC_DIR/$EXE_FILE" $SOURCE_FILES
 
 if [ $? -eq 0 -a -x "$EXEC_DIR/$EXE_FILE" ]; then
     echo "Build complete."
 else
+    rm "$EXEC_DIR/$EXE_FILE" > /dev/null 2>&1
     Exit "Build failure!"
 fi
 

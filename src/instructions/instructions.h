@@ -9,7 +9,6 @@
 
 #ifndef INSTRUCTIONS_H
 #define INSTRUCTIONS_H
-
 // Basic instructions
 #define INSTR_EXIT 0x00
 #define INSTR_NOP 0xFF
@@ -54,16 +53,29 @@
 #define JUMP_MODE_JMPEQ 0x0A
 #define JUMP_MODE_JMPNEQ 0x0B
 
-void dec_instr(uint32_t);
-void function_call();
-void function_return();
-void alter_sr();
-void zb_on();
-void zb_off();
-int zb_tst();
-void push(uint32_t);
-uint32_t pop();
-uint32_t peek();
-void print(char);
-void unsupported_mode(unsigned char);
+/**
+ * TODO
+ */
+struct instruction
+{
+    unsigned char op;
+    unsigned char mode;
+    unsigned char d1;
+    unsigned char d2;
+    uint16_t data;
+};
+
+void instr_exit();
+void instr_load(struct instruction);
+void instr_store(struct instruction);
+void instr_add(struct instruction);
+void instr_sub(struct instruction);
+void instr_push(struct instruction);
+void instr_pop(struct instruction);
+void instr_peek(struct instruction);
+void instr_jmp(struct instruction);
+void instr_function_call();
+void instr_function_return();
+void instr_adv_print(struct instruction);
+void instr_adv_scan(struct instruction);
 #endif
