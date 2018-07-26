@@ -52,7 +52,9 @@ int main(int argc, const char *argv[])
         return 1;
 
     // Create the virtual machine in RAM
-    allocate_vm();
+    // TODO: Take VM init values as command line arguments
+    allocate_vm(DEFAULT_RAM_SIZE, DEFAULT_FLASH_SIZE, NUM_REGISTERS,
+                REGISTER_SIZE, DEFAULT_STACK_SIZE);
     // TODO: load in the program specified via command line
     load_test_app();
     // Pass the program to the virtual machine and begin executing

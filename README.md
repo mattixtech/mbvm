@@ -1,37 +1,18 @@
 MBVM
 ===
 
-Machine Layout
+About
 ---
-+ Program Counter: PC - DWORD
-+ Stack Pointer: SP - DWORD
-+ Registers: r0-r7 - DWORD
-+ Data Register: dr - DWORD
-+ Print Register: pr - DWORD
-+ Status Register: sr - BYTE
++ See the doc/ directory.
 
-Machine Instructions
+Building
 ---
-+ EXIT
-+ NOP
-+ PUSH
-+ POP
-+ PEEK
-+ LOAD
-+ STORE
-+ ADD
-+ SUB
-+ JMP
-+ FCAL
-+ FRET
++ Execute the build script in the root directory. The executable will be
+generated as exec/mbvm.
++ Use the '-d' flag when building to enable debugging the program (gcc -g).
 
-Advanced Instructions
+Testing
 ---
-+ PRINT
-+ SCAN
-
-Machine Features
---
-+ Hardware print-to-screen emulation
-
-    Accessed by storing a character or string address in the print register and then issuing the PRINT instruction
++ First make sure you have CUnit installed (http://cunit.sourceforge.net/).
++ Execute the build script in the root directory with the '-t' flag. The test
+executable will be generated as exec/mbvm_test.

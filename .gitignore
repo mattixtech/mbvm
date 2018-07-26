@@ -1,2 +1,4 @@
 .vscode/*
 exec/*
+*/temp.txt
+*.exe

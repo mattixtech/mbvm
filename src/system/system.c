@@ -150,7 +150,8 @@ void dump_state()
         printf("RAM explorer:\n");
         int printed_contents = 0;
 
-        for (int i = flash_allocated * INSTRUCTION_SIZE; i < (RAM_SIZE); i++)
+        for (int i = flash_allocated * INSTRUCTION_SIZE;
+             i < ((int)configured_ram_size); i++)
         {
             char ram_contents = *(ram + i);
 

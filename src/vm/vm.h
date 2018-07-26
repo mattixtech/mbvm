@@ -11,13 +11,13 @@
 #define VM_H
 
 // RAM 10MB
-#define RAM_SIZE (1024*1024*10)
+#define DEFAULT_RAM_SIZE (1024 * 1024 * 10)
 
 // Flash 100MB
-#define FLASH_SIZE (1024*1024*10)
+#define DEFAULT_FLASH_SIZE (1024 * 1024 * 10)
 
 // Stack 64KB
-#define STACK_SIZE (64*1024)
+#define DEFAULT_STACK_SIZE (64 * 1024)
 
 #define INSTRUCTION_SIZE 4
 #define NUM_REGISTERS 10
@@ -25,6 +25,11 @@
 
 #define DATA_REGISTER 8
 #define PRINT_REGISTER 9
+
+unsigned int configured_ram_size;
+unsigned int configured_flash_size;
+unsigned int configured_num_registers;
+unsigned int configured_stack_size;
 
 uint8_t *ram;
 uint32_t *flash;
@@ -46,8 +51,9 @@ uint8_t sr;
 uint32_t *dr;
 uint32_t *pr;
 uint32_t flash_allocated;
-void allocate_vm();
+void allocate_vm(unsigned int, unsigned int, unsigned int, unsigned int,
+                 unsigned int);
 void deallocate_vm();
-void copy_memory(uint32_t*, uint8_t*, int);
+void copy_memory(uint32_t *, uint8_t *, int);
 void exec_program();
 #endif

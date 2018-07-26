@@ -16,12 +16,14 @@
 /**
  * Allocates the virtual machine's attributes.
  */
-void allocate_vm()
+void allocate_vm(unsigned int ram_size, unsigned int flash_size,
+                 unsigned int num_registers, unsigned int register_size,
+                 unsigned int stack_size)
 {
-    ram = malloc(RAM_SIZE);
-    flash = malloc(FLASH_SIZE);
-    r = malloc(NUM_REGISTERS * REGISTER_SIZE);
-    stack = (uint32_t *)(ram + (RAM_SIZE - STACK_SIZE)); //+ PROGRAM_SPACE;
+    ram = malloc(ram_size);
+    flash = malloc(flash_size);
+    r = malloc(num_registers * register_size);
+    stack = (uint32_t *)(ram + (ram_size - stack_size)); //+ PROGRAM_SPACE;
     sp = 0;
     pc = 0;
     sr = 0;
@@ -34,12 +36,18 @@ void allocate_vm()
     {
         printf("MBVM INIT\n");
         printf("FLASH size: %dMB, @ %p\n",
-               FLASH_SIZE / (1024 * 1024), flash);
+               flash_size / (1024 * 1024), flash);
         printf("RAM size:   %dMB, @ %p\n",
-               RAM_SIZE / (1024 * 1024), ram);
+               ram_size / (1024 * 1024), ram);
         printf("STACK size: %dKB, @ %p\n\n",
-               STACK_SIZE / (1024), stack);
+               stack_size / (1024), stack);
     }
+
+    // These are set mainly for testing purposes
+    configured_ram_size = ram_size;
+    configured_flash_size = flash_size;
+    configured_num_registers = num_registers;
+    configured_stack_size = stack_size;
 }
 
 /**
@@ -48,8 +56,18 @@ void allocate_vm()
 void deallocate_vm()
 {
     free(ram);
+    ram = NULL;
     free(flash);
+    flash = NULL;
     free(r);
+    r = NULL;
+
+    stack = NULL;
+    sp = 0;
+    pc = 0;
+    sr = 0;
+    dr = NULL;
+    pr = NULL;
 }
 
 /**
