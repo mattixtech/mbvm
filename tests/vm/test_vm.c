@@ -9,6 +9,7 @@
 
 #include "../../src/instructions/instructions.h"
 #include "../../src/io/load.h"
+#include "../../src/system/system.h"
 #include "../../src/util/util.h"
 #include "../../src/vm/vm.h"
 
@@ -135,16 +136,16 @@ void test_copy_memory()
  */
 void test_exec_program()
 {
-    // This is a very trivial test just to check that the pc was incremented
-    // after executing a no op
     allocate();
     uint32_t test_instructions[2] = {
-        create_instruction(INSTR_NOP, 0x00, 0x00, 0x00),
-        create_instruction(INSTR_EXIT, 0x00, 0x00, 0x00)};
+        create_instruction(INSTR_NOP, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE),
+        create_instruction(INSTR_EXIT, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE)};
     load_program(test_instructions,
                  sizeof(test_instructions) / sizeof(test_instructions[0]),
                  flash);
     exec_program();
+    // This is a very trivial test just to check that the pc was incremented
+    // after executing a no op
     CU_ASSERT(0 != pc);
     deallocate();
 }
