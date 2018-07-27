@@ -13,7 +13,7 @@
 #define FORMAT_HEX_4_BYTE "0x%08X"
 
 uint8_t debugging;
-void exec(uint32_t);
+int exec(uint32_t);
 void disp_image(uint32_t *, int);
 void dump_state();
 void store_dword(uint8_t *, uint32_t, uint32_t);

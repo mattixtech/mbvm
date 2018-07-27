@@ -15,6 +15,12 @@
 
 /**
  * Allocates the virtual machine's attributes.
+ * 
+ * @param ram_size the amount of ram to allocate
+ * @param flash_size the amount of flash to allocate
+ * @param num_registers the number of registers to allocate
+ * @param register_size the size of a register
+ * @param stack_size the amount of stack to allocate
  */
 void allocate_vm(unsigned int ram_size, unsigned int flash_size,
                  unsigned int num_registers, unsigned int register_size,
@@ -72,21 +78,28 @@ void deallocate_vm()
 
 /**
  * Copies 4byte blocks of memory from source to byte addressable destination.
+ * 
+ * @param source the pointer to the ram source address
+ * @param destination the pointer to the ram destination address
+ * @param num_dwords the number of dwords to copy
  */
-void copy_memory(uint32_t *source, uint8_t *destination, int num_dwords)
+void copy_memory(void *source, void *destination, int num_dwords)
 {
+    uint32_t *pSource = (uint32_t *)source;
+    uint8_t *pDestination = (uint8_t *)destination;
+
     // TODO: there is no bounds checking here.
     for (int i = 0; i < num_dwords; i++)
     {
         // Memory is byte addressable but the program image is composed of 4byte
         // instructions and 4byte data so here it is split into bytes and copied
-        *(destination) = (*(source + i) & 0xFF000000) >> 24;
-        *(destination + 1) = (*(source + i) & 0x00FF0000) >> 16;
-        *(destination + 2) = (*(source + i) & 0x0000FF00) >> 8;
-        *(destination + 3) = (*(source + i) & 0x000000FF);
+        *(pDestination) = (*(pSource + i) & 0xFF000000) >> 24;
+        *(pDestination + 1) = (*(pSource + i) & 0x00FF0000) >> 16;
+        *(pDestination + 2) = (*(pSource + i) & 0x0000FF00) >> 8;
+        *(pDestination + 3) = (*(pSource + i) & 0x000000FF);
 
         // Increment destination counter to next 4byte block
-        destination += 4;
+        pDestination += INSTRUCTION_SIZE;
     }
 
     if (debugging)
@@ -115,7 +128,8 @@ void exec_program()
         // Get the next 4byte block instruction from ram @ pc
         uint32_t next_instr = get_dword(ram, pc);
         // Execute the instruction received
-        exec(next_instr);
+        if (0 != exec(next_instr))
+            break;
         // Dump state for debug purposes
         dump_state();
     }

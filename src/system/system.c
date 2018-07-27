@@ -15,11 +15,14 @@
 /**
  * Executes an instruction.
  */
-void exec(uint32_t programCode)
+int exec(uint32_t programCode)
 {
-    process_instr(programCode);
+    if (0 != process_instr(programCode))
+        return 1;
     prev_instr = programCode;
     incr_pc();
+
+    return 0;
 }
 
 /**

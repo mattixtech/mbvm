@@ -7,6 +7,9 @@
 
 #include <CUnit/Basic.h>
 
+#include "../../src/instructions/instructions.h"
+#include "../../src/io/load.h"
+#include "../../src/util/util.h"
 #include "../../src/vm/vm.h"
 
 /**
@@ -88,7 +91,43 @@ void test_deallocate_vm()
  */
 void test_copy_memory()
 {
-    // TODO
+    allocate();
+
+    // Create 10 instructions and load them into ram
+    int num_instructions = configured_ram_size / 2;
+
+    // We don't need to test a TON of ram...
+    if (num_instructions > 1000)
+        num_instructions = 1000;
+
+    uint32_t instruction_array[num_instructions];
+
+    for (int i = 0; i < num_instructions; i++)
+    {
+        void *pRam = ram + (i * INSTRUCTION_SIZE);
+        instruction_array[i] = create_instruction((unsigned char)i,
+                                                  (unsigned char)i,
+                                                  (unsigned char)i,
+                                                  (unsigned char)i);
+        *((uint32_t *)pRam) = instruction_array[i];
+    }
+
+    // Find the next available ram
+    int used_ram = INSTRUCTION_SIZE * num_instructions;
+    uint32_t *pDest = (uint32_t *)(ram + used_ram);
+    copy_memory(ram, pDest, num_instructions);
+    int failed_match = 0;
+
+    // Check the memory where we copied to and verify it is the same as the
+    // source data
+    for (int i = 0; i < num_instructions; i++)
+    {
+        if ((pDest[i] != instruction_array[i]))
+            failed_match = 1;
+    }
+
+    CU_ASSERT(0 == failed_match);
+    deallocate();
 }
 
 /**
@@ -96,5 +135,16 @@ void test_copy_memory()
  */
 void test_exec_program()
 {
-    // TODO
+    // This is a very trivial test just to check that the pc was incremented
+    // after executing a no op
+    allocate();
+    uint32_t test_instructions[2] = {
+        create_instruction(INSTR_NOP, 0x00, 0x00, 0x00),
+        create_instruction(INSTR_EXIT, 0x00, 0x00, 0x00)};
+    load_program(test_instructions,
+                 sizeof(test_instructions) / sizeof(test_instructions[0]),
+                 flash);
+    exec_program();
+    CU_ASSERT(0 != pc);
+    deallocate();
 }

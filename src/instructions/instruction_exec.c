@@ -35,8 +35,10 @@ struct instruction dec_instr(uint32_t instr)
 
 /**
  * Executes an instruction.
+ * 
+ * @return TODO
  */
-void exec_instr(struct instruction ic)
+int exec_instr(struct instruction ic)
 {
     // memory content
     // TODO: Unused
@@ -48,7 +50,8 @@ void exec_instr(struct instruction ic)
         // Regular Instructions...
     case INSTR_EXIT:
         instr_exit();
-        break;
+
+        return 1;
     case INSTR_LOAD:
         instr_load(ic);
         break;
@@ -87,12 +90,16 @@ void exec_instr(struct instruction ic)
         instr_adv_scan(ic);
         break;
     }
+
+    return 0;
 }
 
 /**
  * Process an instruction by decoding it and then executing it.
+ * 
+ * @return TODO
  */
-void process_instr(uint32_t instr)
+int process_instr(uint32_t instr)
 {
-    exec_instr(dec_instr(instr));
+    return exec_instr(dec_instr(instr));
 }

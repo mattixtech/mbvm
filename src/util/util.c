@@ -1,8 +1,8 @@
 /**
  * Project:     MBVM
- * File:        test_util.c
+ * File:        util.c
  * Author:      Matthew Brooks
- * Created:     2018-07-23
+ * Created:     2018-07-26
  */
 
 #include <stdint.h>
@@ -49,8 +49,7 @@ void load_test_app()
             create_instruction(INSTR_EXIT, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE),
             0x68656C6C, // The string 'hello world\n'
             0x6F20776F,
-            0x726C640A
-        };
+            0x726C640A};
 
     // Load it
     load_program(program, sizeof(program) / sizeof(program[0]), flash);

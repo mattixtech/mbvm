@@ -54,6 +54,6 @@ uint32_t flash_allocated;
 void allocate_vm(unsigned int, unsigned int, unsigned int, unsigned int,
                  unsigned int);
 void deallocate_vm();
-void copy_memory(uint32_t *, uint8_t *, int);
+void copy_memory(void *, void *, int);
 void exec_program();
 #endif

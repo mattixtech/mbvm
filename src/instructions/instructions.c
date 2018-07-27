@@ -22,7 +22,7 @@ void instr_exit()
     if (debugging)
         printf("exit instruction reached, terminating...\n");
 
-    exit(0);
+    //exit(0);
 }
 
 /**

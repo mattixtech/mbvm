@@ -9,5 +9,5 @@
 
 #ifndef INSTRUCTION_EXEC_H
 #define INSTRUCTION_EXEC_H
-void process_instr(uint32_t);
+int process_instr(uint32_t);
 #endif

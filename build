@@ -107,10 +107,8 @@ while getopts "dt" args; do
         GCC_EXTRA_OPTIONS+=" $GCC_DEBUG_OPTIONS"
         ;;
     t)
-        GCC_EXTRA_OPTIONS+=" $GCC_DEBUG_OPTIONS"
         BUILD_TESTS=1
-        break
-      ;;
+        ;;
   esac
 done
 
@@ -123,8 +121,6 @@ fi
 if ! create_output_dir "$EXEC_DIR"; then
     Exit "Failed to create exec directory!"
 fi
-
-
 
 if ((BUILD_TESTS)); then
     echo "Building tests..."

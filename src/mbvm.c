@@ -11,7 +11,7 @@
 
 #include "instructions/instructions.h"
 #include "system/system.h"
-#include "test/test_util.h"
+#include "util/util.h"
 #include "vm/vm.h"
 
 /**
