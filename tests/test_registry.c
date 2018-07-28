@@ -17,27 +17,27 @@
  */
 int main()
 {
-    CU_pSuite pSuite = NULL;
+    CU_pSuite p_suite = NULL;
 
     if (CUE_SUCCESS != CU_initialize_registry())
         return CU_get_error();
 
     // Add the test suite for instructions
-    pSuite = CU_add_suite("Instructions Test Suite",
+    p_suite = CU_add_suite("Instructions Test Suite",
                           init_instructions_test_suite,
                           clean_instructions_test_suite);
     // Add the tests
-    CU_add_test(pSuite, "test of instr_exit()", test_instr_exit);
+    CU_add_test(p_suite, "test of instr_exit()", test_instr_exit);
 
     // Add the test suite for vm
-    pSuite = CU_add_suite("VM Test Suite",
+    p_suite = CU_add_suite("VM Test Suite",
                           init_vm_test_suite,
                           clean_vm_test_suite);
     // Add the tests
-    CU_add_test(pSuite, "test of allocate_vm()", test_allocate_vm);
-    CU_add_test(pSuite, "test of deallocate_vm()", test_deallocate_vm);
-    CU_add_test(pSuite, "test of copy_memory()", test_copy_memory);
-    CU_add_test(pSuite, "test of exec_program()", test_exec_program);
+    CU_add_test(p_suite, "test of allocate_vm()", test_allocate_vm);
+    CU_add_test(p_suite, "test of deallocate_vm()", test_deallocate_vm);
+    CU_add_test(p_suite, "test of copy_memory()", test_copy_memory);
+    CU_add_test(p_suite, "test of exec_program()", test_exec_program);
 
     // Run all tests using the CUnit Basic interface
     CU_basic_set_mode(CU_BRM_VERBOSE);

@@ -124,15 +124,15 @@ fi
 
 if ((BUILD_TESTS)); then
     echo "Building tests..."
-    SOURCE_FILES="$(find $DIR/src/* -type f -name '*.c' -print)"
+
+    # mindepth 2 here to ignore the 'main' c file
+    SOURCE_FILES="$(find $DIR/src/ -mindepth 2 -type f -name '*.c' -print) \
+        $(find $DIR/tests/ -type f -name '*.c' -print)"
 
     if [ -z "$SOURCE_FILES" ]; then
         Exit "Failed to find source files!"
     fi
 
-    # mindepth 2 here to ignore the 'main' c file
-    SOURCE_FILES="$(find $DIR/src/ -mindepth 2 -type f -name '*.c' -print) \
-        $(find $DIR/tests/ -type f -name '*.c' -print)"
     gcc $GCC_EXTRA_OPTIONS -o "$EXEC_DIR/$TEST_EXE_FILE" $SOURCE_FILES -lcunit
     verify_build
 else

@@ -21,8 +21,8 @@
  * @param d2 the second data byte
  * @return the 4-byte instruction
  */
-uint32_t create_instruction(unsigned char instr, unsigned char mode,
-                            unsigned char d1, unsigned char d2)
+uint32_t create_instruction(uint8_t instr, uint8_t mode,
+                            uint8_t d1, uint8_t d2)
 {
     // TODO: There is probably a better way to do this...
     uint32_t instruction = 0x00000000;

@@ -77,33 +77,41 @@ void deallocate_vm()
 }
 
 /**
- * Copies 4byte blocks of memory from source to byte addressable destination.
+ * Copies 4 byte blocks of memory from source to byte addressable destination.
  * 
  * @param source the pointer to the ram source address
  * @param destination the pointer to the ram destination address
  * @param num_dwords the number of dwords to copy
+ * @return 0 if memory could be copied 1 otherwise
  */
-void copy_memory(void *source, void *destination, int num_dwords)
+int copy_memory(uint8_t *source, uint8_t *destination, int num_dwords)
 {
-    uint32_t *pSource = (uint32_t *)source;
-    uint8_t *pDestination = (uint8_t *)destination;
+    uint8_t *p_end_of_ram = ram + configured_ram_size;
+    int ram_being_allocated = num_dwords * INSTRUCTION_SIZE;
 
-    // TODO: there is no bounds checking here.
-    for (int i = 0; i < num_dwords; i++)
+    if ((destination + ram_being_allocated) < p_end_of_ram)
     {
-        // Memory is byte addressable but the program image is composed of 4byte
-        // instructions and 4byte data so here it is split into bytes and copied
-        *(pDestination) = (*(pSource + i) & 0xFF000000) >> 24;
-        *(pDestination + 1) = (*(pSource + i) & 0x00FF0000) >> 16;
-        *(pDestination + 2) = (*(pSource + i) & 0x0000FF00) >> 8;
-        *(pDestination + 3) = (*(pSource + i) & 0x000000FF);
+        for (int i = 0; i < num_dwords; i++)
+        {
+            // Memory is byte addressable but the program image is composed of 4
+            // byte instructions and 4 byte data so here it is split into bytes
+            // and copied
+            *(destination) = (*((uint32_t *)source + i) & 0xFF000000) >> 24;
+            *(destination + 1) = (*((uint32_t *)source + i) & 0x00FF0000) >> 16;
+            *(destination + 2) = (*((uint32_t *)source + i) & 0x0000FF00) >> 8;
+            *(destination + 3) = (*((uint32_t *)source + i) & 0x000000FF);
 
-        // Increment destination counter to next 4byte block
-        pDestination += INSTRUCTION_SIZE;
+            // Increment destination counter to next 4 byte block
+            destination += INSTRUCTION_SIZE;
+        }
+
+        return 0;
     }
 
     if (debugging)
         printf("\nCopied FLASH image to RAM...\n");
+
+    return 1;
 }
 
 /**
@@ -117,7 +125,11 @@ void exec_program()
     // Print the entire program image
     disp_image(flash, flash_allocated);
     // Copy the contents of the program to this VM's RAM
-    copy_memory(flash, ram, flash_allocated);
+    if (0 != copy_memory((uint8_t *)flash, ram, flash_allocated))
+    {
+        printf("\nERROR: Memory copy failed!\n");
+        exit(1);
+    }
 
     if (debugging)
         printf("\nExecuting...\n");

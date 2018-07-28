@@ -94,40 +94,41 @@ void test_copy_memory()
 {
     allocate();
 
-    // Create 10 instructions and load them into ram
-    int num_instructions = configured_ram_size / 2;
-
     // We don't need to test a TON of ram...
-    if (num_instructions > 1000)
-        num_instructions = 1000;
-
+    int num_instructions = (configured_ram_size / 2 > 1000)
+                               ? 1000
+                               : configured_ram_size / 2;
     uint32_t instruction_array[num_instructions];
 
     for (int i = 0; i < num_instructions; i++)
     {
-        void *pRam = ram + (i * INSTRUCTION_SIZE);
-        instruction_array[i] = create_instruction((unsigned char)i,
-                                                  (unsigned char)i,
-                                                  (unsigned char)i,
-                                                  (unsigned char)i);
-        *((uint32_t *)pRam) = instruction_array[i];
+        uint8_t *p_ram = ram + (i * INSTRUCTION_SIZE);
+        instruction_array[i] = create_instruction(i, i, i, i);
+        *((uint32_t *)p_ram) = instruction_array[i];
     }
 
     // Find the next available ram
     int used_ram = INSTRUCTION_SIZE * num_instructions;
-    uint32_t *pDest = (uint32_t *)(ram + used_ram);
-    copy_memory(ram, pDest, num_instructions);
+    uint8_t *p_dest = ram + used_ram;
+    CU_ASSERT(0 == copy_memory(ram, p_dest, num_instructions));
     int failed_match = 0;
 
     // Check the memory where we copied to and verify it is the same as the
     // source data
     for (int i = 0; i < num_instructions; i++)
     {
-        if ((pDest[i] != instruction_array[i]))
+        if ((((uint32_t *)p_dest)[i] != instruction_array[i]))
+        {
             failed_match = 1;
+            break;
+        }
     }
 
     CU_ASSERT(0 == failed_match);
+
+    // Check that we can't write past our allocated RAM
+    CU_ASSERT(1 == copy_memory(ram, p_dest + configured_ram_size,
+                               num_instructions));
     deallocate();
 }
 
