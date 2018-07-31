@@ -1,4 +1,5 @@
 .vscode/*
 exec/*
 */temp.txt
-*.exe.*
+cmake*/*
+.idea/*

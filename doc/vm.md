@@ -32,6 +32,5 @@ Advanced Instructions
 
 Machine Features
 --
-+ Hardware print-to-screen emulation
-
-    Accessed by storing a character or string address in the print register and then issuing the PRINT instruction
++ Print-to-screen
+    + Accessed by storing a character or string address in the print register and then issuing the PRINT instruction
