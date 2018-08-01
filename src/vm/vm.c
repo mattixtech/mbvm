@@ -29,7 +29,7 @@ void allocate_vm(unsigned int ram_size, unsigned int flash_size,
     ram = malloc(ram_size);
     flash = malloc(flash_size);
     r = malloc(num_registers * register_size);
-    stack = (uint32_t *)(ram + (ram_size - stack_size)); //+ PROGRAM_SPACE;
+    stack = (uint32_t *) (ram + (ram_size - stack_size)); //+ PROGRAM_SPACE;
     sp = 0;
     pc = 0;
     sr = 0;
@@ -96,10 +96,11 @@ int copy_memory(uint8_t *source, uint8_t *destination, int num_dwords)
             // Memory is byte addressable but the program image is composed of 4
             // byte instructions and 4 byte data so here it is split into bytes
             // and copied
-            *(destination) = (*((uint32_t *)source + i) & 0xFF000000) >> 24;
-            *(destination + 1) = (*((uint32_t *)source + i) & 0x00FF0000) >> 16;
-            *(destination + 2) = (*((uint32_t *)source + i) & 0x0000FF00) >> 8;
-            *(destination + 3) = (*((uint32_t *)source + i) & 0x000000FF);
+            *(destination) = (*((uint32_t *) source + i) & 0xFF000000) >> 24;
+            *(destination + 1) =
+                    (*((uint32_t *) source + i) & 0x00FF0000) >> 16;
+            *(destination + 2) = (*((uint32_t *) source + i) & 0x0000FF00) >> 8;
+            *(destination + 3) = (*((uint32_t *) source + i) & 0x000000FF);
 
             // Increment destination counter to next 4 byte block
             destination += INSTRUCTION_SIZE;
@@ -125,7 +126,7 @@ void exec_program()
     // Print the entire program image
     disp_image(flash, flash_allocated);
     // Copy the contents of the program to this VM's RAM
-    if (0 != copy_memory((uint8_t *)flash, ram, flash_allocated))
+    if (0 != copy_memory((uint8_t *) flash, ram, flash_allocated))
     {
         printf("\nERROR: Memory copy failed!\n");
         exit(1);

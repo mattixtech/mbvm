@@ -7,6 +7,7 @@
 
 #include <CUnit/Basic.h>
 
+#include "../test_utils.h"
 #include "../../src/instructions/instructions.h"
 #include "../../src/io/load.h"
 #include "../../src/system/system.h"
@@ -29,29 +30,6 @@ int init_vm_test_suite()
 int clean_vm_test_suite()
 {
     return 0;
-}
-
-/**
- * Calls allocate_vm() with defaults.
- */
-void allocate()
-{
-    // Initialize the pointers to NULL so we can test that they get initialized
-    ram = NULL;
-    flash = NULL;
-    r = NULL;
-    stack = NULL;
-
-    allocate_vm(DEFAULT_RAM_SIZE, DEFAULT_FLASH_SIZE, NUM_REGISTERS,
-                REGISTER_SIZE, DEFAULT_STACK_SIZE);
-}
-
-/**
- * Calls deallocate_vm();
- */
-void deallocate()
-{
-    deallocate_vm();
 }
 
 /**
@@ -96,15 +74,15 @@ void test_copy_memory()
 
     // We don't need to test a TON of ram...
     int num_instructions = (configured_ram_size / 2 > 1000)
-                               ? 1000
-                               : configured_ram_size / 2;
+                           ? 1000
+                           : configured_ram_size / 2;
     uint32_t instruction_array[num_instructions];
 
     for (int i = 0; i < num_instructions; i++)
     {
         uint8_t *p_ram = ram + (i * INSTRUCTION_SIZE);
         instruction_array[i] = create_instruction(i, i, i, i);
-        *((uint32_t *)p_ram) = instruction_array[i];
+        *((uint32_t *) p_ram) = instruction_array[i];
     }
 
     // Find the next available ram
@@ -117,7 +95,7 @@ void test_copy_memory()
     // source data
     for (int i = 0; i < num_instructions; i++)
     {
-        if ((((uint32_t *)p_dest)[i] != instruction_array[i]))
+        if ((((uint32_t *) p_dest)[i] != instruction_array[i]))
         {
             failed_match = 1;
             break;
@@ -139,12 +117,13 @@ void test_exec_program()
 {
     allocate();
     uint32_t test_instructions[2] = {
-        create_instruction(INSTR_NOP, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE),
-        create_instruction(INSTR_EXIT, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE)};
+            create_instruction(INSTR_NOP, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE),
+            create_instruction(INSTR_EXIT, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE)};
     load_program(test_instructions,
                  sizeof(test_instructions) / sizeof(test_instructions[0]),
                  flash);
     exec_program();
+    // TODO: Maybe there is a better way to test this
     // This is a very trivial test just to check that the pc was incremented
     // after executing a no op
     CU_ASSERT(0 != pc);

@@ -14,6 +14,9 @@
 
 /**
  * Executes an instruction.
+ *
+ * @param programCode TODO
+ * @return TODO
  */
 int exec(uint32_t programCode)
 {
@@ -26,7 +29,10 @@ int exec(uint32_t programCode)
 }
 
 /**
- * Returns the 4byte block found in loc @ image_addr.
+ * Returns the 4 byte block found in loc @ image_addr.
+ *
+ * @param loc TODO
+ * @param image_addr TODO
  */
 uint32_t get_dword(uint8_t *loc, uint32_t image_addr)
 {
@@ -39,7 +45,7 @@ uint32_t get_dword(uint8_t *loc, uint32_t image_addr)
 }
 
 /**
- * Stores a 4byte value into a memory location.
+ * Stores a 4 byte value into a memory location.
  */
 void store_dword(uint8_t *loc, uint32_t index, uint32_t block)
 {
@@ -50,7 +56,7 @@ void store_dword(uint8_t *loc, uint32_t index, uint32_t block)
 }
 
 /**
- * Stores a 2byte value into a memory location.
+ * Stores a 2 byte value into a memory location.
  */
 void store_word(uint8_t *loc, uint32_t index, uint16_t word)
 {
@@ -67,7 +73,7 @@ void store_byte(uint8_t *loc, uint32_t index, uint8_t byte)
 }
 
 /**
- * Returns the 2byte word found in loc @ image_addr.
+ * Returns the 2 byte word found in loc @ image_addr.
  */
 uint16_t get_word(uint8_t *loc, uint32_t image_addr)
 {
@@ -118,7 +124,7 @@ void disp_image(uint32_t *image, int blocks)
         for (int i = 0; i < blocks; i++)
         {
             // Take the 4 bytes in image[i] and get a char pointer to them
-            unsigned char *chars = (unsigned char *)&image[i];
+            unsigned char *chars = (unsigned char *) &image[i];
             printf("0x%X \t" FORMAT_HEX_4_BYTE "\t%c%c%c%c\n",
                    i * INSTRUCTION_SIZE, image[i], chars[3], chars[2], chars[1],
                    chars[0]);
@@ -154,7 +160,7 @@ void dump_state()
         int printed_contents = 0;
 
         for (int i = flash_allocated * INSTRUCTION_SIZE;
-             i < ((int)configured_ram_size); i++)
+             i < ((int) configured_ram_size); i++)
         {
             char ram_contents = *(ram + i);
 

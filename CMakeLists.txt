@@ -4,12 +4,13 @@ project(mbvm C)
 set(CMAKE_C_STANDARD 11)
 
 # Create an exec directory to store the build products in
-set(EXEC_DIRECTORY ../exec)
+set(EXEC_DIRECTORY ${PROJECT_SOURCE_DIR}/exec)
 file(MAKE_DIRECTORY ${EXEC_DIRECTORY})
 add_custom_target(create-exec-dir ALL
         COMMAND ${CMAKE_COMMAND} -E make_directory ${EXEC_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${EXEC_DIRECTORY})
 
+# TODO: Find a better way to organize the sourc files here
 set(SOURCES_MAIN
         src/instructions/instruction_exec.c
         src/instructions/instruction_exec.h
@@ -34,8 +35,10 @@ set(SOURCES_TEST
         tests/system/test_system.h
         tests/vm/test_vm.c
         tests/vm/test_vm.h
-        tests/test_registry.c)
-set(SOURCES_TEST_REGISTRY)
+        tests/test_utils.c
+        tests/test_utils.h)
+
+set(SOURCES_TEST_REGISTRY tests/test_registry.c)
 
 # Main executable
 add_executable(mbvm ${SOURCES_MAIN} ${SOURCES_MAIN_MBVM})

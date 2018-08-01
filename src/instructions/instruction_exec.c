@@ -17,18 +17,20 @@
 struct instruction dec_instr(uint32_t instr)
 {
     struct instruction ic =
-        {
-            // op is the most significant byte of the instruction
-            .op = (char)((instr & 0xFF000000) >> 24),
-            // mode is the second most significant byte of the instruction
-            .mode = (char)((instr & 0x00FF0000) >> 16),
-            // d1 is the second least significant byte of the instruction
-            .d1 = (char)((instr & 0x0000FF00) >> 8),
-            // d2 is the least significant byte of the instruction
-            .d2 = (char)(instr & 0x000000FF),
-            // data is the least significant 2 bytes of the instruction
-            .data = (instr & 0x0000FFFF),
-        };
+            {
+                    // op is the most significant byte of the instruction
+                    .op = (uint8_t) ((instr & 0xFF000000) >> 24),
+                    // mode is the second most significant byte of the
+                    // instruction
+                    .mode = (uint8_t) ((instr & 0x00FF0000) >> 16),
+                    // d1 is the second least significant byte of the
+                    // instruction
+                    .d1 = (uint8_t) ((instr & 0x0000FF00) >> 8),
+                    // d2 is the least significant byte of the instruction
+                    .d2 = (uint8_t) (instr & 0x000000FF),
+                    // data is the least significant 2 bytes of the instruction
+                    .data = (instr & 0x0000FFFF),
+            };
 
     return ic;
 }
@@ -48,47 +50,47 @@ int exec_instr(struct instruction ic)
     switch (ic.op)
     {
         // Regular Instructions...
-    case INSTR_EXIT:
-        instr_exit();
+        case INSTR_EXIT:
+            instr_exit();
 
-        return 1;
-    case INSTR_LOAD:
-        instr_load(ic);
-        break;
-    case INSTR_STORE:
-        instr_store(ic);
-        break;
-    case INSTR_ADD:
-        instr_add(ic);
-        break;
-    case INSTR_SUB:
-        instr_sub(ic);
-        break;
-    case INSTR_PUSH:
-        instr_push(ic);
-        break;
-    case INSTR_POP:
-        instr_pop(ic);
-        break;
-    case INSTR_PEEK:
-        instr_peek(ic);
-        break;
-    case INSTR_JMP:
-        instr_jmp(ic);
-        break;
-    case INSTR_FCAL:
-        instr_function_call();
-        break;
-    case INSTR_FRET:
-        instr_function_return();
-        break;
-        // Advanced Instructions...
-    case ADV_INSTR_PRINT:
-        instr_adv_print(ic);
-        break;
-    case ADV_INSTR_SCAN:
-        instr_adv_scan(ic);
-        break;
+            return 1;
+        case INSTR_LOAD:
+            instr_load(ic);
+            break;
+        case INSTR_STORE:
+            instr_store(ic);
+            break;
+        case INSTR_ADD:
+            instr_add(ic);
+            break;
+        case INSTR_SUB:
+            instr_sub(ic);
+            break;
+        case INSTR_PUSH:
+            instr_push(ic);
+            break;
+        case INSTR_POP:
+            instr_pop(ic);
+            break;
+        case INSTR_PEEK:
+            instr_peek(ic);
+            break;
+        case INSTR_JMP:
+            instr_jmp(ic);
+            break;
+        case INSTR_FCAL:
+            instr_function_call();
+            break;
+        case INSTR_FRET:
+            instr_function_return();
+            break;
+            // Advanced Instructions...
+        case ADV_INSTR_PRINT:
+            instr_adv_print(ic);
+            break;
+        case ADV_INSTR_SCAN:
+            instr_adv_scan(ic);
+            break;
     }
 
     return 0;
