@@ -1,6 +1,6 @@
-#VM Details
+# VM Details
 
-##Machine Layout
+## Machine Layout
 + Program Counter: PC - DWORD
 + Stack Pointer: SP - DWORD
 + Registers: r0-r7 - DWORD
@@ -8,7 +8,7 @@
 + Print Register: pr - DWORD
 + Status Register: sr - BYTE
 
-##Machine Instructions
+## Machine Instructions
 + EXIT
 + NOP
 + PUSH
@@ -22,10 +22,10 @@
 + FCAL
 + FRET
 
-##Advanced Instructions
+## Advanced Instructions
 + PRINT
 + SCAN
 
-##Virtual Machine Features
+## Virtual Machine Features
 + Print-to-screen
     + Accessed by storing a character or string address in the print register and then issuing the PRINT instruction
