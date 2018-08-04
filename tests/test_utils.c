@@ -6,6 +6,7 @@
  */
 
 #include "test_utils.h"
+#include "../src/system/system.h"
 #include "../src/vm/vm.h"
 
 /**
@@ -29,4 +30,16 @@ void allocate()
 void deallocate()
 {
     deallocate_vm();
+}
+
+/**
+ * TODO
+ *
+ * @param instruction the instruction
+ */
+void exec_with_fresh_vm(uint32_t instruction)
+{
+    deallocate();
+    allocate();
+    exec(instruction);
 }

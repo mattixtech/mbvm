@@ -42,6 +42,7 @@ uint32_t get_dword(uint8_t *loc, uint32_t image_addr)
     uint32_t b3 = loc[image_addr + 3];
 
     return 0x00000000 | b0 | b1 | b2 | b3;
+//    return *(uint32_t *) (loc + image_addr);
 }
 
 /**
