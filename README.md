@@ -21,8 +21,18 @@
 + TODO
 
 ## Testing
+### Unit tests
+The unit tests are built into a separate executable using CUnit. They will all
+run at once, there is currently not a way to run them individually.
 + Make sure the test executable has been built (see above)
 + Run the test make target
     + `make test`
 + Alternatively for detailed test output execute the tests directly
     + `./exec/mbvm_test`
+### Blackbox tests
+The blackbox test script executes the programs in the test_programs/ directory
+and verifies their output against known expected output.
++ Make sure the main executable has been built (see above)
++ Run the 'blackbox_test.py' python script via `python blackbox_test.py` or
+`./blackbox_test.py`
+    + This won't work on Windows currently

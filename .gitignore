@@ -1,5 +1,6 @@
-.vscode/*
-exec/*
-*/temp.txt
+.vscode/
+exec/
 cmake*/*
-.idea/*
+.idea/
+venv/
+lbuild/
