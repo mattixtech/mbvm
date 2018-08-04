@@ -31,15 +31,3 @@ void deallocate()
 {
     deallocate_vm();
 }
-
-/**
- * TODO
- *
- * @param instruction the instruction
- */
-void exec_with_fresh_vm(uint32_t instruction)
-{
-    deallocate();
-    allocate();
-    exec(instruction);
-}

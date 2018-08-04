@@ -10,9 +10,12 @@
 #include <string.h>
 
 #include "instructions/instructions.h"
+#include "io/load.h"
 #include "system/system.h"
 #include "util/util.h"
 #include "vm/vm.h"
+
+static const char *file_name;
 
 /**
  * Check the command line arguments.
@@ -32,9 +35,15 @@ int parse_args(int argc, const char *argv[])
     }
 
     // Turn on debugging if -d switch was provided as command line arg
-    if (argc > 1)
+    if (argc > 2)
+    {
         if (strcmp(argv[1], "-d") == 0)
+        {
             debugging = 1;
+            file_name = argv[2];
+        }
+    }else
+        file_name = argv[1];
 
     return 0;
 }
@@ -55,8 +64,14 @@ int main(int argc, const char *argv[])
     // TODO: Take VM init values as command line arguments
     allocate_vm(DEFAULT_RAM_SIZE, DEFAULT_FLASH_SIZE, NUM_REGISTERS,
                 REGISTER_SIZE, DEFAULT_STACK_SIZE);
-    // TODO: load in the program specified via command line
-    load_test_app();
+
+    // Load from the file
+    if (0 != load_file(file_name))
+    {
+        printf("ERROR: Failed to open file '%s'.", file_name);
+        return 1;
+    }
+
     // Pass the program to the virtual machine and begin executing
     exec_program();
     // Free all the memory we allocated

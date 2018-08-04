@@ -36,13 +36,12 @@ int exec(uint32_t programCode)
  */
 uint32_t get_dword(uint8_t *loc, uint32_t image_addr)
 {
-    uint32_t b0 = loc[image_addr + 0] << 24;
-    uint32_t b1 = loc[image_addr + 1] << 16;
-    uint32_t b2 = loc[image_addr + 2] << 8;
-    uint32_t b3 = loc[image_addr + 3];
+    uint32_t b3 = loc[image_addr + 0] << 24;
+    uint32_t b2 = loc[image_addr + 1] << 16;
+    uint32_t b1 = loc[image_addr + 2] << 8;
+    uint32_t b0 = loc[image_addr + 3];
 
     return 0x00000000 | b0 | b1 | b2 | b3;
-//    return *(uint32_t *) (loc + image_addr);
 }
 
 /**
@@ -130,6 +129,14 @@ void disp_image(uint32_t *image, int blocks)
                    i * INSTRUCTION_SIZE, image[i], chars[3], chars[2], chars[1],
                    chars[0]);
         }
+
+        puts("{");
+
+        // TODO: Loop duplication...
+        for (int i = 0; i < blocks; i++)
+            printf("\t" FORMAT_HEX_4_BYTE "\n", image[i]);
+
+        puts("}");
     }
 }
 
