@@ -600,6 +600,7 @@ void instr_jmp(struct instruction ic)
     // TODO: add the other jump modes
     mem_addr = get_dword(ram, incr_pc());
 
+    // TODO: I don't think this will always be true
     if ((mem_addr % INSTRUCTION_SIZE) == 0)
     {
         switch (ic.mode)

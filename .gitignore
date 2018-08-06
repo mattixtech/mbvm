@@ -4,3 +4,4 @@ cmake*/*
 .idea/
 venv/
 lbuild/
+/programs.txt

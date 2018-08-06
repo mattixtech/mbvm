@@ -58,7 +58,7 @@ int parse_args(int argc, const char *argv[])
 int main(int argc, const char *argv[])
 {
     if (parse_args(argc, argv) != 0)
-        return 1;
+        return EXIT_FAILURE;
 
     // Create the virtual machine in RAM
     // TODO: Take VM init values as command line arguments
@@ -69,7 +69,7 @@ int main(int argc, const char *argv[])
     if (0 != load_file(file_name))
     {
         printf("ERROR: Failed to open file '%s'.", file_name);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Pass the program to the virtual machine and begin executing
@@ -77,5 +77,5 @@ int main(int argc, const char *argv[])
     // Free all the memory we allocated
     deallocate_vm();
 
-    return 0;
+    return EXIT_SUCCESS;
 }

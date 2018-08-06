@@ -29,14 +29,14 @@ def test_program(program_name, expected_output):
     if not isinstance(received_output, str):
         received_output = received_output.decode("utf-8")
 
-    print("testing '" + program_name + "'... ", end="")
+    print("testing '{}'... ".format(program_name), end="")
 
     if expected_output == received_output:
         print("passed")
 
         return 0
     else:
-        print("failed! '" + received_output + "' != '" + expected_output + "'")
+        print("failed! '{}' != '{}'".format(received_output, expected_output))
 
         return 1
 
@@ -49,11 +49,12 @@ def main():
     """
 
     failed_tests = 0
-    failed_tests += test_program("hello_world", "hello world! \n")
+    failed_tests += test_program("hello_world", "hello world!\n")
+    failed_tests += test_program("loop", "*")
     # TODO: Add more test cases here...
 
     if failed_tests:
-        print("Errors: Failed '" + str(failed_tests) + "' tests!")
+        print("Errors: Failed '{}' tests!".format(str(failed_tests)))
     else:
         print("All tests passed!")
 
@@ -77,7 +78,7 @@ else:
         mbvm_exec = mbvm_unix_exec
 
 if not mbvm_exec:
-    sys.stderr.write("ERROR: Could not find the mbvm executable.")
+    sys.stderr.write("ERROR: Could not find the mbvm executable")
     sys.exit(1)
 
 if __name__ == "__main__":
