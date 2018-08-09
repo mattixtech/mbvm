@@ -7,13 +7,15 @@ output.
 """
 # For 2/3 compatible print()
 from __future__ import print_function
+from subprocess import Popen, PIPE
 
+import json
 import os
-import subprocess
+# import subprocess
 import sys
 
 
-def test_program(program_name, expected_output):
+def test_program(program_name, expected_output, program_input=""):
     """
     Tests a program to make sure it outputs what we expect.
 
@@ -22,13 +24,16 @@ def test_program(program_name, expected_output):
     :return: 0 if passed 1 if failed
     """
 
-    received_output = subprocess.check_output(
-        [mbvm_exec, os.path.join(test_programs_dir, program_name)])
-
     # For 2/3 compatibility
-    if not isinstance(received_output, str):
-        received_output = received_output.decode("utf-8")
+    # TODO: Perhaps the kwargs could be passed as an arg dict
+    if sys.version_info >= (3,):
+        p = Popen([mbvm_exec, os.path.join(test_programs_dir, program_name)],
+                  stdin=PIPE, stdout=PIPE, stderr=PIPE, encoding='utf8')
+    else:
+        p = Popen([mbvm_exec, os.path.join(test_programs_dir, program_name)],
+                  stdin=PIPE, stdout=PIPE, stderr=PIPE)
 
+    received_output = p.communicate(program_input)[0]
     print("testing '{}'... ".format(program_name), end="")
 
     if expected_output == received_output:
@@ -48,15 +53,29 @@ def main():
     :return: None
     """
 
-    failed_tests = 0
-    failed_tests += test_program("hello_world", "hello world!\n")
-    failed_tests += test_program("loop", "*")
-    # TODO: Add more test cases here...
+    # TODO: Check JSON exceptions
+    with open(os.path.join(test_programs_dir, "test_programs.json")) as f:
+        test_programs_json = json.load(f)
 
-    if failed_tests:
-        print("Errors: Failed '{}' tests!".format(str(failed_tests)))
+    if test_programs_json:
+        failed_tests = 0
+
+        for test in test_programs_json["programs"]:
+            if "input" in test:
+                input_text = test["input"]
+            else:
+                input_text = "a"
+
+            failed_tests += test_program(test["name"], test["expected_output"],
+                                         program_input=input_text)
+
+        if failed_tests:
+            print("Errors: Failed '{}' tests!".format(str(failed_tests)))
+        else:
+            print("All tests passed!")
     else:
-        print("All tests passed!")
+        sys.stderr.write("ERROR: No tests were found")
+        sys.exit(1)
 
 
 # Some global variables

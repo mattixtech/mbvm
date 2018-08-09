@@ -643,7 +643,7 @@ void instr_function_call()
  */
 void instr_function_return()
 {
-    sr = pop();
+    sr = (uint8_t) pop();
     pc = pop();
 
     // Restore registers from stack

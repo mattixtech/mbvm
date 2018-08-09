@@ -1,0 +1,21 @@
+{
+  "programs": [
+    {
+      "name": "add_addr",
+      "expected_output": "*"
+    },
+    {
+      "name": "hello_world",
+      "expected_output": "hello world!\n"
+    },
+    {
+      "name": "loop",
+      "expected_output": "*"
+    },
+    {
+      "name": "repeat_me",
+      "input" : "Everything's impossible until somebody does it",
+      "expected_output": "Everything's impossible until somebody does it"
+    }
+  ]
+}
