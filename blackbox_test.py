@@ -63,7 +63,7 @@ def main():
             if "input" in test:
                 input_text = test["input"]
             else:
-                input_text = "a"
+                input_text = ""
 
             failed_tests += test_program(test["name"], test["expected_output"],
                                          program_input=input_text)
