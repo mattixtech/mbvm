@@ -14,7 +14,7 @@
     },
     {
       "name": "repeat_me",
-      "input" : "Everything's impossible until somebody does it",
+      "input": "Everything's impossible until somebody does it",
       "expected_output": "Everything's impossible until somebody does it"
     }
   ]

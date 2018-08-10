@@ -33,6 +33,6 @@ run at once, there is currently not a way to run them individually.
 The blackbox test script executes the programs in the test_programs/ directory
 and verifies their output against known expected output.
 + Make sure the main executable has been built (see above)
-+ Run the 'blackbox_test.py' python script via `python blackbox_test.py` or
-`./blackbox_test.py`
++ Run the 'test_programs.py' python script via `python test_programs.py` or
+`./test_programs.py`
     + This won't work on Windows currently

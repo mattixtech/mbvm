@@ -37,74 +37,74 @@ void instr_load(struct instruction ic)
 
     switch (ic.mode)
     {
-    case MODE_IMMEDIATE_B:
-        *dr = ic.d2;
-        break;
-    case MODE_IMMEDIATE_W:
-        *dr = ic.data;
-        break;
-    case MODE_DATA_32:
-        *dr = get_dword(ram, incr_pc());
-        break;
-    case MODE_DATA_32_ADDR:
-        mem_addr = get_dword(ram, incr_pc());
-        *dr = get_dword(ram, mem_addr);
-        break;
-    case MODE_DATA_32_ADDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        *dr = get_word(ram, mem_addr);
-        break;
-    case MODE_DATA_32_ADDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        *dr = get_byte(ram, mem_addr);
-        break;
-    case MODE_DATA_32_INDR:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        *dr = get_dword(ram, mem_addr);
-        break;
-    case MODE_DATA_32_INDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        *dr = get_word(ram, mem_addr);
-        break;
-    case MODE_DATA_32_INDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        *dr = get_byte(ram, mem_addr);
-        break;
-    case MODE_REGISTER:
-        *dr = r[ic.d2];
-        break;
-    case MODE_REGISTER_ADDR:
-        mem_addr = r[ic.d2];
-        *dr = get_dword(ram, mem_addr);
-        break;
-    case MODE_REGISTER_ADDR_W:
-        mem_addr = r[ic.d2];
-        *dr = get_word(ram, mem_addr);
-        break;
-    case MODE_REGISTER_ADDR_B:
-        mem_addr = r[ic.d2];
-        *dr = get_byte(ram, mem_addr);
-        break;
-    case MODE_REGISTER_INDR:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        *dr = get_dword(ram, mem_addr);
-        break;
-    case MODE_REGISTER_INDR_W:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        *dr = get_word(ram, mem_addr);
-        break;
-    case MODE_REGISTER_INDR_B:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        *dr = get_byte(ram, mem_addr);
-        break;
-    default:
-        unsupported_mode(ic.mode);
+        case MODE_IMMEDIATE_B:
+            *dr = ic.d2;
+            break;
+        case MODE_IMMEDIATE_W:
+            *dr = ic.data;
+            break;
+        case MODE_DATA_32:
+            *dr = get_dword(ram, incr_pc());
+            break;
+        case MODE_DATA_32_ADDR:
+            mem_addr = get_dword(ram, incr_pc());
+            *dr = get_dword(ram, mem_addr);
+            break;
+        case MODE_DATA_32_ADDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            *dr = get_word(ram, mem_addr);
+            break;
+        case MODE_DATA_32_ADDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            *dr = get_byte(ram, mem_addr);
+            break;
+        case MODE_DATA_32_INDR:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            *dr = get_dword(ram, mem_addr);
+            break;
+        case MODE_DATA_32_INDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            *dr = get_word(ram, mem_addr);
+            break;
+        case MODE_DATA_32_INDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            *dr = get_byte(ram, mem_addr);
+            break;
+        case MODE_REGISTER:
+            *dr = r[ic.d2];
+            break;
+        case MODE_REGISTER_ADDR:
+            mem_addr = r[ic.d2];
+            *dr = get_dword(ram, mem_addr);
+            break;
+        case MODE_REGISTER_ADDR_W:
+            mem_addr = r[ic.d2];
+            *dr = get_word(ram, mem_addr);
+            break;
+        case MODE_REGISTER_ADDR_B:
+            mem_addr = r[ic.d2];
+            *dr = get_byte(ram, mem_addr);
+            break;
+        case MODE_REGISTER_INDR:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            *dr = get_dword(ram, mem_addr);
+            break;
+        case MODE_REGISTER_INDR_W:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            *dr = get_word(ram, mem_addr);
+            break;
+        case MODE_REGISTER_INDR_B:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            *dr = get_byte(ram, mem_addr);
+            break;
+        default:
+            unsupported_mode(ic.mode);
     }
 
     alter_sr();
@@ -122,65 +122,65 @@ void instr_store(struct instruction ic)
 
     switch (ic.mode)
     {
-    case MODE_DATA_32_ADDR:
-        mem_addr = get_dword(ram, incr_pc());
-        store_dword(ram, mem_addr, *dr);
-        break;
-    case MODE_DATA_32_ADDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        store_word(ram, mem_addr, *dr);
-        break;
-    case MODE_DATA_32_ADDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        store_byte(ram, mem_addr, *dr);
-        break;
-    case MODE_DATA_32_INDR:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        store_dword(ram, mem_addr, *dr);
-        break;
-    case MODE_DATA_32_INDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        store_word(ram, mem_addr, *dr);
-        break;
-    case MODE_DATA_32_INDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        store_byte(ram, mem_addr, *dr);
-        break;
-    case MODE_REGISTER:
-        r[ic.d2] = *dr;
-        break;
-    case MODE_REGISTER_ADDR:
-        mem_addr = r[ic.d2];
-        store_dword(ram, mem_addr, *dr);
-        break;
-    case MODE_REGISTER_ADDR_W:
-        mem_addr = r[ic.d2];
-        store_word(ram, mem_addr, *dr);
-        break;
-    case MODE_REGISTER_ADDR_B:
-        mem_addr = r[ic.d2];
-        store_byte(ram, mem_addr, *dr);
-        break;
-    case MODE_REGISTER_INDR:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        store_dword(ram, mem_addr, *dr);
-        break;
-    case MODE_REGISTER_INDR_W:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        store_word(ram, mem_addr, *dr);
-        break;
-    case MODE_REGISTER_INDR_B:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        store_byte(ram, mem_addr, *dr);
-        break;
-    default:
-        unsupported_mode(ic.mode);
+        case MODE_DATA_32_ADDR:
+            mem_addr = get_dword(ram, incr_pc());
+            store_dword(ram, mem_addr, *dr);
+            break;
+        case MODE_DATA_32_ADDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            store_word(ram, mem_addr, *dr);
+            break;
+        case MODE_DATA_32_ADDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            store_byte(ram, mem_addr, *dr);
+            break;
+        case MODE_DATA_32_INDR:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            store_dword(ram, mem_addr, *dr);
+            break;
+        case MODE_DATA_32_INDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            store_word(ram, mem_addr, *dr);
+            break;
+        case MODE_DATA_32_INDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            store_byte(ram, mem_addr, *dr);
+            break;
+        case MODE_REGISTER:
+            r[ic.d2] = *dr;
+            break;
+        case MODE_REGISTER_ADDR:
+            mem_addr = r[ic.d2];
+            store_dword(ram, mem_addr, *dr);
+            break;
+        case MODE_REGISTER_ADDR_W:
+            mem_addr = r[ic.d2];
+            store_word(ram, mem_addr, *dr);
+            break;
+        case MODE_REGISTER_ADDR_B:
+            mem_addr = r[ic.d2];
+            store_byte(ram, mem_addr, *dr);
+            break;
+        case MODE_REGISTER_INDR:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            store_dword(ram, mem_addr, *dr);
+            break;
+        case MODE_REGISTER_INDR_W:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            store_word(ram, mem_addr, *dr);
+            break;
+        case MODE_REGISTER_INDR_B:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            store_byte(ram, mem_addr, *dr);
+            break;
+        default:
+            unsupported_mode(ic.mode);
     }
 
     alter_sr();
@@ -198,74 +198,74 @@ void instr_add(struct instruction ic)
 
     switch (ic.mode)
     {
-    case MODE_IMMEDIATE_B:
-        *dr += ic.d2;
-        break;
-    case MODE_IMMEDIATE_W:
-        *dr += ic.data;
-        break;
-    case MODE_DATA_32:
-        *dr += get_dword(ram, incr_pc());
-        break;
-    case MODE_DATA_32_ADDR:
-        mem_addr = get_dword(ram, incr_pc());
-        *dr += get_dword(ram, mem_addr);
-        break;
-    case MODE_DATA_32_ADDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        *dr += get_word(ram, mem_addr);
-        break;
-    case MODE_DATA_32_ADDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        *dr += get_byte(ram, mem_addr);
-        break;
-    case MODE_DATA_32_INDR:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        *dr += get_dword(ram, mem_addr);
-        break;
-    case MODE_DATA_32_INDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        *dr += get_word(ram, mem_addr);
-        break;
-    case MODE_DATA_32_INDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        *dr += get_byte(ram, mem_addr);
-        break;
-    case MODE_REGISTER:
-        *dr += r[ic.d2];
-        break;
-    case MODE_REGISTER_ADDR:
-        mem_addr = r[ic.d2];
-        *dr += get_dword(ram, mem_addr);
-        break;
-    case MODE_REGISTER_ADDR_W:
-        mem_addr = r[ic.d2];
-        *dr += get_word(ram, mem_addr);
-        break;
-    case MODE_REGISTER_ADDR_B:
-        mem_addr = r[ic.d2];
-        *dr += get_byte(ram, mem_addr);
-        break;
-    case MODE_REGISTER_INDR:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        *dr += get_dword(ram, mem_addr);
-        break;
-    case MODE_REGISTER_INDR_W:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        *dr += get_word(ram, mem_addr);
-        break;
-    case MODE_REGISTER_INDR_B:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        *dr += get_byte(ram, mem_addr);
-        break;
-    default:
-        unsupported_mode(ic.mode);
+        case MODE_IMMEDIATE_B:
+            *dr += ic.d2;
+            break;
+        case MODE_IMMEDIATE_W:
+            *dr += ic.data;
+            break;
+        case MODE_DATA_32:
+            *dr += get_dword(ram, incr_pc());
+            break;
+        case MODE_DATA_32_ADDR:
+            mem_addr = get_dword(ram, incr_pc());
+            *dr += get_dword(ram, mem_addr);
+            break;
+        case MODE_DATA_32_ADDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            *dr += get_word(ram, mem_addr);
+            break;
+        case MODE_DATA_32_ADDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            *dr += get_byte(ram, mem_addr);
+            break;
+        case MODE_DATA_32_INDR:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            *dr += get_dword(ram, mem_addr);
+            break;
+        case MODE_DATA_32_INDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            *dr += get_word(ram, mem_addr);
+            break;
+        case MODE_DATA_32_INDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            *dr += get_byte(ram, mem_addr);
+            break;
+        case MODE_REGISTER:
+            *dr += r[ic.d2];
+            break;
+        case MODE_REGISTER_ADDR:
+            mem_addr = r[ic.d2];
+            *dr += get_dword(ram, mem_addr);
+            break;
+        case MODE_REGISTER_ADDR_W:
+            mem_addr = r[ic.d2];
+            *dr += get_word(ram, mem_addr);
+            break;
+        case MODE_REGISTER_ADDR_B:
+            mem_addr = r[ic.d2];
+            *dr += get_byte(ram, mem_addr);
+            break;
+        case MODE_REGISTER_INDR:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            *dr += get_dword(ram, mem_addr);
+            break;
+        case MODE_REGISTER_INDR_W:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            *dr += get_word(ram, mem_addr);
+            break;
+        case MODE_REGISTER_INDR_B:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            *dr += get_byte(ram, mem_addr);
+            break;
+        default:
+            unsupported_mode(ic.mode);
     }
 
     alter_sr();
@@ -283,74 +283,74 @@ void instr_sub(struct instruction ic)
 
     switch (ic.mode)
     {
-    case MODE_IMMEDIATE_B:
-        *dr -= ic.d2;
-        break;
-    case MODE_IMMEDIATE_W:
-        *dr -= ic.data;
-        break;
-    case MODE_DATA_32:
-        *dr -= get_dword(ram, incr_pc());
-        break;
-    case MODE_DATA_32_ADDR:
-        mem_addr = get_dword(ram, incr_pc());
-        *dr -= get_dword(ram, mem_addr);
-        break;
-    case MODE_DATA_32_ADDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        *dr -= get_word(ram, mem_addr);
-        break;
-    case MODE_DATA_32_ADDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        *dr -= get_byte(ram, mem_addr);
-        break;
-    case MODE_DATA_32_INDR:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        *dr -= get_dword(ram, mem_addr);
-        break;
-    case MODE_DATA_32_INDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        *dr -= get_word(ram, mem_addr);
-        break;
-    case MODE_DATA_32_INDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        *dr -= get_byte(ram, mem_addr);
-        break;
-    case MODE_REGISTER:
-        *dr -= r[ic.d2];
-        break;
-    case MODE_REGISTER_ADDR:
-        mem_addr = r[ic.d2];
-        *dr -= get_dword(ram, mem_addr);
-        break;
-    case MODE_REGISTER_ADDR_W:
-        mem_addr = r[ic.d2];
-        *dr -= get_word(ram, mem_addr);
-        break;
-    case MODE_REGISTER_ADDR_B:
-        mem_addr = r[ic.d2];
-        *dr -= get_byte(ram, mem_addr);
-        break;
-    case MODE_REGISTER_INDR:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        *dr -= get_dword(ram, mem_addr);
-        break;
-    case MODE_REGISTER_INDR_W:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        *dr -= get_word(ram, mem_addr);
-        break;
-    case MODE_REGISTER_INDR_B:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        *dr -= get_byte(ram, mem_addr);
-        break;
-    default:
-        unsupported_mode(ic.mode);
+        case MODE_IMMEDIATE_B:
+            *dr -= ic.d2;
+            break;
+        case MODE_IMMEDIATE_W:
+            *dr -= ic.data;
+            break;
+        case MODE_DATA_32:
+            *dr -= get_dword(ram, incr_pc());
+            break;
+        case MODE_DATA_32_ADDR:
+            mem_addr = get_dword(ram, incr_pc());
+            *dr -= get_dword(ram, mem_addr);
+            break;
+        case MODE_DATA_32_ADDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            *dr -= get_word(ram, mem_addr);
+            break;
+        case MODE_DATA_32_ADDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            *dr -= get_byte(ram, mem_addr);
+            break;
+        case MODE_DATA_32_INDR:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            *dr -= get_dword(ram, mem_addr);
+            break;
+        case MODE_DATA_32_INDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            *dr -= get_word(ram, mem_addr);
+            break;
+        case MODE_DATA_32_INDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            *dr -= get_byte(ram, mem_addr);
+            break;
+        case MODE_REGISTER:
+            *dr -= r[ic.d2];
+            break;
+        case MODE_REGISTER_ADDR:
+            mem_addr = r[ic.d2];
+            *dr -= get_dword(ram, mem_addr);
+            break;
+        case MODE_REGISTER_ADDR_W:
+            mem_addr = r[ic.d2];
+            *dr -= get_word(ram, mem_addr);
+            break;
+        case MODE_REGISTER_ADDR_B:
+            mem_addr = r[ic.d2];
+            *dr -= get_byte(ram, mem_addr);
+            break;
+        case MODE_REGISTER_INDR:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            *dr -= get_dword(ram, mem_addr);
+            break;
+        case MODE_REGISTER_INDR_W:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            *dr -= get_word(ram, mem_addr);
+            break;
+        case MODE_REGISTER_INDR_B:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            *dr -= get_byte(ram, mem_addr);
+            break;
+        default:
+            unsupported_mode(ic.mode);
     }
 
     alter_sr();
@@ -368,74 +368,74 @@ void instr_push(struct instruction ic)
 
     switch (ic.mode)
     {
-    case MODE_IMMEDIATE_B:
-        push(ic.d2);
-        break;
-    case MODE_IMMEDIATE_W:
-        push(ic.data);
-        break;
-    case MODE_DATA_32:
-        push(get_dword(ram, incr_pc()));
-        break;
-    case MODE_DATA_32_ADDR:
-        mem_addr = get_dword(ram, incr_pc());
-        push(get_dword(ram, mem_addr));
-        break;
-    case MODE_DATA_32_ADDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        push(get_word(ram, mem_addr));
-        break;
-    case MODE_DATA_32_ADDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        push(get_byte(ram, mem_addr));
-        break;
-    case MODE_DATA_32_INDR:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        push(get_dword(ram, mem_addr));
-        break;
-    case MODE_DATA_32_INDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        push(get_word(ram, mem_addr));
-        break;
-    case MODE_DATA_32_INDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        push(get_byte(ram, mem_addr));
-        break;
-    case MODE_REGISTER:
-        push(r[ic.d2]);
-        break;
-    case MODE_REGISTER_ADDR:
-        mem_addr = r[ic.d2];
-        push(get_dword(ram, mem_addr));
-        break;
-    case MODE_REGISTER_ADDR_W:
-        mem_addr = r[ic.d2];
-        push(get_word(ram, mem_addr));
-        break;
-    case MODE_REGISTER_ADDR_B:
-        mem_addr = r[ic.d2];
-        push(get_byte(ram, mem_addr));
-        break;
-    case MODE_REGISTER_INDR:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        push(get_dword(ram, mem_addr));
-        break;
-    case MODE_REGISTER_INDR_W:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        push(get_word(ram, mem_addr));
-        break;
-    case MODE_REGISTER_INDR_B:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        push(get_byte(ram, mem_addr));
-        break;
-    default:
-        unsupported_mode(ic.mode);
+        case MODE_IMMEDIATE_B:
+            push(ic.d2);
+            break;
+        case MODE_IMMEDIATE_W:
+            push(ic.data);
+            break;
+        case MODE_DATA_32:
+            push(get_dword(ram, incr_pc()));
+            break;
+        case MODE_DATA_32_ADDR:
+            mem_addr = get_dword(ram, incr_pc());
+            push(get_dword(ram, mem_addr));
+            break;
+        case MODE_DATA_32_ADDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            push(get_word(ram, mem_addr));
+            break;
+        case MODE_DATA_32_ADDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            push(get_byte(ram, mem_addr));
+            break;
+        case MODE_DATA_32_INDR:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            push(get_dword(ram, mem_addr));
+            break;
+        case MODE_DATA_32_INDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            push(get_word(ram, mem_addr));
+            break;
+        case MODE_DATA_32_INDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            push(get_byte(ram, mem_addr));
+            break;
+        case MODE_REGISTER:
+            push(r[ic.d2]);
+            break;
+        case MODE_REGISTER_ADDR:
+            mem_addr = r[ic.d2];
+            push(get_dword(ram, mem_addr));
+            break;
+        case MODE_REGISTER_ADDR_W:
+            mem_addr = r[ic.d2];
+            push(get_word(ram, mem_addr));
+            break;
+        case MODE_REGISTER_ADDR_B:
+            mem_addr = r[ic.d2];
+            push(get_byte(ram, mem_addr));
+            break;
+        case MODE_REGISTER_INDR:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            push(get_dword(ram, mem_addr));
+            break;
+        case MODE_REGISTER_INDR_W:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            push(get_word(ram, mem_addr));
+            break;
+        case MODE_REGISTER_INDR_B:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            push(get_byte(ram, mem_addr));
+            break;
+        default:
+            unsupported_mode(ic.mode);
     }
 }
 
@@ -451,65 +451,65 @@ void instr_pop(struct instruction ic)
 
     switch (ic.mode)
     {
-    case MODE_DATA_32_ADDR:
-        mem_addr = get_dword(ram, incr_pc());
-        store_dword(ram, mem_addr, pop());
-        break;
-    case MODE_DATA_32_ADDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        store_word(ram, mem_addr, pop());
-        break;
-    case MODE_DATA_32_ADDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        store_byte(ram, mem_addr, pop());
-        break;
-    case MODE_DATA_32_INDR:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        store_dword(ram, mem_addr, pop());
-        break;
-    case MODE_DATA_32_INDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        store_word(ram, mem_addr, pop());
-        break;
-    case MODE_DATA_32_INDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        store_byte(ram, mem_addr, pop());
-        break;
-    case MODE_REGISTER:
-        r[ic.d2] = pop();
-        break;
-    case MODE_REGISTER_ADDR:
-        mem_addr = r[ic.d2];
-        store_dword(ram, mem_addr, pop());
-        break;
-    case MODE_REGISTER_ADDR_W:
-        mem_addr = r[ic.d2];
-        store_word(ram, mem_addr, pop());
-        break;
-    case MODE_REGISTER_ADDR_B:
-        mem_addr = r[ic.d2];
-        store_byte(ram, mem_addr, pop());
-        break;
-    case MODE_REGISTER_INDR:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        store_dword(ram, mem_addr, pop());
-        break;
-    case MODE_REGISTER_INDR_W:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        store_word(ram, mem_addr, pop());
-        break;
-    case MODE_REGISTER_INDR_B:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        store_byte(ram, mem_addr, pop());
-        break;
-    default:
-        unsupported_mode(ic.mode);
+        case MODE_DATA_32_ADDR:
+            mem_addr = get_dword(ram, incr_pc());
+            store_dword(ram, mem_addr, pop());
+            break;
+        case MODE_DATA_32_ADDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            store_word(ram, mem_addr, pop());
+            break;
+        case MODE_DATA_32_ADDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            store_byte(ram, mem_addr, pop());
+            break;
+        case MODE_DATA_32_INDR:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            store_dword(ram, mem_addr, pop());
+            break;
+        case MODE_DATA_32_INDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            store_word(ram, mem_addr, pop());
+            break;
+        case MODE_DATA_32_INDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            store_byte(ram, mem_addr, pop());
+            break;
+        case MODE_REGISTER:
+            r[ic.d2] = pop();
+            break;
+        case MODE_REGISTER_ADDR:
+            mem_addr = r[ic.d2];
+            store_dword(ram, mem_addr, pop());
+            break;
+        case MODE_REGISTER_ADDR_W:
+            mem_addr = r[ic.d2];
+            store_word(ram, mem_addr, pop());
+            break;
+        case MODE_REGISTER_ADDR_B:
+            mem_addr = r[ic.d2];
+            store_byte(ram, mem_addr, pop());
+            break;
+        case MODE_REGISTER_INDR:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            store_dword(ram, mem_addr, pop());
+            break;
+        case MODE_REGISTER_INDR_W:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            store_word(ram, mem_addr, pop());
+            break;
+        case MODE_REGISTER_INDR_B:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            store_byte(ram, mem_addr, pop());
+            break;
+        default:
+            unsupported_mode(ic.mode);
     }
 }
 
@@ -525,65 +525,65 @@ void instr_peek(struct instruction ic)
 
     switch (ic.mode)
     {
-    case MODE_DATA_32_ADDR:
-        mem_addr = get_dword(ram, incr_pc());
-        store_dword(ram, mem_addr, peek(0));
-        break;
-    case MODE_DATA_32_ADDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        store_word(ram, mem_addr, peek(0));
-        break;
-    case MODE_DATA_32_ADDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        store_byte(ram, mem_addr, peek(0));
-        break;
-    case MODE_DATA_32_INDR:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        store_dword(ram, mem_addr, peek(0));
-        break;
-    case MODE_DATA_32_INDR_W:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        store_word(ram, mem_addr, peek(0));
-        break;
-    case MODE_DATA_32_INDR_B:
-        mem_addr = get_dword(ram, incr_pc());
-        mem_addr = get_dword(ram, mem_addr);
-        store_byte(ram, mem_addr, peek(0));
-        break;
-    case MODE_REGISTER:
-        r[ic.d2] = peek(0);
-        break;
-    case MODE_REGISTER_ADDR:
-        mem_addr = r[ic.d2];
-        store_dword(ram, mem_addr, peek(0));
-        break;
-    case MODE_REGISTER_ADDR_W:
-        mem_addr = r[ic.d2];
-        store_word(ram, mem_addr, peek(0));
-        break;
-    case MODE_REGISTER_ADDR_B:
-        mem_addr = r[ic.d2];
-        store_byte(ram, mem_addr, peek(0));
-        break;
-    case MODE_REGISTER_INDR:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        store_dword(ram, mem_addr, peek(0));
-        break;
-    case MODE_REGISTER_INDR_W:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        store_word(ram, mem_addr, peek(0));
-        break;
-    case MODE_REGISTER_INDR_B:
-        mem_addr = r[ic.d2];
-        mem_addr = get_dword(ram, mem_addr);
-        store_byte(ram, mem_addr, peek(0));
-        break;
-    default:
-        unsupported_mode(ic.mode);
+        case MODE_DATA_32_ADDR:
+            mem_addr = get_dword(ram, incr_pc());
+            store_dword(ram, mem_addr, peek(0));
+            break;
+        case MODE_DATA_32_ADDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            store_word(ram, mem_addr, peek(0));
+            break;
+        case MODE_DATA_32_ADDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            store_byte(ram, mem_addr, peek(0));
+            break;
+        case MODE_DATA_32_INDR:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            store_dword(ram, mem_addr, peek(0));
+            break;
+        case MODE_DATA_32_INDR_W:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            store_word(ram, mem_addr, peek(0));
+            break;
+        case MODE_DATA_32_INDR_B:
+            mem_addr = get_dword(ram, incr_pc());
+            mem_addr = get_dword(ram, mem_addr);
+            store_byte(ram, mem_addr, peek(0));
+            break;
+        case MODE_REGISTER:
+            r[ic.d2] = peek(0);
+            break;
+        case MODE_REGISTER_ADDR:
+            mem_addr = r[ic.d2];
+            store_dword(ram, mem_addr, peek(0));
+            break;
+        case MODE_REGISTER_ADDR_W:
+            mem_addr = r[ic.d2];
+            store_word(ram, mem_addr, peek(0));
+            break;
+        case MODE_REGISTER_ADDR_B:
+            mem_addr = r[ic.d2];
+            store_byte(ram, mem_addr, peek(0));
+            break;
+        case MODE_REGISTER_INDR:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            store_dword(ram, mem_addr, peek(0));
+            break;
+        case MODE_REGISTER_INDR_W:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            store_word(ram, mem_addr, peek(0));
+            break;
+        case MODE_REGISTER_INDR_B:
+            mem_addr = r[ic.d2];
+            mem_addr = get_dword(ram, mem_addr);
+            store_byte(ram, mem_addr, peek(0));
+            break;
+        default:
+            unsupported_mode(ic.mode);
     }
 }
 
@@ -605,22 +605,22 @@ void instr_jmp(struct instruction ic)
     {
         switch (ic.mode)
         {
-        case MODE_DEFAULT:
-            // Point the pc to the jmp location
-            pc = mem_addr - 4;
-            break;
-        case JUMP_MODE_JMPEQ:
-            if (zb_tst())
+            case MODE_DEFAULT:
                 // Point the pc to the jmp location
                 pc = mem_addr - 4;
-            break;
-        case JUMP_MODE_JMPNEQ:
-            if (!zb_tst())
-                // Point the pc to the jmp location
-                pc = mem_addr - 4;
-            break;
-        default:
-            unsupported_mode(ic.mode);
+                break;
+            case JUMP_MODE_JMPEQ:
+                if (zb_tst())
+                    // Point the pc to the jmp location
+                    pc = mem_addr - 4;
+                break;
+            case JUMP_MODE_JMPNEQ:
+                if (!zb_tst())
+                    // Point the pc to the jmp location
+                    pc = mem_addr - 4;
+                break;
+            default:
+                unsupported_mode(ic.mode);
         }
     }
 }
@@ -666,18 +666,18 @@ void instr_adv_print(struct instruction ic)
     // 2. print the 0 terminated string located in the memory pointed to by pr
     switch (ic.mode)
     {
-    case MODE_DEFAULT:
-        print((char)*pr);
-        break;
-    case MODE_EXTRA:
-        mem_addr = *pr;
-        char p_byte = '\00';
-        while ((p_byte = get_byte(ram, mem_addr++)))
-            print(p_byte);
+        case MODE_DEFAULT:
+            print((char) *pr);
+            break;
+        case MODE_EXTRA:
+            mem_addr = *pr;
+            char p_byte = '\00';
+            while ((p_byte = get_byte(ram, mem_addr++)))
+                print(p_byte);
 
-        break;
-    default:
-        unsupported_mode(ic.mode);
+            break;
+        default:
+            unsupported_mode(ic.mode);
     }
 }
 
@@ -693,15 +693,15 @@ void instr_adv_scan(struct instruction ic)
 
     switch (ic.mode)
     {
-    case MODE_DEFAULT:
-        // Scan the character literal into pr
-        scanf("%c", (char *)pr);
-        break;
-    case MODE_EXTRA:
-        mem_addr = *pr;
-        fgets((char *)(ram + mem_addr), *dr, stdin);
-        break;
-    default:
-        unsupported_mode(ic.mode);
+        case MODE_DEFAULT:
+            // Scan the character literal into pr
+            scanf("%c", (char *) pr);
+            break;
+        case MODE_EXTRA:
+            mem_addr = *pr;
+            fgets((char *) (ram + mem_addr), *dr, stdin);
+            break;
+        default:
+            unsupported_mode(ic.mode);
     }
 }

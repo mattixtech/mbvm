@@ -117,7 +117,7 @@ void test_exec_program()
 {
     allocate();
     uint32_t test_instructions[2] = {
-            create_instruction(INSTR_NOP, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE),
+            create_instruction(INSTR_NOOP, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE),
             create_instruction(INSTR_EXIT, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE)};
     load_program(test_instructions,
                  sizeof(test_instructions) / sizeof(test_instructions[0]),

@@ -14,5 +14,7 @@
 int init_instructions_test_suite();
 int clean_instructions_test_suite();
 void test_instr_exit();
+void test_instr_noop();
 void test_instr_push();
+void test_instr_pop();
 #endif

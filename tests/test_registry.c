@@ -24,7 +24,9 @@ void add_instructions_tests(CU_pSuite p_suite)
                            clean_instructions_test_suite);
     // Add the tests
     CU_add_test(p_suite, "test of instr_exit()", test_instr_exit);
+    CU_add_test(p_suite, "test of instr_noop()", test_instr_noop);
     CU_add_test(p_suite, "test of instr_push()", test_instr_push);
+    CU_add_test(p_suite, "test of instr_pop()", test_instr_pop);
     // TODO: Add the rest
 }
 

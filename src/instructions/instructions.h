@@ -11,7 +11,7 @@
 #define INSTRUCTIONS_H
 // Basic instructions
 #define INSTR_EXIT 0x00
-#define INSTR_NOP 0xFF
+#define INSTR_NOOP 0xFF
 
 #define INSTR_PUSH 0xA0
 #define INSTR_POP 0xA1

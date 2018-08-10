@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-blackbox_test.py
+test_programs.py
 Matthew Brooks, 2018
 Tests mbvm using all of the programs in test_programs against their known
 output.

@@ -54,6 +54,8 @@ int exec_instr(struct instruction ic)
             instr_exit();
 
             return 1;
+        case INSTR_NOOP:
+            return 0;
         case INSTR_LOAD:
             instr_load(ic);
             break;

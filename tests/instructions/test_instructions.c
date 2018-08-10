@@ -15,6 +15,15 @@
 #include "../../src/system/system.h"
 #include "../../src/vm/vm.h"
 
+// The instruction locations for the successive instructions after our push
+// to help with addressing and indirection
+static const uint32_t NEXT_INSTR = INSTRUCTION_SIZE;
+static const uint32_t NEXT2_INSTR = INSTRUCTION_SIZE * 2;
+static const uint32_t NEXT3_INSTR = INSTRUCTION_SIZE * 3;
+static const int SOURCE_IMMEDIATE = 1;
+static const int SOURCE_REGISTER = 2;
+static const uint32_t REGISTER_LOCATION = 0x0A000000;
+
 /**
  * The suite initialization function.
  * Returns zero on success, non-zero otherwise.
@@ -45,10 +54,25 @@ void test_instr_exit()
 }
 
 /**
+ * Tests 'instr_noop'
+ */
+void test_instr_noop()
+{
+    allocate();
+    exec(create_instruction(INSTR_NOOP, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE));
+    // TODO: Not sure what to test here, just checking that the PC
+    // was incremented for now
+    CU_ASSERT(INSTRUCTION_SIZE == pc);
+    deallocate();
+}
+
+/**
  * Tests 'isntr_push()'.
  */
 void test_instr_push()
 {
+    // TODO: Create a util function similiar to pop_test_util()
+
     // MODE_IMMEDIATE_B
     allocate();
     exec(create_instruction(INSTR_PUSH, MODE_IMMEDIATE_B, EMPTY_BYTE,
@@ -70,12 +94,6 @@ void test_instr_push()
                             EMPTY_BYTE));
     CU_ASSERT(DUMMY_VALUE_32 == pop());
     deallocate();
-
-    // The instruction locations for the successive instructions after our push
-    // to help with addressing and indirection
-    const int NEXT_INSTR = INSTRUCTION_SIZE;
-    const int NEXT2_INSTR = INSTRUCTION_SIZE * 2;
-    const int NEXT3_INSTR = INSTRUCTION_SIZE * 3;
 
     // MODE_DATA_32_ADDR
     allocate();
@@ -222,6 +240,95 @@ void test_instr_push()
                             TEST_REGISTER));
     CU_ASSERT(DUMMY_VALUE_8 == pop());
     deallocate();
+}
+
+/**
+ * A utility function to avoid duplication when testing pop() implementations.
+ */
+void pop_test_util(uint32_t push_value, uint8_t pop_mode, uint32_t get_location,
+                   int source)
+{
+    allocate();
+    push(push_value);
+
+    if (source == SOURCE_IMMEDIATE)
+    {
+        store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
+
+        if (get_location == NEXT3_INSTR)
+            store_dword(ram, NEXT2_INSTR, NEXT3_INSTR);
+
+        exec(create_instruction(INSTR_POP, pop_mode, EMPTY_BYTE,
+                                EMPTY_BYTE));
+    }
+    else
+    {
+        //  We can point the register to next instruction by default
+        r[TEST_REGISTER] = NEXT_INSTR;
+
+        if (get_location == NEXT2_INSTR)
+            store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
+
+        exec(create_instruction(INSTR_POP, pop_mode, EMPTY_BYTE,
+                                TEST_REGISTER));
+    }
+
+    if (get_location == REGISTER_LOCATION)
+    {
+        CU_ASSERT(push_value == r[TEST_REGISTER]);
+    }
+    else
+    {
+        switch (push_value)
+        {
+            case DUMMY_VALUE_32:
+            CU_ASSERT(push_value == get_dword(ram, get_location));
+                break;
+            case DUMMY_VALUE_16:
+            CU_ASSERT(push_value == get_word(ram, get_location));
+                break;
+            case DUMMY_VALUE_8:
+            CU_ASSERT(push_value == get_byte(ram, get_location));
+                break;
+            default:
+            CU_FAIL("Invalid push_value");
+        }
+    }
+
+    deallocate();
+}
+
+/**
+ * Tests 'isntr_pop()'.
+ */
+void test_instr_pop()
+{
+    pop_test_util(DUMMY_VALUE_32, MODE_DATA_32_ADDR, NEXT2_INSTR,
+                  SOURCE_IMMEDIATE);
+    pop_test_util(DUMMY_VALUE_16, MODE_DATA_32_ADDR_W, NEXT2_INSTR,
+                  SOURCE_IMMEDIATE);
+    pop_test_util(DUMMY_VALUE_8, MODE_DATA_32_ADDR_B, NEXT2_INSTR,
+                  SOURCE_IMMEDIATE);
+    pop_test_util(DUMMY_VALUE_32, MODE_DATA_32_INDR, NEXT3_INSTR,
+                  SOURCE_IMMEDIATE);
+    pop_test_util(DUMMY_VALUE_16, MODE_DATA_32_INDR_W, NEXT3_INSTR,
+                  SOURCE_IMMEDIATE);
+    pop_test_util(DUMMY_VALUE_8, MODE_DATA_32_INDR_B, NEXT3_INSTR,
+                  SOURCE_IMMEDIATE);
+    pop_test_util(DUMMY_VALUE_32, MODE_REGISTER, REGISTER_LOCATION,
+                  SOURCE_REGISTER);
+    pop_test_util(DUMMY_VALUE_32, MODE_REGISTER_ADDR, NEXT_INSTR,
+                  SOURCE_REGISTER);
+    pop_test_util(DUMMY_VALUE_16, MODE_REGISTER_ADDR_W, NEXT_INSTR,
+                  SOURCE_REGISTER);
+    pop_test_util(DUMMY_VALUE_8, MODE_REGISTER_ADDR_B, NEXT_INSTR,
+                  SOURCE_REGISTER);
+    pop_test_util(DUMMY_VALUE_32, MODE_REGISTER_INDR, NEXT2_INSTR,
+                  SOURCE_REGISTER);
+    pop_test_util(DUMMY_VALUE_16, MODE_REGISTER_INDR_W, NEXT2_INSTR,
+                  SOURCE_REGISTER);
+    pop_test_util(DUMMY_VALUE_8, MODE_REGISTER_INDR_B, NEXT2_INSTR,
+                  SOURCE_REGISTER);
 }
 
 // TODO: Add the rest
