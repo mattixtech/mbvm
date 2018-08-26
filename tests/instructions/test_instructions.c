@@ -17,6 +17,7 @@
 
 // The instruction locations for the successive instructions after our push
 // to help with addressing and indirection
+static const uint32_t IMMEDIATE = 0;
 static const uint32_t NEXT_INSTR = INSTRUCTION_SIZE;
 static const uint32_t NEXT2_INSTR = INSTRUCTION_SIZE * 2;
 static const uint32_t NEXT3_INSTR = INSTRUCTION_SIZE * 3;
@@ -67,195 +68,113 @@ void test_instr_noop()
 }
 
 /**
- * Tests 'isntr_push()'.
+ * A utility function to avoid duplication when testing push() implementations.
+ *
+ * @param pop_value TODO
+ * @param push_mode TODO
+ * @param storage_location TODO
+ * @param source_location TODO
  */
-void test_instr_push()
+void
+push_test_util(uint32_t pop_value, uint8_t push_mode, uint32_t storage_location,
+               int source_location)
 {
-    // TODO: Create a util function similiar to pop_test_util()
-
-    // MODE_IMMEDIATE_B
     allocate();
-    exec(create_instruction(INSTR_PUSH, MODE_IMMEDIATE_B, EMPTY_BYTE,
-                            DUMMY_VALUE_8));
-    CU_ASSERT(DUMMY_VALUE_8 == pop());
-    deallocate();
 
-    // MODE_IMMEDIATE_W
-    allocate();
-    exec(create_instruction(INSTR_PUSH, MODE_IMMEDIATE_W, DUMMY_VALUE_8,
-                            DUMMY_VALUE_8));
-    CU_ASSERT(DUMMY_VALUE_16 == pop());
-    deallocate();
+    if (storage_location != IMMEDIATE)
+    {
+        if (storage_location == NEXT2_INSTR)
+            store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
 
-    // MODE_DATA_32
-    allocate();
-    *((uint32_t *) (ram + INSTRUCTION_SIZE)) = DUMMY_VALUE_32;
-    exec(create_instruction(INSTR_PUSH, MODE_DATA_32, EMPTY_BYTE,
-                            EMPTY_BYTE));
-    CU_ASSERT(DUMMY_VALUE_32 == pop());
-    deallocate();
+        if (source_location == SOURCE_IMMEDIATE &&
+            storage_location == NEXT3_INSTR)
+        {
+            store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
+            store_dword(ram, NEXT2_INSTR, NEXT3_INSTR);
+        }
+        else if (source_location == SOURCE_REGISTER)
+            r[TEST_REGISTER] = NEXT_INSTR;
+    }
 
-    // MODE_DATA_32_ADDR
-    allocate();
-    // Store address 2*instr in the next instruction (ram[instr])
-    store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
-    // Store a dummy value in ram[instr*2]
-    store_dword(ram, NEXT2_INSTR, DUMMY_VALUE_32);
-    exec(create_instruction(INSTR_PUSH, MODE_DATA_32_ADDR, EMPTY_BYTE,
-                            EMPTY_BYTE));
-    CU_ASSERT(DUMMY_VALUE_32 == pop());
-    deallocate();
+    switch (pop_value)
+    {
+        case DUMMY_VALUE_8:
+            if (source_location == SOURCE_IMMEDIATE)
+            {
+                store_byte(ram, storage_location, DUMMY_VALUE_8);
+                exec(create_instruction(INSTR_PUSH, push_mode, EMPTY_BYTE,
+                                        DUMMY_VALUE_8));
+            }
+            else if (source_location == SOURCE_REGISTER)
+            {
+                if (storage_location == IMMEDIATE)
+                    r[TEST_REGISTER] = DUMMY_VALUE_8;
+                else
+                    store_byte(ram, storage_location, DUMMY_VALUE_8);
+            }
+            break;
+        case DUMMY_VALUE_16:
+            if (source_location == SOURCE_IMMEDIATE)
+            {
+                store_word(ram, storage_location, DUMMY_VALUE_16);
+                exec(create_instruction(INSTR_PUSH, push_mode, DUMMY_VALUE_8,
+                                        DUMMY_VALUE_8));
+            }
+            else if (source_location == SOURCE_REGISTER)
+            {
+                if (storage_location == IMMEDIATE)
+                    r[TEST_REGISTER] = DUMMY_VALUE_16;
+                else
+                    store_word(ram, storage_location, DUMMY_VALUE_16);
+            }
+            break;
+        case DUMMY_VALUE_32:
+            if (source_location == SOURCE_IMMEDIATE)
+            {
+                store_dword(ram, storage_location, DUMMY_VALUE_32);
+                exec(create_instruction(INSTR_PUSH, push_mode, EMPTY_BYTE,
+                                        EMPTY_BYTE));
+            }
+            else if (source_location == SOURCE_REGISTER)
+            {
+                if (storage_location == IMMEDIATE)
+                    r[TEST_REGISTER] = DUMMY_VALUE_32;
+                else
+                    store_dword(ram, storage_location, DUMMY_VALUE_32);
+            }
+            break;
+        default:
+        CU_FAIL("Invalid pop_value");
+    }
 
-    // MODE_DATA_32_ADDR_W
-    allocate();
-    // Store address 2*instr in the next instruction (ram[instr])
-    store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
-    // Store a dummy value in ram[instr*2]
-    store_word(ram, NEXT2_INSTR, DUMMY_VALUE_16);
-    exec(create_instruction(INSTR_PUSH, MODE_DATA_32_ADDR_W, EMPTY_BYTE,
-                            EMPTY_BYTE));
-    CU_ASSERT(DUMMY_VALUE_16 == pop());
-    deallocate();
+    if (source_location == SOURCE_REGISTER)
+        exec(create_instruction(INSTR_PUSH, push_mode, EMPTY_BYTE,
+                                TEST_REGISTER));
 
-    // MODE_DATA_32_ADDR_B
-    allocate();
-    // Store address 2*instr in the next instruction (ram[instr])
-    store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
-    // Store a dummy value in ram[instr*2]
-    store_byte(ram, NEXT2_INSTR, DUMMY_VALUE_8);
-    exec(create_instruction(INSTR_PUSH, MODE_DATA_32_ADDR_B, EMPTY_BYTE,
-                            EMPTY_BYTE));
-    CU_ASSERT(DUMMY_VALUE_8 == pop());
-    deallocate();
-
-    // MODE_DATA_32_INDR
-    allocate();
-    // Store address 2*instr in the next instruction (ram[instr])
-    store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
-    // Store address 3*instr in ram[instr*2]
-    store_dword(ram, NEXT2_INSTR, NEXT3_INSTR);
-    // Store a dummy value in ram[instr*4]
-    store_dword(ram, NEXT3_INSTR, DUMMY_VALUE_32);
-    exec(create_instruction(INSTR_PUSH, MODE_DATA_32_INDR, EMPTY_BYTE,
-                            EMPTY_BYTE));
-    CU_ASSERT(DUMMY_VALUE_32 == pop());
-    deallocate();
-
-    // MODE_DATA_32_INDR_W
-    allocate();
-    // Store address 2*instr in the next instruction (ram[instr])
-    store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
-    // Store address 3*instr in ram[instr*2]
-    store_dword(ram, NEXT2_INSTR, NEXT3_INSTR);
-    // Store a dummy value in ram[instr*4]
-    store_word(ram, NEXT3_INSTR, DUMMY_VALUE_16);
-    exec(create_instruction(INSTR_PUSH, MODE_DATA_32_INDR_W, EMPTY_BYTE,
-                            EMPTY_BYTE));
-    CU_ASSERT(DUMMY_VALUE_16 == pop());
-    deallocate();
-
-    // MODE_DATA_32_INDR_B
-    allocate();
-    // Store address 2*instr in the next instruction (ram[instr])
-    store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
-    // Store address 3*instr in ram[instr*2]
-    store_dword(ram, NEXT2_INSTR, NEXT3_INSTR);
-    // Store a dummy value in ram[instr*4]
-    store_byte(ram, NEXT3_INSTR, DUMMY_VALUE_8);
-    exec(create_instruction(INSTR_PUSH, MODE_DATA_32_INDR_B, EMPTY_BYTE,
-                            EMPTY_BYTE));
-    CU_ASSERT(DUMMY_VALUE_8 == pop());
-    deallocate();
-
-    // MODE_REGISTER
-    allocate();
-    r[TEST_REGISTER] = DUMMY_VALUE_32;
-    exec(create_instruction(INSTR_PUSH, MODE_REGISTER, EMPTY_BYTE,
-                            TEST_REGISTER));
-    CU_ASSERT(DUMMY_VALUE_32 == pop());
-    deallocate();
-
-    // MODE_REGISTER_ADDR
-    allocate();
-    // Point register to next instruction
-    r[TEST_REGISTER] = NEXT_INSTR;
-    // Store the dummy value in that next instruction
-    store_dword(ram, NEXT_INSTR, DUMMY_VALUE_32);
-    exec(create_instruction(INSTR_PUSH, MODE_REGISTER_ADDR, EMPTY_BYTE,
-                            TEST_REGISTER));
-    CU_ASSERT(DUMMY_VALUE_32 == pop());
-    deallocate();
-
-    // MODE_REGISTER_ADDR_W
-    allocate();
-    // Point register to next instruction
-    r[TEST_REGISTER] = NEXT_INSTR;
-    // Store the dummy value in that next instruction
-    store_word(ram, NEXT_INSTR, DUMMY_VALUE_16);
-    exec(create_instruction(INSTR_PUSH, MODE_REGISTER_ADDR_W, EMPTY_BYTE,
-                            TEST_REGISTER));
-    CU_ASSERT(DUMMY_VALUE_16 == pop());
-    deallocate();
-
-    // MODE_REGISTER_ADDR_B
-    allocate();
-    // Point register to next instruction
-    r[TEST_REGISTER] = NEXT_INSTR;
-    // Store the dummy value in that next instruction
-    store_byte(ram, NEXT_INSTR, DUMMY_VALUE_8);
-    exec(create_instruction(INSTR_PUSH, MODE_REGISTER_ADDR_B, EMPTY_BYTE,
-                            TEST_REGISTER));
-    CU_ASSERT(DUMMY_VALUE_8 == pop());
-    deallocate();
-
-    // MODE_REGISTER_INDR
-    allocate();
-    // Point register to next instruction
-    r[TEST_REGISTER] = NEXT_INSTR;
-    store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
-    store_dword(ram, NEXT2_INSTR, DUMMY_VALUE_32);
-    exec(create_instruction(INSTR_PUSH, MODE_REGISTER_INDR, EMPTY_BYTE,
-                            TEST_REGISTER));
-    CU_ASSERT(DUMMY_VALUE_32 == pop());
-    deallocate();
-
-    // MODE_REGISTER_INDR_W
-    allocate();
-    // Point register to next instruction
-    r[TEST_REGISTER] = NEXT_INSTR;
-    store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
-    store_word(ram, NEXT2_INSTR, DUMMY_VALUE_16);
-    exec(create_instruction(INSTR_PUSH, MODE_REGISTER_INDR_W, EMPTY_BYTE,
-                            TEST_REGISTER));
-    CU_ASSERT(DUMMY_VALUE_16 == pop());
-    deallocate();
-
-    // MODE_REGISTER_INDR_B
-    allocate();
-    // Point register to next instruction
-    r[TEST_REGISTER] = NEXT_INSTR;
-    store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
-    store_byte(ram, NEXT2_INSTR, DUMMY_VALUE_8);
-    exec(create_instruction(INSTR_PUSH, MODE_REGISTER_INDR_B, EMPTY_BYTE,
-                            TEST_REGISTER));
-    CU_ASSERT(DUMMY_VALUE_8 == pop());
+    CU_ASSERT(pop_value == pop());
     deallocate();
 }
 
 /**
  * A utility function to avoid duplication when testing pop() implementations.
+ *
+ * @param push_value TODO
+ * @param pop_mode TODO
+ * @param storage_location TODO
+ * @param source_location TODO
  */
-void pop_test_util(uint32_t push_value, uint8_t pop_mode, uint32_t get_location,
-                   int source)
+void
+pop_test_util(uint32_t push_value, uint8_t pop_mode, uint32_t storage_location,
+              int source_location)
 {
     allocate();
     push(push_value);
 
-    if (source == SOURCE_IMMEDIATE)
+    if (source_location == SOURCE_IMMEDIATE)
     {
         store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
 
-        if (get_location == NEXT3_INSTR)
+        if (storage_location == NEXT3_INSTR)
             store_dword(ram, NEXT2_INSTR, NEXT3_INSTR);
 
         exec(create_instruction(INSTR_POP, pop_mode, EMPTY_BYTE,
@@ -266,14 +185,14 @@ void pop_test_util(uint32_t push_value, uint8_t pop_mode, uint32_t get_location,
         //  We can point the register to next instruction by default
         r[TEST_REGISTER] = NEXT_INSTR;
 
-        if (get_location == NEXT2_INSTR)
+        if (storage_location == NEXT2_INSTR)
             store_dword(ram, NEXT_INSTR, NEXT2_INSTR);
 
         exec(create_instruction(INSTR_POP, pop_mode, EMPTY_BYTE,
                                 TEST_REGISTER));
     }
 
-    if (get_location == REGISTER_LOCATION)
+    if (storage_location == REGISTER_LOCATION)
     {
         CU_ASSERT(push_value == r[TEST_REGISTER]);
     }
@@ -282,13 +201,13 @@ void pop_test_util(uint32_t push_value, uint8_t pop_mode, uint32_t get_location,
         switch (push_value)
         {
             case DUMMY_VALUE_32:
-            CU_ASSERT(push_value == get_dword(ram, get_location));
+            CU_ASSERT(push_value == get_dword(ram, storage_location));
                 break;
             case DUMMY_VALUE_16:
-            CU_ASSERT(push_value == get_word(ram, get_location));
+            CU_ASSERT(push_value == get_word(ram, storage_location));
                 break;
             case DUMMY_VALUE_8:
-            CU_ASSERT(push_value == get_byte(ram, get_location));
+            CU_ASSERT(push_value == get_byte(ram, storage_location));
                 break;
             default:
             CU_FAIL("Invalid push_value");
@@ -296,6 +215,44 @@ void pop_test_util(uint32_t push_value, uint8_t pop_mode, uint32_t get_location,
     }
 
     deallocate();
+}
+
+/**
+ * Tests 'isntr_push()'.
+ */
+void test_instr_push()
+{
+    push_test_util(DUMMY_VALUE_8, MODE_IMMEDIATE_B, IMMEDIATE,
+                   SOURCE_IMMEDIATE);
+    push_test_util(DUMMY_VALUE_16, MODE_IMMEDIATE_W, IMMEDIATE,
+                   SOURCE_IMMEDIATE);
+    push_test_util(DUMMY_VALUE_32, MODE_DATA_32, NEXT_INSTR, SOURCE_IMMEDIATE);
+    push_test_util(DUMMY_VALUE_32, MODE_DATA_32_ADDR, NEXT2_INSTR,
+                   SOURCE_IMMEDIATE);
+    push_test_util(DUMMY_VALUE_16, MODE_DATA_32_ADDR_W, NEXT2_INSTR,
+                   SOURCE_IMMEDIATE);
+    push_test_util(DUMMY_VALUE_8, MODE_DATA_32_ADDR_B, NEXT2_INSTR,
+                   SOURCE_IMMEDIATE);
+    push_test_util(DUMMY_VALUE_32, MODE_DATA_32_INDR, NEXT3_INSTR,
+                   SOURCE_IMMEDIATE);
+    push_test_util(DUMMY_VALUE_16, MODE_DATA_32_INDR_W, NEXT3_INSTR,
+                   SOURCE_IMMEDIATE);
+    push_test_util(DUMMY_VALUE_8, MODE_DATA_32_INDR_B, NEXT3_INSTR,
+                   SOURCE_IMMEDIATE);
+    push_test_util(DUMMY_VALUE_32, MODE_REGISTER, IMMEDIATE,
+                   SOURCE_REGISTER);
+    push_test_util(DUMMY_VALUE_32, MODE_REGISTER_ADDR, NEXT_INSTR,
+                   SOURCE_REGISTER);
+    push_test_util(DUMMY_VALUE_16, MODE_REGISTER_ADDR_W, NEXT_INSTR,
+                   SOURCE_REGISTER);
+    push_test_util(DUMMY_VALUE_8, MODE_REGISTER_ADDR_B, NEXT_INSTR,
+                   SOURCE_REGISTER);
+    push_test_util(DUMMY_VALUE_32, MODE_REGISTER_INDR, NEXT2_INSTR,
+                   SOURCE_REGISTER);
+    push_test_util(DUMMY_VALUE_16, MODE_REGISTER_INDR_W, NEXT2_INSTR,
+                   SOURCE_REGISTER);
+    push_test_util(DUMMY_VALUE_8, MODE_REGISTER_INDR_B, NEXT2_INSTR,
+                   SOURCE_REGISTER);
 }
 
 /**
